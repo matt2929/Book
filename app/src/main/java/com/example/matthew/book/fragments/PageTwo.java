@@ -23,6 +23,16 @@ public class PageTwo extends Page {
     }
 
     @Override
+    public String getString() {
+        return "page two";
+    }
+
+    @Override
+    public void enabledisabletouch(boolean b) {
+
+    }
+
+    @Override
     public boolean doneTouching() {
         return false;
     }

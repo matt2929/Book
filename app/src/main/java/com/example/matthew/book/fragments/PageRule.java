@@ -6,4 +6,8 @@ package com.example.matthew.book.fragments;
 
 public interface PageRule {
     public boolean doneTouching();
+
+    public String getString();
+
+    public void enabledisabletouch(boolean b);
 }

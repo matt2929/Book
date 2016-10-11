@@ -1,8 +1,7 @@
 package com.example.matthew.book.Activities;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,14 +18,17 @@ import com.example.matthew.book.fragments.Page;
 import com.example.matthew.book.fragments.PageOne;
 import com.example.matthew.book.fragments.PageTwo;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 
 public class PageTurner extends AppCompatActivity implements TextToSpeech.OnInitListener ,TextToSpeech.OnUtteranceCompletedListener{
     TextView textView;
-    Button button;
+    Button nextPage,Repeat;
     RelativeLayout ll;
     FrameLayout fragCase;
+    MediaPlayer mediaPlayer;
+
     int clickCount = 0;
     android.app.FragmentManager fragmentManager;
     android.app.FragmentTransaction transaction;
@@ -42,9 +44,21 @@ public class PageTurner extends AppCompatActivity implements TextToSpeech.OnInit
         textView =(TextView) findViewById(R.id.textonpage);
         tts = new TextToSpeech(this, this);
         tts.setOnUtteranceCompletedListener(this);
+        mediaPlayer = MediaPlayer.create(PageTurner.this, R.raw.dirtmove);
+        nextPage.setVisibility(View.INVISIBLE);
         fragmentManager = getFragmentManager();
-        button = (Button) findViewById(R.id.changefragment);
-        button.setOnClickListener(new View.OnClickListener() {
+        _CurrentPage.passMediaPlayer(getApplicationContext());
+        Repeat=(Button) findViewById(R.id.repeatspeaks);
+        Repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+                tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+            }
+        });
+        nextPage = (Button) findViewById(R.id.changefragment);
+        nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (_CurrentPage.doneTouching()) {
@@ -66,6 +80,7 @@ public class PageTurner extends AppCompatActivity implements TextToSpeech.OnInit
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
                     tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                    _CurrentPage.passMediaPlayer(getApplicationContext());
                     _CurrentPage.enabledisabletouch(false);
                 }
             }
@@ -96,7 +111,7 @@ public class PageTurner extends AppCompatActivity implements TextToSpeech.OnInit
                         Toast.LENGTH_LONG).show();
                 Log.e("TTS", "Language is not supported");
             }
-            // Enable the button - It was disabled in main.xml (Go back and
+            // Enable the nextPage - It was disabled in main.xml (Go back and
             // Check it)
             else {
 

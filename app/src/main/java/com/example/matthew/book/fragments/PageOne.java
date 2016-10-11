@@ -1,8 +1,10 @@
 package com.example.matthew.book.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -26,7 +28,7 @@ import java.util.HashMap;
 
 public class PageOne extends Page implements View.OnTouchListener {
     String thisPagesText = "All living things have a life cycle. This is the story of my life cycle, which started with me as a tiny seed. Press the stages of my life cycle to learn about them.";
-   Button seed, seedling, sappling, tree, treeFlower, treeApple;
+    Button seed, seedling, sappling, tree, treeFlower, treeApple;
     Button[] buttons;
 
     HashMap<Button,Boolean> didITouch= new HashMap<Button,Boolean>();
@@ -106,6 +108,16 @@ public class PageOne extends Page implements View.OnTouchListener {
     @Override
     public String getString() {
         return thisPagesText;
+    }
+
+    @Override
+    public void getSound(int id) {
+        super.getSound(id);
+    }
+
+    @Override
+    public void passMediaPlayer(Context context) {
+
     }
 
     @Override

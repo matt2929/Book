@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.matthew.book.R;
 import com.example.matthew.book.fragments.Page;
 import com.example.matthew.book.fragments.PageOne;
+import com.example.matthew.book.fragments.PageThree;
 import com.example.matthew.book.fragments.PageTwo;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class PageTurner extends AppCompatActivity implements TextToSpeech.OnInit
         tts = new TextToSpeech(this, this);
         tts.setOnUtteranceCompletedListener(this);
         mediaPlayer = MediaPlayer.create(PageTurner.this, R.raw.dirtmove);
-        nextPage.setVisibility(View.INVISIBLE);
+        //nextPage.setVisibility(View.INVISIBLE);
         fragmentManager = getFragmentManager();
         _CurrentPage.passMediaPlayer(getApplicationContext());
         Repeat=(Button) findViewById(R.id.repeatspeaks);
@@ -61,17 +62,20 @@ public class PageTurner extends AppCompatActivity implements TextToSpeech.OnInit
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e("turn",""+clickCount);
                 if (_CurrentPage.doneTouching()) {
                     transaction = fragmentManager.beginTransaction();
                     transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                     if (clickCount == 0) {
                         _CurrentPage = new PageTwo();
                         transaction.replace(fragCase.getId(), _CurrentPage);
+
                     } else if (clickCount == 1) {
-                        _CurrentPage = new PageTwo();
+                        _CurrentPage = new PageThree();
                         transaction.replace(fragCase.getId(), _CurrentPage);
-                    } else {
-                        _CurrentPage = new PageTwo();
+
+                    } else if (clickCount ==2){
+                        _CurrentPage = new PageThree();
                         transaction.replace(fragCase.getId(), _CurrentPage);
                     }
                     textView.setText(_CurrentPage.getString());

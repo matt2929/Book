@@ -98,8 +98,6 @@ public class PageOne extends Page implements View.OnTouchListener {
         } else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
             imageView.setText("");
             view.setBackground(drawable);
-            Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.twiststretch);
-            view.startAnimation(hyperspaceJumpAnimation);
             view.setAlpha(.5f);
         }
         return true;

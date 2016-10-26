@@ -19,7 +19,7 @@ import com.example.matthew.book.R;
  * Created by Matthew on 9/29/2016.
  */
 
-public class PageTwo extends Page implements View.OnTouchListener {
+public class PageThree extends Page implements View.OnTouchListener {
     Button Seeds1, Seeds2, Seeds3, Dirt1, Dirt2, Dirt3;
     Button[] seeds;
     Button[] dirt;
@@ -29,19 +29,20 @@ public class PageTwo extends Page implements View.OnTouchListener {
     Float lastX = 0f, lastY = 0f;
     boolean bool = false;
     MediaPlayer mp;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewHierarchy =
-                inflater.inflate(R.layout.fragmentpage2, container, false);
+                inflater.inflate(R.layout.fragmentpage3, container, false);
         Seeds1 = (Button) viewHierarchy.findViewById(R.id.Page3MainPile);
-        Seeds2 = (Button) viewHierarchy.findViewById(R.id.Page2Seed2);
-        Seeds3 = (Button) viewHierarchy.findViewById(R.id.Page2Seed3);
+        Seeds2 = (Button) viewHierarchy.findViewById(R.id.small1);
+        Seeds3 = (Button) viewHierarchy.findViewById(R.id.small2);
 
 
         seeds = new Button[]{Seeds1, Seeds2, Seeds3};
-        Dirt1 = (Button) viewHierarchy.findViewById(R.id.Page2Dirt1);
-        Dirt2 = (Button) viewHierarchy.findViewById(R.id.Page2Dirt2);
-        Dirt3 = (Button) viewHierarchy.findViewById(R.id.Page2Dirt3);
+        Dirt1 = (Button) viewHierarchy.findViewById(R.id.Page3Dirt1);
+        Dirt2 = (Button) viewHierarchy.findViewById(R.id.Page3Dirt2);
+        Dirt3 = (Button) viewHierarchy.findViewById(R.id.Page3Dirt3);
         dirt = new Button[]{Dirt1, Dirt2, Dirt3};
         for (int i = 0; i < seeds.length; i++) {
             seeds[i].setOnTouchListener(this);
@@ -53,7 +54,18 @@ public class PageTwo extends Page implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (bool) {
-            v.setBackground(getResources().getDrawable(R.drawable.seeds_for_dirt));
+            v.setBackground(getResources().getDrawable(R.drawable.page3dirt1));
+            if (event.equals(MotionEvent.ACTION_DOWN)) {
+                for (int i = 0; i < seeds.length; i++) {
+                    if (!seeds[i].equals(v))
+                        if (updateLimiter == 0) {
+                            updateLimiter++;
+                            seeds[i].setBackground(getResources().getDrawable(R.drawable.page3dirt2));
+                        } else {
+                            seeds[i].setBackground(getResources().getDrawable(R.drawable.page3dirt1));
+                        }
+                }
+            }
             if (lastY == 0) {
                 lastX = event.getRawX();
                 lastY = event.getRawY();
@@ -64,12 +76,12 @@ public class PageTwo extends Page implements View.OnTouchListener {
                 float xdiff = lastX - event.getRawX();
                 float ydiff = lastY - event.getRawY();
 
-                if((v.getX()-xdiff)+v.getWidth()>masterView.getWidth()
-                        ||(v.getX()-xdiff)<0
-                        ||(v.getY()-ydiff)+v.getHeight()>masterView.getHeight()
-                        ||(v.getY()-ydiff)<0
-                        ){
-                }else {
+                if ((v.getX() - xdiff) + v.getWidth() > masterView.getWidth()
+                        || (v.getX() - xdiff) < 0
+                        || (v.getY() - ydiff) + v.getHeight() > masterView.getHeight()
+                        || (v.getY() - ydiff) < 0
+                        ) {
+                } else {
                     v.setX((v.getX() - xdiff));
                     v.setY((v.getY() - ydiff));
                     lastX = event.getRawX();
@@ -109,7 +121,7 @@ public class PageTwo extends Page implements View.OnTouchListener {
         Rect rect2 = new Rect((int) v2.getX(), (int) v2.getY(), (int) v2.getX() + v1.getWidth(), (int) v2.getY() + v2.getHeight());
         Log.e("rect2", "" + rect2.toString());
         if (rect1.intersect(rect2)) {
-            v1.setBackground(getResources().getDrawable(R.drawable.dirt_with_seeds));
+            v1.setBackground(getResources().getDrawable(R.drawable.page3dirt2));
             v2.setVisibility(View.GONE);
             return true;
         } else {
@@ -119,12 +131,12 @@ public class PageTwo extends Page implements View.OnTouchListener {
 
     @Override
     public void passMediaPlayer(Context context) {
-     mp =MediaPlayer.create(context,R.raw.dirtmove);
+        mp = MediaPlayer.create(context, R.raw.dirtmove);
     }
 
     @Override
     public String getString() {
-        return "“If I fall to the ground I might grow into a big apple tree, just like my mother.” “Place me in the ground and plant me so I can grow big and tall!”";
+        return "The dirt feels soft and cool as it covers my little seed body. Can you help cover me with dirt so that I can start to grow beneath the ground?\n";
     }
 
     @Override
@@ -134,8 +146,8 @@ public class PageTwo extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        for(int i=0;i<dirtFertilized.length;i++){
-            if(!dirtFertilized[i]){
+        for (int i = 0; i < dirtFertilized.length; i++) {
+            if (!dirtFertilized[i]) {
                 return false;
             }
         }

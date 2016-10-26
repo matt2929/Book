@@ -31,7 +31,6 @@ Button button;
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), PageTurner.class);
                 startActivity(i);
-
             }
         });
     }

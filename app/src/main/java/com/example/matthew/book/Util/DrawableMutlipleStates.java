@@ -23,7 +23,7 @@ public class DrawableMutlipleStates {
 
         }
         checkpoint.add(MaxNum);
-        Max=MaxNum;
+        Max=MaxNum-1;
     }
     public Drawable update(){
         currentNum++;
@@ -39,6 +39,6 @@ public class DrawableMutlipleStates {
         return myDrawables.get(0);
     }
     public boolean allComplete(){
-        return currentNum>=Max;
+        return currentNum>=checkpoint.get(checkpoint.size()-2);
     }
 }

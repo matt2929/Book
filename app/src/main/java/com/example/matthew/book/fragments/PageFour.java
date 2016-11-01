@@ -90,14 +90,12 @@ public class PageFour extends Page implements View.OnTouchListener {
             float xdiff = lastX - event.getRawX();
             float ydiff = lastY - event.getRawY();
 
-            //  if ((v.getX() - xdiff) + v.getWidth() > masterView.getWidth()
-            //|| (v.getX() - xdiff) < 0
-            //  || (v.getY() - ydiff) + v.getHeight() > masterView.getHeight()
-            //    || (v.getY() - ydiff) < 0
-            //      ) {
-            //} else {
-            v.setX((v.getX() - xdiff));
-            v.setY((v.getY() - ydiff));
+            if((v.getX() - xdiff)>=0&&(v.getX() - xdiff)+v.getWidth()<masterView.getWidth()) {
+                v.setX((v.getX() - xdiff));
+            }
+            if(((v.getY() - ydiff)>=0&&(v.getY() - ydiff)+v.getHeight()<masterView.getHeight())) {
+                v.setY((v.getY() - ydiff));
+            }
             lastX = event.getRawX();
             lastY = event.getRawY();
 //                }
@@ -112,22 +110,27 @@ public class PageFour extends Page implements View.OnTouchListener {
 
     }
 
-
     private void isViewOverlapping() {
-        if(cloud.getX()>seedbutt1.getX()-50&&cloud.getX()<seedbutt1.getX()+seedbutt1.getWidth()+100){
+        if(checkButtOverlap(seedbutt1,cloud)){
             seedbutt1.setBackground(seedstattes1.update());
-        Log.e("IS","1");
-        }if(cloud.getX()>seedbutt2.getX()-50&&cloud.getX()<seedbutt2.getX()+seedbutt2.getWidth()+100){
+            Log.e("IS","1");
+        }if(checkButtOverlap(seedbutt2,cloud)){
             seedbutt2.setBackground(seedstates2.update());
             Log.e("IS","2");
-        } if(cloud.getX()>seedbutt3.getX()-50&&cloud.getX()<seedbutt3.getX()+seedbutt3.getWidth()+100){
+        } if(checkButtOverlap(seedbutt3,cloud)){
             seedbutt3.setBackground(seedstates3.update());
             Log.e("IS","3");
         }
 
     }
 
-    @Override
+    public boolean checkButtOverlap(Button butt1,Button butt2) {
+        return ((butt1.getX() > butt2.getX() && butt1.getX() < butt2.getX() + butt2.getWidth())
+                || (butt1.getX() + butt1.getWidth() > butt2.getX() && butt1.getX() + butt1.getWidth() < butt2.getX() + butt2.getWidth()));
+
+    }
+
+        @Override
     public void passMediaPlayer(Context context) {
         mp = MediaPlayer.create(context, R.raw.thunder);
         mp.setLooping(true);
@@ -135,7 +138,7 @@ public class PageFour extends Page implements View.OnTouchListener {
 
     @Override
     public String getString() {
-        return "The dirt feels soft and cool as it covers my little seed body. Can you help cover me with dirt so that I can start to grow beneath the ground?\n";
+        return "I am thirsty and need water to grow.  Could you help me?\n";
     }
 
     @Override
@@ -160,11 +163,15 @@ public class PageFour extends Page implements View.OnTouchListener {
 
         public void run() {
             if (cloudIsClicked) {
+
                 isViewOverlapping();
                 if (index + 1 == myDrawablesCloud.size()) {
                     index = 0;
                 } else {
                     index++;
+                }
+                if(index==0){
+
                 }
                 cloud.setBackground(myDrawablesCloud.get(index));
             }

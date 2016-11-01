@@ -3,10 +3,8 @@ package com.example.matthew.book.fragments;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -50,12 +48,15 @@ public class PageFive extends Page implements View.OnTouchListener {
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page4sprout4));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page4sprout5));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page4sprout6));
-        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page4rain1));
-        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page4rain2));
-        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page4rain3));
-        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page4rain4));
-        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page4rain5));
-        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page4rain6));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.cloud9));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.cloud8));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.cloud7));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.cloud5));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.cloud4));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.cloud3));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.cloud2));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page5sun2));
+        myDrawablesCloud.add(getResources().getDrawable(R.drawable.page5sun1));
         seeds = new DrawableMutlipleStates[3];
         seedstattes1      = new DrawableMutlipleStates(myDrawablesSprout, 100);
         seedstates2 = new DrawableMutlipleStates(myDrawablesSprout, 100);
@@ -69,63 +70,66 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            cloudIsClicked = true;
-            mp.start();
-            Log.e("click", "down");
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            mp.pause();
-            cloudIsClicked = false;
-            Log.e("click", "up");
-            cloud.setBackground(getResources().getDrawable(R.drawable.page4rain0));
-        }
-        if (lastY == 0) {
-            lastX = event.getRawX();
-            lastY = event.getRawY();
-
-        } else {
-
-
-            float xdiff = lastX - event.getRawX();
-            float ydiff = lastY - event.getRawY();
-
-            //  if ((v.getX() - xdiff) + v.getWidth() > masterView.getWidth()
-            //|| (v.getX() - xdiff) < 0
-            //  || (v.getY() - ydiff) + v.getHeight() > masterView.getHeight()
-            //    || (v.getY() - ydiff) < 0
-            //      ) {
-            //} else {
-            v.setX((v.getX() - xdiff));
-            v.setY((v.getY() - ydiff));
-            lastX = event.getRawX();
-            lastY = event.getRawY();
-//                }
-            Button imageView = (Button) v;
-            if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
-                lastY = 0f;
-                lastX = 0f;
+        if(bool) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                cloudIsClicked = true;
+                mp.start();
+                Log.e("click", "down");
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                mp.pause();
+                index = 0;
+                cloud.setBackground(getResources().getDrawable(R.drawable.cloud9));
+                cloudIsClicked = false;
+                Log.e("click", "up");
+                //    cloud.setBackground(getResources().getDrawable(R.drawable.page4rain0));
             }
+            if (lastY == 0) {
+                lastX = event.getRawX();
+                lastY = event.getRawY();
+
+            } else {
+
+
+                float xdiff = lastX - event.getRawX();
+                float ydiff = lastY - event.getRawY();
+                v.setX((v.getX() - xdiff));
+                v.setY((v.getY() - ydiff));
+                lastX = event.getRawX();
+                lastY = event.getRawY();
+//                }
+                Button imageView = (Button) v;
+                if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+                    lastY = 0f;
+                    lastX = 0f;
+                }
+            }
+
+
         }
-
         return true;
-
     }
 
 
     private void isViewOverlapping() {
-        if(cloud.getX()>seedbutt1.getX()-50&&cloud.getX()<seedbutt1.getX()+seedbutt1.getWidth()+100){
+        if(checkButtOverlap(seedbutt1,cloud)){
             seedbutt1.setBackground(seedstattes1.update());
             Log.e("IS","1");
-        }if(cloud.getX()>seedbutt2.getX()-50&&cloud.getX()<seedbutt2.getX()+seedbutt2.getWidth()+100){
+        }if(checkButtOverlap(seedbutt2,cloud)){
             seedbutt2.setBackground(seedstates2.update());
             Log.e("IS","2");
-        } if(cloud.getX()>seedbutt3.getX()-50&&cloud.getX()<seedbutt3.getX()+seedbutt3.getWidth()+100){
+        } if(checkButtOverlap(seedbutt3,cloud)){
             seedbutt3.setBackground(seedstates3.update());
             Log.e("IS","3");
         }
 
     }
 
+    public boolean checkButtOverlap(Button butt1,Button butt2){
+        return((butt1.getX()>butt2.getX()&&butt1.getX()<butt2.getX()+butt2.getWidth())
+                ||(butt1.getX()+butt1.getWidth()>butt2.getX()&&butt1.getX()+butt1.getWidth()<butt2.getX()+butt2.getWidth()));
+
+
+    }
     @Override
     public void passMediaPlayer(Context context) {
         mp = MediaPlayer.create(context, R.raw.thunder);
@@ -134,7 +138,7 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public String getString() {
-        return "The dirt feels soft and cool as it covers my little seed body. Can you help cover me with dirt so that I can start to grow beneath the ground?\n";
+        return "It is dark and I need sunlight to grow. Could you help me?\n";
     }
 
     @Override
@@ -160,12 +164,11 @@ public class PageFive extends Page implements View.OnTouchListener {
         public void run() {
             if (cloudIsClicked) {
                 isViewOverlapping();
-                if (index + 1 == myDrawablesCloud.size()) {
-                    index = 0;
-                } else {
-                    index++;
-                }
+                index++;
                 cloud.setBackground(myDrawablesCloud.get(index));
+                if(index+1==(myDrawablesCloud.size())){
+                    index=myDrawablesCloud.size()-3;
+                }
             }
             handler.postDelayed(this, 70);
         }

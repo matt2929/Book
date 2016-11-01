@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.PageTurner"></activity>
+        <activity android:name=".Activities.PageTurner" />
+        <activity android:name=".fragments.Page6"></activity>
     </application>
 
 </manifest>

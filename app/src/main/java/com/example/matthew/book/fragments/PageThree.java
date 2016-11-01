@@ -55,16 +55,18 @@ public class PageThree extends Page implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         if (bool) {
             v.setBackground(getResources().getDrawable(R.drawable.page3dirt1));
-            if (event.equals(MotionEvent.ACTION_DOWN)) {
+            if (!v.getBackground().equals(getResources().getDrawable(R.drawable.page3dirt1))&&event.getAction()==(MotionEvent.ACTION_DOWN)) {
                 for (int i = 0; i < seeds.length; i++) {
-                    if (!seeds[i].equals(v))
+                    if (!seeds[i].equals(v)) {
                         if (updateLimiter == 0) {
-                            updateLimiter++;
                             seeds[i].setBackground(getResources().getDrawable(R.drawable.page3dirt2));
                         } else {
                             seeds[i].setBackground(getResources().getDrawable(R.drawable.page3dirt1));
                         }
+                    }
                 }
+                updateLimiter++;
+
             }
             if (lastY == 0) {
                 lastX = event.getRawX();

@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,11 +19,10 @@ import com.example.matthew.book.R;
 import com.example.matthew.book.fragments.Page;
 import com.example.matthew.book.fragments.PageFive;
 import com.example.matthew.book.fragments.PageFour;
-import com.example.matthew.book.fragments.PageOne;
+import com.example.matthew.book.fragments.PageSix;
 import com.example.matthew.book.fragments.PageThree;
 import com.example.matthew.book.fragments.PageTwo;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -36,7 +35,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     int clickCount = 0;
     android.app.FragmentManager fragmentManager;
     android.app.FragmentTransaction transaction;
-    Page _CurrentPage = new PageOne();
+    Page _CurrentPage = new PageSix();
     TextToSpeech tts;
     boolean firstSpeak = false;
     boolean canClick = false;
@@ -87,6 +86,10 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         _CurrentPage = new PageFive();
                         transaction.replace(fragCase.getId(), _CurrentPage);
 
+                    } else if (clickCount == 5) {
+                        _CurrentPage = new PageSix();
+                        transaction.replace(fragCase.getId(), _CurrentPage);
+
                     }
                     textView.setText(_CurrentPage.getString());
                     transaction.commit();
@@ -107,18 +110,28 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                     int off = textView.getOffsetForPosition(event.getX(), event.getY());
                     if (off < _CurrentPage.getString().length()) {
                         Log.e("Val", "" + off);
+                        String editText="";
+                        String textBeggining = "";
+                        String textEnd="";
+                        String theWord="";
                         String myWord = "";
                         for (int i = 0; i < _CurrentPage.getString().length(); i++) {
                             if (_CurrentPage.getString().charAt(i) == ' ' && i < off) {
                                 myWord = "";
                             } else {
-                                if (_CurrentPage.getString().charAt(i) == ' ') {
-                                    break;
+                                if (_CurrentPage.getString().charAt(i) == ' '&&theWord=="") {
+                                    theWord=myWord;
+                                    textBeggining=_CurrentPage.getString().substring(0, i-theWord.length());
                                 }
                             }
-                            myWord = myWord + _CurrentPage.getString().charAt(i);
-                        }
-                        textView.getText();
+                            if(textBeggining=="") {
+                                myWord = myWord + _CurrentPage.getString().charAt(i);
+                            }else{
+                                textEnd += _CurrentPage.getString().charAt(i);
+                            }
+
+                            }
+                        textView.setText(Html.fromHtml("<font color='white'>"+textBeggining+"</font><font color='yellow'>"+theWord+"</font><font color='white'>"+textEnd+"</font>"), TextView.BufferType.NORMAL);
                         tts.speak(myWord, TextToSpeech.QUEUE_FLUSH, null);
                     }
 

@@ -17,7 +17,7 @@
         android:id="@+id/page3relativeview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/linearLayout2"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
         <Button
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:background="@drawable/page4sprout1" />
+            android:background="@drawable/sprout0" />
 
         <Button
             android:id="@+id/Page4Seed2"
@@ -34,23 +34,58 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/page4sprout1" />
+            android:background="@drawable/sprout0" />
 
         <Button
             android:id="@+id/Page4Seed3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/page4sprout1"
+            android:background="@drawable/sprout0"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+
+        <view
+            android:layout_height="200dp"
+            class="com.example.matthew.book.customview.SunAndRain"
+            android:id="@+id/rainsun2"
+            android:layout_width="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/Page4Sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/page5sun1"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
         <Button
             android:id="@+id/Page4Cloud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:background="@drawable/page4rain0"
-            />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <view
+            android:layout_height="200dp"
+            android:id="@+id/rainsun1"
+            class="com.example.matthew.book.customview.SunAndRain"
+            android:layout_width="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"/>
+
+        <view
+            android:layout_height="200dp"
+            class="com.example.matthew.book.customview.SunAndRain"
+            android:id="@+id/rainsun3"
+            android:layout_width="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"/>
 
     </RelativeLayout>
 

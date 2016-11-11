@@ -41,7 +41,7 @@ public class PageOne extends Page implements View.OnTouchListener {
 
         View viewHierarchy =
                 inflater.inflate(R.layout.fragmentpage1, container, false);
-
+        viewHierarchy.setBackground(getResources().getDrawable(android.R.drawable.screen_background_dark_transparent));
         seed = (Button) viewHierarchy.findViewById(R.id.cycleseed);
         seed.setBackgroundResource(R.drawable.seed);
         seedling = (Button) viewHierarchy.findViewById(R.id.cycleseedling);

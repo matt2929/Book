@@ -19,7 +19,7 @@ import com.example.matthew.book.R;
 import com.example.matthew.book.fragments.Page;
 import com.example.matthew.book.fragments.PageFive;
 import com.example.matthew.book.fragments.PageFour;
-import com.example.matthew.book.fragments.PageSix;
+import com.example.matthew.book.fragments.PageOne;
 import com.example.matthew.book.fragments.PageThree;
 import com.example.matthew.book.fragments.PageTwo;
 
@@ -35,10 +35,11 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     int clickCount = 0;
     android.app.FragmentManager fragmentManager;
     android.app.FragmentTransaction transaction;
-    Page _CurrentPage = new PageSix();
+    Page _CurrentPage = new PageFour();
     TextToSpeech tts;
     boolean firstSpeak = false;
     boolean canClick = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,28 +70,20 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                     transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                     if (clickCount == 0) {
                         _CurrentPage = new PageTwo();
-                        transaction.replace(fragCase.getId(), _CurrentPage);
-
                     } else if (clickCount == 1) {
                         _CurrentPage = new PageThree();
-                        transaction.replace(fragCase.getId(), _CurrentPage);
-
                     } else if (clickCount == 2) {
                         _CurrentPage = new PageFour();
-                        transaction.replace(fragCase.getId(), _CurrentPage);
                     } else if (clickCount == 3) {
                         _CurrentPage = new PageFive();
-                        transaction.replace(fragCase.getId(), _CurrentPage);
-
                     } else if (clickCount == 4) {
-                        _CurrentPage = new PageFive();
-                        transaction.replace(fragCase.getId(), _CurrentPage);
-
+                      //  _CurrentPage = new PageSix();
                     } else if (clickCount == 5) {
-                        _CurrentPage = new PageSix();
-                        transaction.replace(fragCase.getId(), _CurrentPage);
-
+                        //_CurrentPage =new PageSeven();
+                    } else if (clickCount == 6) {
+                        //_CurrentPage =new PageSeven();
                     }
+                    transaction.replace(fragCase.getId(), _CurrentPage);
                     textView.setText(_CurrentPage.getString());
                     transaction.commit();
                     clickCount++;
@@ -99,7 +92,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                     tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
                     _CurrentPage.passMediaPlayer(getApplicationContext());
                     _CurrentPage.enabledisabletouch(false);
-                    canClick=false;
+                    canClick = false;
                 }
             }
         });
@@ -110,28 +103,28 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                     int off = textView.getOffsetForPosition(event.getX(), event.getY());
                     if (off < _CurrentPage.getString().length()) {
                         Log.e("Val", "" + off);
-                        String editText="";
+                        String editText = "";
                         String textBeggining = "";
-                        String textEnd="";
-                        String theWord="";
+                        String textEnd = "";
+                        String theWord = "";
                         String myWord = "";
                         for (int i = 0; i < _CurrentPage.getString().length(); i++) {
                             if (_CurrentPage.getString().charAt(i) == ' ' && i < off) {
                                 myWord = "";
                             } else {
-                                if (_CurrentPage.getString().charAt(i) == ' '&&theWord=="") {
-                                    theWord=myWord;
-                                    textBeggining=_CurrentPage.getString().substring(0, i-theWord.length());
+                                if (_CurrentPage.getString().charAt(i) == ' ' && theWord == "") {
+                                    theWord = myWord;
+                                    textBeggining = _CurrentPage.getString().substring(0, i - theWord.length());
                                 }
                             }
-                            if(textBeggining=="") {
+                            if (textBeggining == "") {
                                 myWord = myWord + _CurrentPage.getString().charAt(i);
-                            }else{
+                            } else {
                                 textEnd += _CurrentPage.getString().charAt(i);
                             }
 
-                            }
-                        textView.setText(Html.fromHtml("<font color='white'>"+textBeggining+"</font><font color='yellow'>"+theWord+"</font><font color='white'>"+textEnd+"</font>"), TextView.BufferType.NORMAL);
+                        }
+                        textView.setText(Html.fromHtml("<font color='white'>" + textBeggining + "</font><font color='yellow'>" + theWord + "</font><font color='white'>" + textEnd + "</font>"), TextView.BufferType.NORMAL);
                         tts.speak(myWord, TextToSpeech.QUEUE_FLUSH, null);
                     }
 
@@ -139,7 +132,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                 }
                 return false;
             }
-            });
+        });
         fragCase = (FrameLayout) findViewById(R.id.fragmentcase);
         getFragmentManager().beginTransaction().replace(R.id.fragmentcase, _CurrentPage).commit();
     }
@@ -147,7 +140,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     @Override
     public void onUtteranceCompleted(String s) {
         Log.e("work", "work");
-        canClick=true;
+        canClick = true;
         _CurrentPage.enabledisabletouch(true);
     }
 

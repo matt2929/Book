@@ -19,8 +19,6 @@ public class DrawableMutlipleStates {
         myDrawables=drawables;
         for(int i=0;i<myDrawables.size();i++){
             checkpoint.add((int)((float)(MaxNum)*((float)i/(float)myDrawables.size())));
-            Log.e("taint",""+checkpoint.get(i));
-
         }
         checkpoint.add(MaxNum);
         Max=MaxNum-1;

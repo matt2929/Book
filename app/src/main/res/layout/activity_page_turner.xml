@@ -9,15 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.matthew.book.Activities.FrontPage"
-    android:background="@drawable/greenbackground"
+    android:background="@drawable/gre2"
     android:duplicateParentState="true">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/changefragment"
-        android:background="@android:drawable/ic_media_ff"
-        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,16 +26,19 @@
         android:shadowRadius="24"
         android:fontFamily="sans-serif"
         android:typeface="serif"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:elevation="1dp"
         android:textStyle="normal|bold"
-        android:layout_toStartOf="@+id/changefragment" />
+        android:layout_toStartOf="@+id/repeatspeaks"
+        android:linksClickable="false"
+        android:lineSpacingExtra="8sp" />
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/fragmentcase"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textonpage"
         android:layout_alignParentStart="true">
 

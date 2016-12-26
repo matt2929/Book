@@ -29,6 +29,7 @@ public class PageTwo extends Page implements View.OnTouchListener {
     Float lastX = 0f, lastY = 0f;
     boolean bool = false;
     MediaPlayer mp;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewHierarchy =
@@ -64,12 +65,12 @@ public class PageTwo extends Page implements View.OnTouchListener {
                 float xdiff = lastX - event.getRawX();
                 float ydiff = lastY - event.getRawY();
 
-                if((v.getX()-xdiff)+v.getWidth()>masterView.getWidth()
-                        ||(v.getX()-xdiff)<0
-                        ||(v.getY()-ydiff)+v.getHeight()>masterView.getHeight()
-                        ||(v.getY()-ydiff)<0
-                        ){
-                }else {
+                if ((v.getX() - xdiff) + v.getWidth() > masterView.getWidth()
+                        || (v.getX() - xdiff) < 0
+                        || (v.getY() - ydiff) + v.getHeight() > masterView.getHeight()
+                        || (v.getY() - ydiff) < 0
+                        ) {
+                } else {
                     v.setX((v.getX() - xdiff));
                     v.setY((v.getY() - ydiff));
                     lastX = event.getRawX();
@@ -119,12 +120,12 @@ public class PageTwo extends Page implements View.OnTouchListener {
 
     @Override
     public void passMediaPlayer(Context context) {
-     mp =MediaPlayer.create(context,R.raw.dirtmove);
+        mp = MediaPlayer.create(context, R.raw.dirtmove);
     }
 
     @Override
     public String getString() {
-        return "“If I fall to the ground I might grow into a big apple tree, just like my mother.” “Place me in the ground and plant me so I can grow big and tall!”";
+        return "If I fall to the ground I might grow into a big apple tree, just like my mother. Place me in the ground and plant me so I can grow big and tall!";
     }
 
     @Override
@@ -134,8 +135,8 @@ public class PageTwo extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        for(int i=0;i<dirtFertilized.length;i++){
-            if(!dirtFertilized[i]){
+        for (int i = 0; i < dirtFertilized.length; i++) {
+            if (!dirtFertilized[i]) {
                 return false;
             }
         }

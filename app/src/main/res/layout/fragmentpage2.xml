@@ -20,16 +20,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/linearLayout2"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/Page3MainPile"
-            android:background="@drawable/page2appleseed" />
 
         <Button
             android:layout_width="wrap_content"
@@ -61,17 +53,27 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page2Seed2"
+            android:id="@+id/Page2Seed3"
             android:background="@drawable/page2appleseed"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/Page3MainPile" />
+            android:layout_above="@+id/Page2Dirt1"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="29dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page2Seed3"
+            android:id="@+id/Page2Seed2"
             android:background="@drawable/page2appleseed"
-            android:layout_alignParentTop="true"
+            android:layout_above="@+id/Page2Dirt1"
+            android:layout_toEndOf="@+id/Page2Seed3" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Page3MainPile"
+            android:background="@drawable/page2appleseed"
+            android:layout_alignBaseline="@+id/Page2Seed2"
+            android:layout_alignBottom="@+id/Page2Seed2"
             android:layout_toEndOf="@+id/Page2Seed2" />
     </RelativeLayout>
 

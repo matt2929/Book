@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.matthew.book.fragments.PageFive">
+    tools:context="com.example.matthew.book.fragments.PageEight">
 
     <RelativeLayout
         android:id="@+id/page3relativeview"
@@ -16,32 +16,24 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:background="@drawable/sprout9"
-            android:id="@+id/page4seed1" />
+            android:background="@drawable/page77"
+            android:id="@+id/page8seed1" />
 
         <Button
-            android:id="@+id/Page4Seed2"
+            android:id="@+id/page8seed2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/sprout9" />
+            android:background="@drawable/page77" />
 
         <Button
-            android:id="@+id/Page6Seed3"
+            android:id="@+id/page8seed3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/sprout9"
+            android:background="@drawable/page77"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true" />
-
-        <Button
-            android:id="@+id/Page4Cloud"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/minerals1"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

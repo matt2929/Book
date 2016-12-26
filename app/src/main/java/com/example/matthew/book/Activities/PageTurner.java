@@ -2,7 +2,10 @@ package com.example.matthew.book.Activities;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
 import android.text.Html;
@@ -17,38 +20,77 @@ import android.widget.Toast;
 
 import com.example.matthew.book.R;
 import com.example.matthew.book.fragments.Page;
+import com.example.matthew.book.fragments.PageEight;
 import com.example.matthew.book.fragments.PageFive;
 import com.example.matthew.book.fragments.PageFour;
 import com.example.matthew.book.fragments.PageOne;
+import com.example.matthew.book.fragments.PageSeven;
+import com.example.matthew.book.fragments.PageSix;
 import com.example.matthew.book.fragments.PageThree;
 import com.example.matthew.book.fragments.PageTwo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class PageTurner extends Activity implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener {
+public class PageTurner extends Activity implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     TextView textView;
     Button nextPage, Repeat;
     RelativeLayout ll;
     FrameLayout fragCase;
-    MediaPlayer mediaPlayer;
+    Clock clock;
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    ArrayList<Integer> mediaPlayers = new ArrayList<>();
+
     int clickCount = 0;
     android.app.FragmentManager fragmentManager;
     android.app.FragmentTransaction transaction;
-    Page _CurrentPage = new PageFour();
-    TextToSpeech tts;
+    Page _CurrentPage = new PageEight();
+    ArrayList<String> listOfWords = convertPageToList(_CurrentPage);
+    //  TextToSpeech tts;
     boolean firstSpeak = false;
     boolean canClick = false;
+    Handler handler;
+    Typeface tf;
+    private float x1, x2;
+    static final int MIN_DISTANCE = 150;
+
+    ArrayList<Page> allPages = new ArrayList<>();
+    ArrayList<String> wordsList = new ArrayList<>();
+    int currentPageIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_turner);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        resetPages();
+        mediaPlayers.add(R.raw.page1);
+        mediaPlayers.add(R.raw.page2);
+        mediaPlayers.add(R.raw.page3);
+        mediaPlayers.add(R.raw.page4);
+        mediaPlayers.add(R.raw.page5);
+        mediaPlayers.add(R.raw.page6);
+        mediaPlayers.add(R.raw.page7);
+        mediaPlayers.add(R.raw.page8);
+        handler = new Handler();
+        clock = new Clock(handler);
+        ll = (RelativeLayout) findViewById(R.id.activity_page_turner);
         textView = (TextView) findViewById(R.id.textonpage);
-        tts = new TextToSpeech(this, this);
-        tts.setOnUtteranceCompletedListener(this);
-        mediaPlayer = MediaPlayer.create(PageTurner.this, R.raw.dirtmove);
+        textView.setText(_CurrentPage.getString());
+        // tts = new TextToSpeech(this, this);
+        mediaPlayer = MediaPlayer.create(this, R.raw.page1);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnPreparedListener(this);
+
+        //  tts.setOnUtteranceCompletedListener(this);
+        tf = Typeface.createFromAsset(getAssets(), "fonts/calibri.otf");
+        textView.setTypeface(tf);
+        mediaPlayer = MediaPlayer.create(PageTurner.this, R.raw.page1);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnPreparedListener(this);
         fragmentManager = getFragmentManager();
         _CurrentPage.passMediaPlayer(getApplicationContext());
         Repeat = (Button) findViewById(R.id.repeatspeaks);
@@ -57,84 +99,32 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
             public void onClick(View v) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-                tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                //         tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                mediaPlayer.start();
             }
         });
-        nextPage = (Button) findViewById(R.id.changefragment);
-        nextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("turn", "" + clickCount);
-                if (_CurrentPage.doneTouching()) {
-                    transaction = fragmentManager.beginTransaction();
-                    transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
-                    if (clickCount == 0) {
-                        _CurrentPage = new PageTwo();
-                    } else if (clickCount == 1) {
-                        _CurrentPage = new PageThree();
-                    } else if (clickCount == 2) {
-                        _CurrentPage = new PageFour();
-                    } else if (clickCount == 3) {
-                        _CurrentPage = new PageFive();
-                    } else if (clickCount == 4) {
-                      //  _CurrentPage = new PageSix();
-                    } else if (clickCount == 5) {
-                        //_CurrentPage =new PageSeven();
-                    } else if (clickCount == 6) {
-                        //_CurrentPage =new PageSeven();
-                    }
-                    transaction.replace(fragCase.getId(), _CurrentPage);
-                    textView.setText(_CurrentPage.getString());
-                    transaction.commit();
-                    clickCount++;
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-                    tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
-                    _CurrentPage.passMediaPlayer(getApplicationContext());
-                    _CurrentPage.enabledisabletouch(false);
-                    canClick = false;
-                }
-            }
-        });
-        textView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (canClick) {
-                    int off = textView.getOffsetForPosition(event.getX(), event.getY());
-                    if (off < _CurrentPage.getString().length()) {
-                        Log.e("Val", "" + off);
-                        String editText = "";
-                        String textBeggining = "";
-                        String textEnd = "";
-                        String theWord = "";
-                        String myWord = "";
-                        for (int i = 0; i < _CurrentPage.getString().length(); i++) {
-                            if (_CurrentPage.getString().charAt(i) == ' ' && i < off) {
-                                myWord = "";
-                            } else {
-                                if (_CurrentPage.getString().charAt(i) == ' ' && theWord == "") {
-                                    theWord = myWord;
-                                    textBeggining = _CurrentPage.getString().substring(0, i - theWord.length());
-                                }
-                            }
-                            if (textBeggining == "") {
-                                myWord = myWord + _CurrentPage.getString().charAt(i);
-                            } else {
-                                textEnd += _CurrentPage.getString().charAt(i);
-                            }
 
-                        }
-                        textView.setText(Html.fromHtml("<font color='white'>" + textBeggining + "</font><font color='yellow'>" + theWord + "</font><font color='white'>" + textEnd + "</font>"), TextView.BufferType.NORMAL);
-                        tts.speak(myWord, TextToSpeech.QUEUE_FLUSH, null);
-                    }
+//use this - textView.setText(Html.fromHtml("<font color='white'>" + textBeggining + "</font><font color='yellow'>" + theWord + "</font><font color='white'>" + textEnd + "</font>"), TextView.BufferType.NORMAL);
 
-
-                }
-                return false;
-            }
-        });
         fragCase = (FrameLayout) findViewById(R.id.fragmentcase);
         getFragmentManager().beginTransaction().replace(R.id.fragmentcase, _CurrentPage).commit();
+    }
+
+    public ArrayList<String> convertPageToList(Page page) {
+        return new ArrayList<String>(Arrays.asList(page.getString().split(" ")));
+
+    }
+
+    public void resetPages() {
+        allPages.clear();
+        allPages.add(new PageEight());
+        allPages.add(new PageTwo());
+        allPages.add(new PageThree());
+        allPages.add(new PageFour());
+        allPages.add(new PageFive());
+        allPages.add(new PageSix());
+        allPages.add(new PageSeven());
+        allPages.add(new PageOne());
     }
 
     @Override
@@ -145,8 +135,116 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     }
 
     @Override
+    public void onCompletion(MediaPlayer mp) {
+        canClick = true;
+        _CurrentPage.enabledisabletouch(true);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float deltaX = x2 - x1;
+                if (deltaX < -MIN_DISTANCE) {
+                    resetPages();
+                    if (_CurrentPage.doneTouching()) {
+                        resetPages();
+                        transaction = fragmentManager.beginTransaction();
+                        transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
+                        if (currentPageIndex == allPages.size() - 1) {
+                        } else {
+                            _CurrentPage = allPages.get(++currentPageIndex);
+                            if (currentPageIndex == allPages.size() - 1) {
+                                _CurrentPage = new PageOne();
+                                ll.setBackground(getDrawable(R.drawable.pastellegreenback));
+                                textView.setTextColor(Color.WHITE);
+                                textView.setShadowLayer(10, 10, 10, Color.BLACK);
+
+                            } else {
+                                ll.setBackground(getDrawable(R.drawable.gre2));
+                                textView.setTextColor(Color.BLACK);
+                                //   textView.setShadowLayer(10, 10, 10, Color.WHITE);
+                            }
+                            transaction.replace(fragCase.getId(), _CurrentPage);
+                            textView.setText(_CurrentPage.getString());
+                            transaction.commit();
+                            clickCount++;
+                            HashMap<String, String> map = new HashMap<String, String>();
+                            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+                            mediaPlayer = MediaPlayer.create(this, mediaPlayers.get(currentPageIndex));
+                            mediaPlayer.setOnPreparedListener(this);
+                            mediaPlayer.setOnCompletionListener(this);
+
+                            //      tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                            _CurrentPage.passMediaPlayer(getApplicationContext());
+                            wordsList=convertPageToList(_CurrentPage);
+                            clock.reset();
+                            clock.run();
+                            _CurrentPage.enabledisabletouch(false);
+                            canClick = false;
+                        }
+                    }
+                } else if (deltaX > MIN_DISTANCE) {
+                    resetPages();
+                    if (_CurrentPage.doneTouching()) {
+                        transaction = fragmentManager.beginTransaction();
+                        transaction.setCustomAnimations(R.animator.fadein2, R.animator.fadeout2);
+                        if (currentPageIndex == 0) {
+                        } else {
+                            _CurrentPage = allPages.get(--currentPageIndex);
+                            if (currentPageIndex == allPages.size() - 1) {
+                                _CurrentPage = new PageOne();
+                                ll.setBackground(getDrawable(R.drawable.pastellegreenback));
+                                textView.setTextColor(Color.WHITE);
+                                textView.setShadowLayer(10, 10, 10, Color.BLACK);
+
+                            } else {
+                                ll.setBackground(getDrawable(R.drawable.gre2));
+                                textView.setTextColor(Color.BLACK);
+                                //   textView.setShadowLayer(10, 10, 10, Color.WHITE);
+                            }
+                            transaction.replace(fragCase.getId(), _CurrentPage);
+                            textView.setText(_CurrentPage.getString());
+                            transaction.commit();
+                            clickCount++;
+                            HashMap<String, String> map = new HashMap<String, String>();
+                            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+                            //   tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                            mediaPlayer = MediaPlayer.create(this, mediaPlayers.get(currentPageIndex));
+                            mediaPlayer.setOnCompletionListener(this);
+                            mediaPlayer.setOnPreparedListener(this);
+                            _CurrentPage.passMediaPlayer(getApplicationContext());
+                            wordsList=convertPageToList(_CurrentPage);
+                           clock.reset();
+                            clock.run();
+                            _CurrentPage.enabledisabletouch(false);
+                            canClick = false;
+                        }
+                    }
+                }
+
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        if (mp.isPlaying()) {
+
+        } else {
+            mp.start();
+            clock.run();
+        }
+    }
+
+    @Override
     public void onInit(int status) {
-        // TODO Auto-generated method stub
+      /*  // TODO Auto-generated method stub
         // TTS is successfully initialized
         if (status == TextToSpeech.SUCCESS) {
             // Setting speech language
@@ -173,8 +271,69 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         if (!firstSpeak) {
             HashMap<String, String> map = new HashMap<String, String>();
             map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-            tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+        //    tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
             firstSpeak = !firstSpeak;
+        }*/
+    }
+
+
+    class Clock implements Runnable {
+        private Handler handler;
+        private View view;
+        private int count = 0;
+
+
+        public Clock(Handler handler) {
+            this.handler = handler;
+        }
+
+        public void run() {
+            String whiteOne = "";
+            String yellowOne = "";
+            String whiteOne2 = "";
+            if (count == 0) {
+                yellowOne = listOfWords.get(0)+" ";
+                for (int i = 1; i < listOfWords.size(); i++) {
+                    whiteOne2 += listOfWords.get(i)+" ";
+                }
+                textView.setText(Html.fromHtml("<font color='yellow'>" + yellowOne + "</font><font color='white'>" + whiteOne + "</font>"), TextView.BufferType.NORMAL);
+            } else if (count == listOfWords.size() - 1) {
+                yellowOne = listOfWords.get(listOfWords.size() - 1)+" ";
+                for (int i = 0; i < listOfWords.size() - 1; i++) {
+                    whiteOne += listOfWords.get(i)+" ";
+                }
+                textView.setText(Html.fromHtml("<font color='white'>" + whiteOne + "</font><font color='yellow'>" + yellowOne + "</font>"), TextView.BufferType.NORMAL);
+            } else if(count > listOfWords.size()-1) {
+            }else{
+
+                Log.i("data", "Array Size: " + listOfWords.size()+ " count: "+count);
+                for (int i = 0; i < count; i++) {
+                    whiteOne += listOfWords.get(i)+" ";
+                }
+                for (int i = count + 1; i < listOfWords.size(); i++) {
+                    whiteOne2 += listOfWords.get(i)+" ";
+                }
+                yellowOne = listOfWords.get(count)+" ";
+                textView.setText(Html.fromHtml("<font color='white'>" + whiteOne + "</font><font color='yellow'>" + yellowOne + "</font><font color='white'>" + whiteOne2 + "</font>"), TextView.BufferType.NORMAL);
+            }
+            if (count >= listOfWords.size()-1) {
+            } else {
+                String nextWord = listOfWords.get(count+1);
+
+                int delay = 0;
+                delay=nextWord.length()*150;
+                if(nextWord.contains(",")){
+                    delay=delay*2;
+                }
+                handler.postDelayed(this, delay);
+            }
+            count++;
+        }
+
+        public void reset() {
+            count = 0;
+            listOfWords = convertPageToList(_CurrentPage);
         }
     }
 }
+

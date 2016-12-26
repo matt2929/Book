@@ -20,9 +20,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/linearLayout2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/page3relativeview">
+        android:id="@+id/page3relativeview"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentStart="true">
 
         <Button
             android:id="@+id/Page3Dirt1"
@@ -52,28 +52,31 @@
             android:background="@drawable/dirt_with_seeds" />
 
         <Button
+            android:id="@+id/small2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/page3dirt3"
+            android:layout_marginBottom="76dp"
+            android:layout_above="@+id/Page3Dirt2"
+            android:layout_alignStart="@+id/Page3Dirt2" />
+
+        <Button
             android:id="@+id/Page3MainPile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/page3dirt3"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignBaseline="@+id/small2"
+            android:layout_alignBottom="@+id/small2"
+            android:layout_alignStart="@+id/small2" />
 
         <Button
             android:id="@+id/small1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/page3dirt3"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-
-        <Button
-            android:id="@+id/small2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/page3dirt3"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignBaseline="@+id/small2"
+            android:layout_alignBottom="@+id/small2"
+            android:layout_alignStart="@+id/small2" />
 
     </RelativeLayout>
 

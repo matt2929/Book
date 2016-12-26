@@ -16,10 +16,10 @@ public class SunAndRain extends RelativeLayout {
     private float B = 0f;
     private Paint paintBlack=new Paint(),paintGrey=new Paint(),paintRed=new Paint(),paintBlue=new Paint();
     public void setUp(){
-        paintBlack.setColor(Color.TRANSPARENT);
-        paintGrey.setColor(Color.DKGRAY);
-        paintRed.setColor(Color.RED);
-        paintBlue.setColor(Color.BLUE);
+        paintBlack.setColor(Color.DKGRAY);
+        paintGrey.setColor(Color.GRAY);
+        paintRed.setColor(Color.rgb(255,216,60));
+        paintBlue.setColor(Color.rgb(141,196,200));
     }
     public SunAndRain(Context context) {
         super(context);
@@ -44,11 +44,13 @@ public class SunAndRain extends RelativeLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         canvas.drawRect(0,0,getWidth(),getHeight(),paintBlack);
         canvas.drawRect(getWidth()*(1f/5f),0,getWidth()*(2f/5f),getHeight(),paintGrey);
         canvas.drawRect(getWidth()*(1f/5f),getHeight()-(getHeight()*A),getWidth()*(2f/5f),getHeight(),paintRed);
         canvas.drawRect(getWidth()*(3f/5f),0,getWidth()*(4f/5f),getHeight(),paintGrey);
         canvas.drawRect(getWidth()*(3f/5f),getHeight()-(getHeight()*B),getWidth()*(4f/5f),getHeight(),paintBlue);
+
     }
 
     public void update(float a, float b) {

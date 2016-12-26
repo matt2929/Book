@@ -27,7 +27,7 @@ import java.util.HashMap;
  */
 
 public class PageOne extends Page implements View.OnTouchListener {
-    String thisPagesText = "All living things have a life cycle. This is the story of my life cycle, which started with me as a tiny seed. Press the stages of my life cycle to learn about them.";
+    String thisPagesText = "So, my life is a cycle: from seed, to sapling, to full-grown tree, to blossom, to apple, and back to seed again.";
     Button seed, seedling, sappling, tree, treeFlower, treeApple;
     Button[] buttons;
 
@@ -41,7 +41,8 @@ public class PageOne extends Page implements View.OnTouchListener {
 
         View viewHierarchy =
                 inflater.inflate(R.layout.fragmentpage1, container, false);
-        viewHierarchy.setBackground(getResources().getDrawable(android.R.drawable.screen_background_dark_transparent));
+       // viewHierarchy.setBackground(getResources().getDrawable(android.R.drawable.screen_background_dark_transparent));
+
         seed = (Button) viewHierarchy.findViewById(R.id.cycleseed);
         seed.setBackgroundResource(R.drawable.seed);
         seedling = (Button) viewHierarchy.findViewById(R.id.cycleseedling);
@@ -49,7 +50,7 @@ public class PageOne extends Page implements View.OnTouchListener {
         sappling = (Button) viewHierarchy.findViewById(R.id.cyclesapling);
         sappling.setBackgroundResource(R.drawable.sapling);
         tree = (Button) viewHierarchy.findViewById(R.id.cycletree);
-        tree.setBackgroundResource(R.drawable.tree);
+        tree.setBackgroundResource(R.drawable.atree);
         treeFlower = (Button) viewHierarchy.findViewById(R.id.cycletreeflower);
         treeFlower.setBackgroundResource(R.drawable.treewithflowers);
         treeApple = (Button) viewHierarchy.findViewById(R.id.cycletreeapple);
@@ -131,16 +132,7 @@ public class PageOne extends Page implements View.OnTouchListener {
     @Override
     public void enabledisabletouch(boolean b) {
         currentBool=b;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("enabledisable",""+
-                        currentBool);
-                for(int i =0;i<buttons.length;i++){
-                    buttons[i].setEnabled(currentBool);
-                }
-            }
-        });
+
 
     }
 }

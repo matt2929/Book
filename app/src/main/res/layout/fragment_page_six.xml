@@ -44,16 +44,6 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true" />
 
-        <view
-            android:layout_height="200dp"
-            class="com.example.matthew.book.customview.SunAndRainAndMineral"
-            android:id="@+id/rainsunmineral2"
-            android:layout_width="75dp"
-            android:background="@android:color/transparent"
-            android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/Page6Seed2"
-            android:layout_marginBottom="120dp" />
-
         <Button
             android:id="@+id/Page6Seed2"
             android:layout_width="wrap_content"
@@ -62,6 +52,15 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="120dp" />
+
+        <view
+            android:layout_height="200dp"
+            class="com.example.matthew.book.customview.SunAndRainAndMineral"
+            android:id="@+id/rainsunmineral2"
+            android:layout_width="75dp"
+            android:background="@android:color/transparent"
+            android:layout_alignBottom="@+id/Page6Seed2"
+            android:layout_toStartOf="@+id/Page6Seed2" />
 
     </RelativeLayout>
 

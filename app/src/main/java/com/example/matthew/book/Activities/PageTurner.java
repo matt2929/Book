@@ -46,7 +46,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     int clickCount = 0;
     android.app.FragmentManager fragmentManager;
     android.app.FragmentTransaction transaction;
-    Page _CurrentPage = new PageEight();
+    Page _CurrentPage = new PageOne();
     ArrayList<String> listOfWords = convertPageToList(_CurrentPage);
     //  TextToSpeech tts;
     boolean firstSpeak = false;

@@ -28,12 +28,12 @@ import java.util.HashMap;
 
 public class PageOne extends Page implements View.OnTouchListener {
     String thisPagesText = "So, my life is a cycle: from seed, to sapling, to full-grown tree, to blossom, to apple, and back to seed again.";
-    Button seed, seedling, sappling, tree, treeFlower, treeApple;
+    Button seed, seedling, tree, treeFlower, treeApple;
     Button[] buttons;
 
     HashMap<Button,Boolean> didITouch= new HashMap<Button,Boolean>();
     Drawable drawable;
-    String strings[]= {"Seed","Seedling","Sappling","Young Tree","Tree With Flowers", "Tree With Apples"};
+    String strings[]= {"Seed","Seedling","Young Tree","Tree With Flowers", "Tree With Apples"};
     Boolean currentBool=false;
     @Nullable
     @Override
@@ -43,19 +43,17 @@ public class PageOne extends Page implements View.OnTouchListener {
                 inflater.inflate(R.layout.fragmentpage1, container, false);
        // viewHierarchy.setBackground(getResources().getDrawable(android.R.drawable.screen_background_dark_transparent));
 
-        seed = (Button) viewHierarchy.findViewById(R.id.cycleseed);
+        seed = (Button) viewHierarchy.findViewById(R.id.cycle1);
         seed.setBackgroundResource(R.drawable.seed);
-        seedling = (Button) viewHierarchy.findViewById(R.id.cycleseedling);
+        seedling = (Button) viewHierarchy.findViewById(R.id.cycle2);
         seedling.setBackgroundResource(R.drawable.seedling);
-        sappling = (Button) viewHierarchy.findViewById(R.id.cyclesapling);
-        sappling.setBackgroundResource(R.drawable.sapling);
-        tree = (Button) viewHierarchy.findViewById(R.id.cycletree);
+        tree = (Button) viewHierarchy.findViewById(R.id.cycle3);
         tree.setBackgroundResource(R.drawable.atree);
-        treeFlower = (Button) viewHierarchy.findViewById(R.id.cycletreeflower);
+        treeFlower = (Button) viewHierarchy.findViewById(R.id.cycle4);
         treeFlower.setBackgroundResource(R.drawable.treewithflowers);
-        treeApple = (Button) viewHierarchy.findViewById(R.id.cycletreeapple);
+        treeApple = (Button) viewHierarchy.findViewById(R.id.cycle5);
         treeApple.setBackgroundResource(R.drawable.treewithapples);
-        buttons = new Button[]{seed, seedling, sappling, tree, treeFlower, treeApple};
+        buttons = new Button[]{seed,seedling, tree, treeFlower, treeApple};
         for(int i=0;i<buttons.length;i++){
             didITouch.put(buttons[i],false);
             buttons[i].setOnTouchListener(this);
@@ -82,17 +80,14 @@ public class PageOne extends Page implements View.OnTouchListener {
             }else if(imageView.equals(seedling)){
                 imageView.setText(strings[1]);
 
-            }else if(imageView.equals(sappling)){
+            }else if(imageView.equals(tree)){
                 imageView.setText(strings[2]);
 
-            }else if(imageView.equals(tree)){
+            }else if(imageView.equals(treeFlower)){
                 imageView.setText(strings[3]);
 
-            }else if(imageView.equals(treeFlower)){
-                imageView.setText(strings[4]);
-
             }else if(imageView.equals(treeApple)){
-                imageView.setText(strings[5]);
+                imageView.setText(strings[4]);
 
             }
 

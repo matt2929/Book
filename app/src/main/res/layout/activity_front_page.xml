@@ -20,7 +20,9 @@
         android:background="@drawable/atreeslife"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button5" />
+        android:id="@+id/button5"
+        android:scaleX=".8"
+        android:scaleY=".8" />
 
     <Button
         android:text="Read To Me"
@@ -28,19 +30,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/titlereadtome"
         android:textAlignment="center"
-        android:background="@color/colorPrimaryDark"
-        android:layout_below="@+id/button5"
+        android:background="@android:color/holo_green_light"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp" />
+        android:textAllCaps="false" />
 
-    <TextView
-        android:text="Matthew Stafford Illustrated by Ashley Stafford"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:textSize="24sp"
-        android:fontFamily="cursive"
-        android:textColor="@android:color/background_light"
+        android:id="@+id/author"
+        android:background="@android:color/holo_green_light"
+        android:text="Acknowledgements"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textAllCaps="false"
+        android:textAlignment="center" />
 </RelativeLayout>

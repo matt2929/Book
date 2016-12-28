@@ -1,6 +1,7 @@
 package com.example.matthew.book.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,9 +15,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.matthew.book.R;
 import com.example.matthew.book.fragments.Page;
@@ -32,7 +33,6 @@ import com.example.matthew.book.fragments.PageTwo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class PageTurner extends Activity implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     TextView textView;
@@ -40,24 +40,26 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     RelativeLayout ll;
     FrameLayout fragCase;
     Clock clock;
+    Clock2 clock2;
     MediaPlayer mediaPlayer = new MediaPlayer();
-    ArrayList<Integer> mediaPlayers = new ArrayList<>();
-
+    ArrayList<Integer> pageTextRecording = new ArrayList<>();
+    ArrayList<Integer> touchDelayRecording = new ArrayList<>();
+    Long startTime = System.currentTimeMillis();
+    boolean justClick = false;
+    Button leftView, rightView;
     int clickCount = 0;
     android.app.FragmentManager fragmentManager;
     android.app.FragmentTransaction transaction;
-    Page _CurrentPage = new PageOne();
+    Page _CurrentPage = new PageEight();
     ArrayList<String> listOfWords = convertPageToList(_CurrentPage);
     //  TextToSpeech tts;
-    boolean firstSpeak = false;
     boolean canClick = false;
-    Handler handler;
+    Handler handler,handler2;
     Typeface tf;
     private float x1, x2;
     static final int MIN_DISTANCE = 150;
 
     ArrayList<Page> allPages = new ArrayList<>();
-    ArrayList<String> wordsList = new ArrayList<>();
     int currentPageIndex = 0;
 
     @Override
@@ -67,24 +69,42 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         setContentView(R.layout.activity_page_turner);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         resetPages();
-        mediaPlayers.add(R.raw.page1);
-        mediaPlayers.add(R.raw.page2);
-        mediaPlayers.add(R.raw.page3);
-        mediaPlayers.add(R.raw.page4);
-        mediaPlayers.add(R.raw.page5);
-        mediaPlayers.add(R.raw.page6);
-        mediaPlayers.add(R.raw.page7);
-        mediaPlayers.add(R.raw.page8);
+
+        pageTextRecording.add(R.raw.page1);
+        pageTextRecording.add(R.raw.page2);
+        pageTextRecording.add(R.raw.page3);
+        pageTextRecording.add(R.raw.page4);
+        pageTextRecording.add(R.raw.page5);
+        pageTextRecording.add(R.raw.page6);
+        pageTextRecording.add(R.raw.page7);
+        pageTextRecording.add(R.raw.page8);
+
+        touchDelayRecording.add(R.raw.slurp);
+        touchDelayRecording.add(R.raw.slurp);
+        touchDelayRecording.add(R.raw.slurp);
+        touchDelayRecording.add(R.raw.slurp);
+        touchDelayRecording.add(R.raw.slurp);
+        touchDelayRecording.add(R.raw.slurp);
+        touchDelayRecording.add(R.raw.slurp);
+        touchDelayRecording.add(R.raw.slurp);
+
         handler = new Handler();
+        handler2 = new Handler();
+
         clock = new Clock(handler);
+        clock2= new Clock2(handler2);
         ll = (RelativeLayout) findViewById(R.id.activity_page_turner);
         textView = (TextView) findViewById(R.id.textonpage);
         textView.setText(_CurrentPage.getString());
+        leftView = (Button) findViewById(R.id.left);
+        rightView = (Button) findViewById(R.id.right);
+        leftView.setVisibility(View.INVISIBLE);
+        rightView.setVisibility(View.INVISIBLE);
         // tts = new TextToSpeech(this, this);
         mediaPlayer = MediaPlayer.create(this, R.raw.page1);
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnPreparedListener(this);
-
+        clock2.run();
         //  tts.setOnUtteranceCompletedListener(this);
         tf = Typeface.createFromAsset(getAssets(), "fonts/calibri.otf");
         textView.setTypeface(tf);
@@ -131,17 +151,20 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     public void onUtteranceCompleted(String s) {
         Log.e("work", "work");
         canClick = true;
+
         _CurrentPage.enabledisabletouch(true);
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
         canClick = true;
+
         _CurrentPage.enabledisabletouch(true);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        startTime = System.currentTimeMillis();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
@@ -156,6 +179,8 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         transaction = fragmentManager.beginTransaction();
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                         if (currentPageIndex == allPages.size() - 1) {
+                            Intent i = new Intent(getApplicationContext(), Authors.class);
+                            startActivity(i);
                         } else {
                             _CurrentPage = allPages.get(++currentPageIndex);
                             if (currentPageIndex == allPages.size() - 1) {
@@ -175,17 +200,17 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             clickCount++;
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-                            mediaPlayer = MediaPlayer.create(this, mediaPlayers.get(currentPageIndex));
+                            mediaPlayer = MediaPlayer.create(this, pageTextRecording.get(currentPageIndex));
                             mediaPlayer.setOnPreparedListener(this);
                             mediaPlayer.setOnCompletionListener(this);
 
                             //      tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
                             _CurrentPage.passMediaPlayer(getApplicationContext());
-                            wordsList=convertPageToList(_CurrentPage);
                             clock.reset();
                             clock.run();
                             _CurrentPage.enabledisabletouch(false);
                             canClick = false;
+
                         }
                     }
                 } else if (deltaX > MIN_DISTANCE) {
@@ -214,12 +239,11 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
                             //   tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
-                            mediaPlayer = MediaPlayer.create(this, mediaPlayers.get(currentPageIndex));
+                            mediaPlayer = MediaPlayer.create(this, pageTextRecording.get(currentPageIndex));
                             mediaPlayer.setOnCompletionListener(this);
                             mediaPlayer.setOnPreparedListener(this);
                             _CurrentPage.passMediaPlayer(getApplicationContext());
-                            wordsList=convertPageToList(_CurrentPage);
-                           clock.reset();
+                            clock.reset();
                             clock.run();
                             _CurrentPage.enabledisabletouch(false);
                             canClick = false;
@@ -288,42 +312,44 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         }
 
         public void run() {
+
             String whiteOne = "";
             String yellowOne = "";
             String whiteOne2 = "";
             if (count == 0) {
-                yellowOne = listOfWords.get(0)+" ";
+                yellowOne = listOfWords.get(0) + " ";
                 for (int i = 1; i < listOfWords.size(); i++) {
-                    whiteOne2 += listOfWords.get(i)+" ";
+                    whiteOne2 += listOfWords.get(i) + " ";
                 }
                 textView.setText(Html.fromHtml("<font color='yellow'>" + yellowOne + "</font><font color='white'>" + whiteOne + "</font>"), TextView.BufferType.NORMAL);
             } else if (count == listOfWords.size() - 1) {
-                yellowOne = listOfWords.get(listOfWords.size() - 1)+" ";
+                yellowOne = listOfWords.get(listOfWords.size() - 1) + " ";
                 for (int i = 0; i < listOfWords.size() - 1; i++) {
-                    whiteOne += listOfWords.get(i)+" ";
+                    whiteOne += listOfWords.get(i) + " ";
                 }
                 textView.setText(Html.fromHtml("<font color='white'>" + whiteOne + "</font><font color='yellow'>" + yellowOne + "</font>"), TextView.BufferType.NORMAL);
-            } else if(count > listOfWords.size()-1) {
-            }else{
+            } else if (count > listOfWords.size() - 1) {
+                startTime=System.currentTimeMillis();
+            } else {
 
-                Log.i("data", "Array Size: " + listOfWords.size()+ " count: "+count);
+                Log.i("data", "Array Size: " + listOfWords.size() + " count: " + count);
                 for (int i = 0; i < count; i++) {
-                    whiteOne += listOfWords.get(i)+" ";
+                    whiteOne += listOfWords.get(i) + " ";
                 }
                 for (int i = count + 1; i < listOfWords.size(); i++) {
-                    whiteOne2 += listOfWords.get(i)+" ";
+                    whiteOne2 += listOfWords.get(i) + " ";
                 }
-                yellowOne = listOfWords.get(count)+" ";
+                yellowOne = listOfWords.get(count) + " ";
                 textView.setText(Html.fromHtml("<font color='white'>" + whiteOne + "</font><font color='yellow'>" + yellowOne + "</font><font color='white'>" + whiteOne2 + "</font>"), TextView.BufferType.NORMAL);
             }
-            if (count >= listOfWords.size()-1) {
+            if (count >= listOfWords.size() - 1) {
             } else {
-                String nextWord = listOfWords.get(count+1);
+                String nextWord = listOfWords.get(count + 1);
 
                 int delay = 0;
-                delay=nextWord.length()*150;
-                if(nextWord.contains(",")){
-                    delay=delay*2;
+                delay = nextWord.length() * 150;
+                if (nextWord.contains(",")) {
+                    delay = delay * 2;
                 }
                 handler.postDelayed(this, delay);
             }
@@ -333,6 +359,42 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         public void reset() {
             count = 0;
             listOfWords = convertPageToList(_CurrentPage);
+        }
+    }
+
+    class Clock2 implements Runnable {
+        private Handler handler;
+        private View view;
+        private int count = 0;
+
+
+        public Clock2(Handler handler) {
+            this.handler = handler;
+        }
+
+        public void run() {
+            if(_CurrentPage.doneTouching()) {
+                if(justClick==false){
+                  startTime=System.currentTimeMillis();
+                    justClick=true;
+                }else{
+
+                }
+                if (Math.abs(startTime - System.currentTimeMillis()) > 10000) {
+                    Log.i("vis","vis");
+                    leftView.setVisibility(View.VISIBLE);
+                    rightView.setVisibility(View.VISIBLE);
+                } else {
+
+
+                    leftView.setVisibility(View.INVISIBLE);
+                    rightView.setVisibility(View.INVISIBLE);
+
+                }
+            }else{
+                justClick=false;
+            }
+            handler.postDelayed(this, 100);
         }
     }
 }

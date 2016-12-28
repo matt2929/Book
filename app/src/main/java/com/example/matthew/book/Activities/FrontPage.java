@@ -18,19 +18,28 @@ import com.example.matthew.book.fragments.PageOne;
 import com.example.matthew.book.fragments.PageTwo;
 
 public class FrontPage extends Activity {
-Button button;
+Button button,button2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        button =(Button) findViewById(R.id.titlereadtome);
+        button = (Button) findViewById(R.id.titlereadtome);
+        button2= (Button) findViewById(R.id.author);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), PageTurner.class);
                 startActivity(i);
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), Authors.class);
+                startActivity(i);
+
             }
         });
     }

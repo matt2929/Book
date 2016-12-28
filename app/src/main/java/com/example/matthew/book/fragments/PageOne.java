@@ -33,7 +33,7 @@ public class PageOne extends Page implements View.OnTouchListener {
 
     HashMap<Button,Boolean> didITouch= new HashMap<Button,Boolean>();
     Drawable drawable;
-    String strings[]= {"Seed","Seedling","Young Tree","Tree With Flowers", "Tree With Apples"};
+    String strings[]= {"Seed","Sapling","Young Tree","Tree With Flowers", "Tree With Apples"};
     Boolean currentBool=false;
     @Nullable
     @Override
@@ -44,9 +44,9 @@ public class PageOne extends Page implements View.OnTouchListener {
        // viewHierarchy.setBackground(getResources().getDrawable(android.R.drawable.screen_background_dark_transparent));
 
         seed = (Button) viewHierarchy.findViewById(R.id.cycle1);
-        seed.setBackgroundResource(R.drawable.seed);
+        seed.setBackgroundResource(R.drawable.seedling);
         seedling = (Button) viewHierarchy.findViewById(R.id.cycle2);
-        seedling.setBackgroundResource(R.drawable.seedling);
+        seedling.setBackgroundResource(R.drawable.sapling);
         tree = (Button) viewHierarchy.findViewById(R.id.cycle3);
         tree.setBackgroundResource(R.drawable.atree);
         treeFlower = (Button) viewHierarchy.findViewById(R.id.cycle4);

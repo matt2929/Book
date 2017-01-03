@@ -13,38 +13,18 @@
     android:background="@drawable/gre2"
     android:duplicateParentState="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text='All living things have a life cycle. This is the story of my life cycle, which started with me as a tiny seed. Press the stages of my life cycle to learn about them"'
-        android:id="@+id/textonpage"
-        android:scrollHorizontally="true"
-        android:textSize="25sp"
-        android:textColor="@android:color/background_dark"
-        android:shadowColor="@android:color/background_light"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="24"
-        android:fontFamily="sans-serif"
-        android:typeface="serif"
-        android:textAlignment="textStart"
-        android:elevation="1dp"
-        android:textStyle="normal|bold"
-        android:layout_toStartOf="@+id/repeatspeaks"
-        android:linksClickable="false"
-        android:lineSpacingExtra="8sp" />
-
     <Button
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/left"
-        android:elevation="1dp"
+        android:elevation="2dp"
 
         android:layout_alignParentStart="true"
         android:layout_marginTop="33dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/leftswipe" />
+        android:background="@drawable/leftswipe"
+        android:alpha=".75" />
 
     <Button
 
@@ -54,7 +34,8 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="26dp"
-        android:background="@drawable/rightswipe" />
+        android:background="@drawable/rightswipe"
+        android:alpha=".75" />
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -74,6 +55,28 @@
         android:background="@android:drawable/ic_menu_rotate"
         android:layout_alignParentEnd="true"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text='All living things have a life cycle. This is the story of my life cycle, which started with me as a tiny seed. Press the stages of my life cycle to learn about them"'
+        android:id="@+id/textonpage"
+       android:textSize="25sp"
+        android:textColor="@android:color/background_dark"
+        android:shadowColor="@android:color/background_light"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="24"
+        android:fontFamily="sans-serif"
+        android:typeface="serif"
+        android:textAlignment="textStart"
+        android:elevation="1dp"
+        android:textStyle="normal|bold"
+        android:linksClickable="false"
+        android:lineSpacingExtra="8sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/repeatspeaks" />
 
 
 </RelativeLayout>

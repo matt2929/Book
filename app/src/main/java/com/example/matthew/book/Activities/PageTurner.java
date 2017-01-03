@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.matthew.book.R;
 import com.example.matthew.book.fragments.Page;
@@ -33,14 +34,17 @@ import com.example.matthew.book.fragments.PageTwo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 
-public class PageTurner extends Activity implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
+public class PageTurner extends Activity implements TextToSpeech.OnInitListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     TextView textView;
     Button nextPage, Repeat;
     RelativeLayout ll;
+    PrematureClick prematureClick = new PrematureClick();
     FrameLayout fragCase;
     Clock clock;
     Clock2 clock2;
+
     MediaPlayer mediaPlayer = new MediaPlayer();
     ArrayList<Integer> pageTextRecording = new ArrayList<>();
     ArrayList<Integer> touchDelayRecording = new ArrayList<>();
@@ -52,13 +56,12 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     android.app.FragmentTransaction transaction;
     Page _CurrentPage = new PageEight();
     ArrayList<String> listOfWords = convertPageToList(_CurrentPage);
-    //  TextToSpeech tts;
+    TextToSpeech tts;
     boolean canClick = false;
-    Handler handler,handler2;
+    Handler handler, handler2;
     Typeface tf;
     private float x1, x2;
     static final int MIN_DISTANCE = 150;
-
     ArrayList<Page> allPages = new ArrayList<>();
     int currentPageIndex = 0;
 
@@ -92,7 +95,8 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         handler2 = new Handler();
 
         clock = new Clock(handler);
-        clock2= new Clock2(handler2);
+        clock2 = new Clock2(handler2);
+
         ll = (RelativeLayout) findViewById(R.id.activity_page_turner);
         textView = (TextView) findViewById(R.id.textonpage);
         textView.setText(_CurrentPage.getString());
@@ -100,12 +104,11 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         rightView = (Button) findViewById(R.id.right);
         leftView.setVisibility(View.INVISIBLE);
         rightView.setVisibility(View.INVISIBLE);
-        // tts = new TextToSpeech(this, this);
+      //  tts = new TextToSpeech(this, this);
         mediaPlayer = MediaPlayer.create(this, R.raw.page1);
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnPreparedListener(this);
         clock2.run();
-        //  tts.setOnUtteranceCompletedListener(this);
         tf = Typeface.createFromAsset(getAssets(), "fonts/calibri.otf");
         textView.setTypeface(tf);
         mediaPlayer = MediaPlayer.create(PageTurner.this, R.raw.page1);
@@ -119,12 +122,9 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
             public void onClick(View v) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-                //         tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
                 mediaPlayer.start();
             }
         });
-
-//use this - textView.setText(Html.fromHtml("<font color='white'>" + textBeggining + "</font><font color='yellow'>" + theWord + "</font><font color='white'>" + textEnd + "</font>"), TextView.BufferType.NORMAL);
 
         fragCase = (FrameLayout) findViewById(R.id.fragmentcase);
         getFragmentManager().beginTransaction().replace(R.id.fragmentcase, _CurrentPage).commit();
@@ -147,13 +147,6 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         allPages.add(new PageOne());
     }
 
-    @Override
-    public void onUtteranceCompleted(String s) {
-        Log.e("work", "work");
-        canClick = true;
-
-        _CurrentPage.enabledisabletouch(true);
-    }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
@@ -167,6 +160,13 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         startTime = System.currentTimeMillis();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                if (!canClick) {
+                    mediaPlayer.pause();
+                    clock.setPause(true);
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
+                    tts.speak(prematureClick.getReadOuts().get(currentPageIndex), TextToSpeech.QUEUE_FLUSH, params);
+                }
                 x1 = event.getX();
                 break;
             case MotionEvent.ACTION_UP:
@@ -192,7 +192,6 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             } else {
                                 ll.setBackground(getDrawable(R.drawable.gre2));
                                 textView.setTextColor(Color.BLACK);
-                                //   textView.setShadowLayer(10, 10, 10, Color.WHITE);
                             }
                             transaction.replace(fragCase.getId(), _CurrentPage);
                             textView.setText(_CurrentPage.getString());
@@ -230,7 +229,6 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             } else {
                                 ll.setBackground(getDrawable(R.drawable.gre2));
                                 textView.setTextColor(Color.BLACK);
-                                //   textView.setShadowLayer(10, 10, 10, Color.WHITE);
                             }
                             transaction.replace(fragCase.getId(), _CurrentPage);
                             textView.setText(_CurrentPage.getString());
@@ -258,18 +256,35 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        if (mp.isPlaying()) {
+        if (mediaPlayer.isPlaying()) {
 
         } else {
-            mp.start();
+            mediaPlayer.start();
             clock.run();
         }
     }
 
     @Override
     public void onInit(int status) {
-      /*  // TODO Auto-generated method stub
+        // TODO Auto-generated method stub
         // TTS is successfully initialized
+        tts.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
+
+                                                @Override
+                                                public void onUtteranceCompleted(String utteranceId) {
+
+                                                    runOnUiThread(new Runnable() {
+
+                                                        @Override
+                                                        public void run() {
+                                                            Log.e("work", "work");
+                                                            mediaPlayer.start();
+                                                            clock.setPause(false);
+                                                        }
+                                                    });
+                                                }
+                                            }
+        );
         if (status == TextToSpeech.SUCCESS) {
             // Setting speech language
             int result = tts.setLanguage(Locale.US);
@@ -292,12 +307,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                     .show();
             Log.e("TTS", "Initilization Failed");
         }
-        if (!firstSpeak) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-        //    tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
-            firstSpeak = !firstSpeak;
-        }*/
+
     }
 
 
@@ -305,14 +315,14 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         private Handler handler;
         private View view;
         private int count = 0;
-
+        boolean clockPause = false;
 
         public Clock(Handler handler) {
             this.handler = handler;
         }
 
         public void run() {
-
+            Log.e("instance","<"+clockPause+">");
             String whiteOne = "";
             String yellowOne = "";
             String whiteOne2 = "";
@@ -329,7 +339,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                 }
                 textView.setText(Html.fromHtml("<font color='white'>" + whiteOne + "</font><font color='yellow'>" + yellowOne + "</font>"), TextView.BufferType.NORMAL);
             } else if (count > listOfWords.size() - 1) {
-                startTime=System.currentTimeMillis();
+                startTime = System.currentTimeMillis();
             } else {
 
                 Log.i("data", "Array Size: " + listOfWords.size() + " count: " + count);
@@ -345,20 +355,29 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
             if (count >= listOfWords.size() - 1) {
             } else {
                 String nextWord = listOfWords.get(count + 1);
-
                 int delay = 0;
-                delay = nextWord.length() * 150;
-                if (nextWord.contains(",")) {
+                if(currentPageIndex==0){
+                    delay=nextWord.length()*75;
+                }else {
+                    delay = nextWord.length() * 150;
+                }
+                    if (nextWord.contains(",")) {
                     delay = delay * 2;
                 }
                 handler.postDelayed(this, delay);
             }
-            count++;
+            if (!clockPause) {
+                count++;
+            }
         }
 
         public void reset() {
             count = 0;
             listOfWords = convertPageToList(_CurrentPage);
+        }
+
+        public void setPause(boolean isPause) {
+            clockPause = isPause;
         }
     }
 
@@ -367,34 +386,29 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         private View view;
         private int count = 0;
 
-
         public Clock2(Handler handler) {
             this.handler = handler;
         }
 
         public void run() {
-            if(_CurrentPage.doneTouching()) {
-                if(justClick==false){
-                  startTime=System.currentTimeMillis();
-                    justClick=true;
-                }else{
-
+            if (_CurrentPage.doneTouching()) {
+                if (justClick == false) {
+                    startTime = System.currentTimeMillis();
+                    justClick = true;
+                } else {
                 }
                 if (Math.abs(startTime - System.currentTimeMillis()) > 10000) {
-                    Log.i("vis","vis");
+                    Log.i("vis", "vis");
                     leftView.setVisibility(View.VISIBLE);
                     rightView.setVisibility(View.VISIBLE);
                 } else {
-
-
                     leftView.setVisibility(View.INVISIBLE);
                     rightView.setVisibility(View.INVISIBLE);
-
                 }
-            }else{
-                justClick=false;
+            } else {
+                justClick = false;
             }
-            handler.postDelayed(this, 100);
+            handler.postDelayed(this, 500);
         }
     }
 }

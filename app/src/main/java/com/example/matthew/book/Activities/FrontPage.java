@@ -18,7 +18,7 @@ import com.example.matthew.book.fragments.PageOne;
 import com.example.matthew.book.fragments.PageTwo;
 
 public class FrontPage extends Activity {
-Button button,button2;
+Button button,button2,button3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +27,7 @@ Button button,button2;
 
         button = (Button) findViewById(R.id.titlereadtome);
         button2= (Button) findViewById(R.id.author);
+        button3 = (Button) findViewById(R.id.ADMIN);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,6 +39,14 @@ Button button,button2;
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), Authors.class);
+                startActivity(i);
+
+            }
+        });
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), HistoricalSessions.class);
                 startActivity(i);
 
             }

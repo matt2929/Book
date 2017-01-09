@@ -18,9 +18,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Matthew on 9/29/2016.
@@ -41,8 +45,6 @@ public class PageOne extends Page implements View.OnTouchListener {
 
         View viewHierarchy =
                 inflater.inflate(R.layout.fragmentpage1, container, false);
-       // viewHierarchy.setBackground(getResources().getDrawable(android.R.drawable.screen_background_dark_transparent));
-
         seed = (Button) viewHierarchy.findViewById(R.id.cycle1);
         seed.setBackgroundResource(R.drawable.seedling);
         seedling = (Button) viewHierarchy.findViewById(R.id.cycle2);
@@ -54,6 +56,7 @@ public class PageOne extends Page implements View.OnTouchListener {
         treeApple = (Button) viewHierarchy.findViewById(R.id.cycle5);
         treeApple.setBackgroundResource(R.drawable.treewithapples);
         buttons = new Button[]{seed,seedling, tree, treeFlower, treeApple};
+        PageTurner.allButtons =  new ArrayList<>(Arrays.asList(buttons));
         for(int i=0;i<buttons.length;i++){
             didITouch.put(buttons[i],false);
             buttons[i].setOnTouchListener(this);
@@ -72,10 +75,11 @@ public class PageOne extends Page implements View.OnTouchListener {
         Button imageView = (Button) view;
         didITouch.put(imageView,true);
         if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+            buttons = new Button[]{seed,seedling, tree, treeFlower, treeApple};
+            PageTurner.allButtons =  new ArrayList<>(Arrays.asList(buttons));
             drawable = imageView.getBackground();
             view.setBackgroundResource(R.drawable.emptybox);
-            //imageView.setBackground(getResources().getDrawable(R.drawable.emptybox));
-            if(imageView.equals(seed)){
+           if(imageView.equals(seed)){
                 imageView.setText(strings[0]);
             }else if(imageView.equals(seedling)){
                 imageView.setText(strings[1]);

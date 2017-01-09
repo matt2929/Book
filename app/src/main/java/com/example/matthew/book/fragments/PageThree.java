@@ -13,7 +13,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Matthew on 9/29/2016.
@@ -48,11 +52,19 @@ public class PageThree extends Page implements View.OnTouchListener {
             seeds[i].setOnTouchListener(this);
         }
         masterView = viewHierarchy;
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(dirt));
+        butttemp.addAll(Arrays.asList(seeds));
+        PageTurner.allButtons =  new ArrayList<>(butttemp);
+
         return viewHierarchy;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(dirt));
+        butttemp.addAll(Arrays.asList(seeds));
+        PageTurner.allButtons =  new ArrayList<>(butttemp);
+
         if (bool) {
             v.setBackground(getResources().getDrawable(R.drawable.page3dirt1));
             if (!v.getBackground().equals(getResources().getDrawable(R.drawable.page3dirt1))&&event.getAction()==(MotionEvent.ACTION_DOWN)) {
@@ -130,8 +142,7 @@ public class PageThree extends Page implements View.OnTouchListener {
             return false;
         }
     }
-
-    @Override
+   @Override
     public void passMediaPlayer(Context context) {
         mp = MediaPlayer.create(context, R.raw.dirtmove);
     }

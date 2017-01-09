@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawMultipleStates2Input;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
 import com.example.matthew.book.customview.SunAndRain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class PageFour extends Page implements View.OnTouchListener {
@@ -39,13 +41,13 @@ public class PageFour extends Page implements View.OnTouchListener {
     ArrayList<Drawable> myDrawablesSprout = new ArrayList<Drawable>();
     ArrayList<Drawable> myDrawablesRain = new ArrayList<Drawable>();
     ArrayList<Drawable> myDrawablesSun = new ArrayList<Drawable>();
-    Button[] seedButts;
-    boolean[] completeGrowth = new boolean[]{false, false, false};
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewHierarchy = inflater.inflate(R.layout.fragment_page_four, container, false);
         handler = new Handler();
+
         sun = (Button) viewHierarchy.findViewById(R.id.Page4Sun);
         cloud = (Button) viewHierarchy.findViewById(R.id.Page4Cloud);
         seedbutt1 = (Button) viewHierarchy.findViewById(R.id.Page4Seed1);
@@ -73,14 +75,18 @@ public class PageFour extends Page implements View.OnTouchListener {
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain4));
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain5));
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain6));
-
-        seeds = new DrawableMutlipleStates[3];
+         seeds = new DrawableMutlipleStates[3];
         seedstattes1 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
         seedstates2 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
         seedstates3 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
+        PageTurner.allButtons =  new ArrayList<>(butttemp);
+
         cloud.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
+                PageTurner.allButtons =  new ArrayList<>(butttemp);
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     cloudIsClicked = true;
                     mp = MediaPlayer.create(_context, R.raw.thunder);
@@ -126,6 +132,9 @@ public class PageFour extends Page implements View.OnTouchListener {
         sun.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
+                PageTurner.allButtons =  new ArrayList<>(butttemp);
+
                 if (bool) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         mp= MediaPlayer.create(_context,R.raw.sunny);

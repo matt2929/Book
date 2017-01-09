@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PageEight extends Page {
     Button seedbutt1, seedbutt2, seedbutt3;
@@ -29,14 +31,20 @@ public class PageEight extends Page {
     MediaPlayer mp;
     ArrayList<Drawable> myDrawablesSprout = new ArrayList<Drawable>();
     int seedCount[] = new int[3];
+    View viewHierarchy;
+    ArrayList<Button> butttemp = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View viewHierarchy = inflater.inflate(R.layout.fragment_page_eight, container, false);
+         viewHierarchy = inflater.inflate(R.layout.fragment_page_eight, container, false);
         handler = new Handler();
         seedbutt1 = (Button) viewHierarchy.findViewById(R.id.page8seed1);
         seedbutt2 = (Button) viewHierarchy.findViewById(R.id.page8seed2);
         seedbutt3 = (Button) viewHierarchy.findViewById(R.id.page8seed3);
+        butttemp.add(seedbutt1);
+        butttemp.add(seedbutt2);
+        butttemp.add(seedbutt3);
+        PageTurner.allButtons =  butttemp;
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page77));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page81));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page82));
@@ -58,8 +66,6 @@ public class PageEight extends Page {
             @Override
             public void onClick(View v) {
                 if(bool) {
-
-
                     seedCount[1] = seedCount[1] + 1;
                     if (seedCount[1] >= myDrawablesSprout.size()) {
                     } else {
@@ -68,6 +74,7 @@ public class PageEight extends Page {
                 }
             }
         });
+
         seedbutt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,8 +92,7 @@ public class PageEight extends Page {
     }
 
 
-    private void isViewOverlapping() {
-    }
+
 
 
     @Override

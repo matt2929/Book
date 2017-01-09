@@ -5,76 +5,57 @@
     android:id="@+id/activity_page_turner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gre2"
+    android:duplicateParentState="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.matthew.book.Activities.FrontPage"
-    android:background="@drawable/gre2"
-    android:duplicateParentState="true">
-
-    <Button
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/left"
-        android:elevation="2dp"
-
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:layout_centerVertical="true"
-        android:background="@drawable/leftswipe"
-        android:alpha=".75" />
-
-    <Button
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/right"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="26dp"
-        android:background="@drawable/rightswipe"
-        android:alpha=".75" />
+    tools:context="com.example.matthew.book.Activities.FrontPage">
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/fragmentcase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textonpage"
-        android:layout_alignParentStart="true">
-
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textonpage">
+        <com.example.matthew.book.customview.PleaseSwipe
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/swipeAnimation"
+            android:background="@android:color/background_dark">
+        </com.example.matthew.book.customview.PleaseSwipe>
     </FrameLayout>
 
     <Button
+        android:id="@+id/repeatspeaks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/repeatspeaks"
-        android:background="@android:drawable/ic_menu_rotate"
         android:layout_alignParentEnd="true"
-        />
+        android:background="@android:drawable/ic_menu_rotate" />
 
     <TextView
+        android:id="@+id/textonpage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text='All living things have a life cycle. This is the story of my life cycle, which started with me as a tiny seed. Press the stages of my life cycle to learn about them"'
-        android:id="@+id/textonpage"
-       android:textSize="25sp"
-        android:textColor="@android:color/background_dark"
+        android:layout_alignParentTop="true"
+        android:elevation="1dp"
+        android:fontFamily="sans-serif"
+        android:lineSpacingExtra="8sp"
+        android:linksClickable="false"
         android:shadowColor="@android:color/background_light"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="24"
-        android:fontFamily="sans-serif"
-        android:typeface="serif"
+        android:text='All living things have a life cycle. This is the story of my life cycle, which started with me as a tiny seed. Press the stages of my life cycle to learn about them"'
         android:textAlignment="textStart"
-        android:elevation="1dp"
+        android:textColor="@android:color/background_dark"
+        android:textSize="25sp"
         android:textStyle="normal|bold"
-        android:linksClickable="false"
-        android:lineSpacingExtra="8sp"
-        android:layout_alignParentTop="true"
+        android:typeface="serif"
+        android:padding="15dp"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/repeatspeaks" />
 

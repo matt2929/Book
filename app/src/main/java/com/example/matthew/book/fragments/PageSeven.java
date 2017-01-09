@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class PageSeven extends Page implements View.OnTouchListener {
@@ -49,7 +51,8 @@ public class PageSeven extends Page implements View.OnTouchListener {
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page75));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page76));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page77));
-
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
+        PageTurner.allButtons = new ArrayList<>(butttemp);
         seeds = new DrawableMutlipleStates[3];
         seedstattes1 = new DrawableMutlipleStates(myDrawablesSprout, 75);
         seedstates2 = new DrawableMutlipleStates(myDrawablesSprout, 75);
@@ -64,13 +67,15 @@ public class PageSeven extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
+        PageTurner.allButtons = new ArrayList<>(butttemp);
         if (bool) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 mp.start();
                 cloudIsClicked = true;
-                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 cloudIsClicked = false;
-            mp.pause();
+                mp.pause();
             }
             if (lastY == 0) {
                 lastX = event.getRawX();
@@ -98,23 +103,18 @@ public class PageSeven extends Page implements View.OnTouchListener {
 
 
     private void isViewOverlapping() {
-if(cloud.getY()>masterView.getHeight()*(1f/4f)&&cloud.getY()<masterView.getHeight()*(3f/4f))
+        if (cloud.getY() > masterView.getHeight() * (1f / 4f) && cloud.getY() < masterView.getHeight() * (3f / 4f))
             if (cloud.getX() + (cloud.getWidth() / 2) < (masterView.getWidth() / 3)) {
-                Log.e("sound", "start");
                 seedbutt1.setBackground(seedstattes1.update());
 
             } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
-                Log.e("sound", "start");
-
                 seedbutt2.setBackground(seedstates2.update());
 
             } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth()) {
-                Log.e("sound", "start");
                 seedbutt3.setBackground(seedstates3.update());
-        } else {
-            Log.e("sound", "pause");
-            mp.pause();
-        }
+            } else {
+                mp.pause();
+            }
     }
 
     public boolean checkButtOverlap(Button butt1, Button butt2) {
@@ -126,9 +126,9 @@ if(cloud.getY()>masterView.getHeight()*(1f/4f)&&cloud.getY()<masterView.getHeigh
 
     @Override
     public void passMediaPlayer(Context context) {
-       // mp.release();
+        // mp.release();
         mp = MediaPlayer.create(context, R.raw.beenoise);
-        if(mp.isPlaying()){
+        if (mp.isPlaying()) {
             mp.pause();
         }
         _context = context;
@@ -159,26 +159,26 @@ if(cloud.getY()>masterView.getHeight()*(1f/4f)&&cloud.getY()<masterView.getHeigh
         }
 
         public void run() {
-           if (cloudIsClicked) {
-           }
-               isViewOverlapping();
-                //bees do stuff here
-                if (offsetIncrease) {
-                    if (offset > offsetMax) {
-                        offsetIncrease = !offsetIncrease;
-                    } else {
-                        offset+=3;
-                    }
+            if (cloudIsClicked) {
+            }
+            isViewOverlapping();
+            //bees do stuff here
+            if (offsetIncrease) {
+                if (offset > offsetMax) {
+                    offsetIncrease = !offsetIncrease;
                 } else {
-                    if (offset < offsetMin) {
-                        offsetIncrease = !offsetIncrease;
-                    } else {
-                        offset-=3;
-                    }
-
+                    offset += 3;
+                }
+            } else {
+                if (offset < offsetMin) {
+                    offsetIncrease = !offsetIncrease;
+                } else {
+                    offset -= 3;
                 }
 
-            cloud.setX(cloud.getX()+offset);
+            }
+
+            cloud.setX(cloud.getX() + offset);
             handler.postDelayed(this, 100);
 
         }

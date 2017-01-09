@@ -13,7 +13,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Matthew on 9/29/2016.
@@ -25,6 +29,7 @@ public class PageTwo extends Page implements View.OnTouchListener {
     Button[] dirt;
     Boolean[] dirtFertilized = new Boolean[]{false, false, false};
     View masterView;
+
     int updateLimiter = 0;
     Float lastX = 0f, lastY = 0f;
     boolean bool = false;
@@ -38,22 +43,31 @@ public class PageTwo extends Page implements View.OnTouchListener {
         Seeds2 = (Button) viewHierarchy.findViewById(R.id.Page2Seed2);
         Seeds3 = (Button) viewHierarchy.findViewById(R.id.Page2Seed3);
 
-
         seeds = new Button[]{Seeds1, Seeds2, Seeds3};
         Dirt1 = (Button) viewHierarchy.findViewById(R.id.Page2Dirt1);
         Dirt2 = (Button) viewHierarchy.findViewById(R.id.Page2Dirt2);
         Dirt3 = (Button) viewHierarchy.findViewById(R.id.Page2Dirt3);
         dirt = new Button[]{Dirt1, Dirt2, Dirt3};
+
         for (int i = 0; i < seeds.length; i++) {
             seeds[i].setOnTouchListener(this);
         }
         masterView = viewHierarchy;
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(dirt));
+        butttemp.addAll(Arrays.asList(seeds));
+        PageTurner.allButtons =  new ArrayList<>(butttemp);
+
         return viewHierarchy;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(dirt));
+        butttemp.addAll(Arrays.asList(seeds));
+        PageTurner.allButtons =  new ArrayList<>(butttemp);
+
         if (bool) {
+
             v.setBackground(getResources().getDrawable(R.drawable.seeds_for_dirt));
             if (lastY == 0) {
                 lastX = event.getRawX();

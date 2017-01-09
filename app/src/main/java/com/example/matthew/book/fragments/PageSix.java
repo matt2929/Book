@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawMultipleStates2Input;
 import com.example.matthew.book.Util.DrawMultipleStates3Input;
@@ -20,6 +21,7 @@ import com.example.matthew.book.customview.SunAndRain;
 import com.example.matthew.book.customview.SunAndRainAndMineral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class PageSix extends Page implements View.OnTouchListener {
@@ -56,15 +58,18 @@ public class PageSix extends Page implements View.OnTouchListener {
         sun = (Button) viewHierarchy.findViewById(R.id.page6sun);
         cloud = (Button) viewHierarchy.findViewById(R.id.Page6Cloud);
         mineral = (Button) viewHierarchy.findViewById(R.id.Page6mineral);
-         seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page6Seed2);
+        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page6Seed2);
+
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt2, cloud, sun, mineral}));
+        PageTurner.allButtons = new ArrayList<>(butttemp);
+
         sr2 = (SunAndRainAndMineral) viewHierarchy.findViewById(R.id.rainsunmineral2);
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree1));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree2));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree3));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree4));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree5));
-      //  myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree6));
-        myDrawablesSprout.add(getResources().getDrawable(R.drawable.page71));
+       myDrawablesSprout.add(getResources().getDrawable(R.drawable.page71));
 
         myDrawablesSun.add(getResources().getDrawable(R.drawable.page5sun1));
         myDrawablesSun.add(getResources().getDrawable(R.drawable.page5sun2));
@@ -79,10 +84,12 @@ public class PageSix extends Page implements View.OnTouchListener {
         myDrawablesMineral.add(getResources().getDrawable(R.drawable.minerals3));
         myDrawablesMineral.add(getResources().getDrawable(R.drawable.minerals4));
         seeds = new DrawableMutlipleStates[3];
-         seedstates2 = new DrawMultipleStates3Input(myDrawablesSprout, 250);
+        seedstates2 = new DrawMultipleStates3Input(myDrawablesSprout, 250);
         cloud.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt2, cloud, sun, mineral}));
+                PageTurner.allButtons = new ArrayList<>(butttemp);
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     cloudIsClicked = true;
                     mp = MediaPlayer.create(_context, R.raw.thunder);
@@ -100,8 +107,6 @@ public class PageSix extends Page implements View.OnTouchListener {
                     lastY = event.getRawY();
 
                 } else {
-
-
                     float xdiff = lastX - event.getRawX();
                     float ydiff = lastY - event.getRawY();
 
@@ -113,7 +118,7 @@ public class PageSix extends Page implements View.OnTouchListener {
                     }
                     lastX = event.getRawX();
                     lastY = event.getRawY();
-//                }
+
                     Button imageView = (Button) v;
                     if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
                         lastY = 0f;
@@ -128,6 +133,8 @@ public class PageSix extends Page implements View.OnTouchListener {
         sun.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt2, cloud, sun, mineral}));
+                PageTurner.allButtons = new ArrayList<>(butttemp);
                 if (bool) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         mp = MediaPlayer.create(_context, R.raw.sunny);
@@ -169,6 +176,8 @@ public class PageSix extends Page implements View.OnTouchListener {
         mineral.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt2, cloud, sun, mineral}));
+                PageTurner.allButtons = new ArrayList<>(butttemp);
                 if (bool) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         //mp = MediaPlayer.create(_context, R.raw.sunny);
@@ -215,7 +224,7 @@ public class PageSix extends Page implements View.OnTouchListener {
 
     private void isRainOverlapping() {
         if (cloud.getX() + (cloud.getWidth() / 2) < (masterView.getWidth() / 3)) {
-         } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
+        } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
             seedbutt2.setBackground(seedstates2.update(0));
         } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth()) {
         }
@@ -234,7 +243,7 @@ public class PageSix extends Page implements View.OnTouchListener {
 
 
     private void isMineralOverlapping() {
-        if(mineral.getY()>masterView.getHeight()*(2f/5f)) {
+        if (mineral.getY() > masterView.getHeight() * (2f / 5f)) {
             if (mineral.getX() + (mineral.getWidth() / 2) < (masterView.getWidth() / 3)) {
 
             } else if (mineral.getX() + mineral.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
@@ -270,7 +279,7 @@ public class PageSix extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        return ( seedstates2.allComplete());
+        return (seedstates2.allComplete());
     }
 
     @Override
@@ -289,7 +298,7 @@ public class PageSix extends Page implements View.OnTouchListener {
         }
 
         public void run() {
-            sr2.update(seedstates2.getFirstFraction(), seedstates2.getSecondFraction(),seedstates2.getThirdFraction());
+            sr2.update(seedstates2.getFirstFraction(), seedstates2.getSecondFraction(), seedstates2.getThirdFraction());
 
             if (cloudIsClicked) {
 
@@ -310,7 +319,7 @@ public class PageSix extends Page implements View.OnTouchListener {
                 if (indexSun + 1 == (myDrawablesSun.size())) {
                     indexSun = myDrawablesSun.size() - 3;
                 }
-            }else if(mineralIsClicked){
+            } else if (mineralIsClicked) {
                 isMineralOverlapping();
                 indexMineral++;
                 mineral.setBackground(myDrawablesMineral.get(indexMineral));

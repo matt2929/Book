@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class PageFive extends Page implements View.OnTouchListener {
@@ -27,8 +29,8 @@ public class PageFive extends Page implements View.OnTouchListener {
     boolean bool = false;
     public Handler handler;
     int index = 0;
-    Context _context;
-    MediaPlayer mp;
+   // Context _context;
+ //   MediaPlayer mp;
     boolean cloudIsClicked = false;
     DrawableMutlipleStates[] seeds;
     ArrayList<Drawable> myDrawablesSprout = new ArrayList<Drawable>();
@@ -44,6 +46,8 @@ public class PageFive extends Page implements View.OnTouchListener {
         seedbutt1 = (Button) viewHierarchy.findViewById(R.id.page4seed1);
         seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page4Seed2);
         seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page6Seed3);
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
+        PageTurner.allButtons =  new ArrayList<>(butttemp);
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout9));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout10));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout11));
@@ -66,6 +70,9 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
+        PageTurner.allButtons =  new ArrayList<>(butttemp);
+
         if (bool) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 cloudIsClicked = true;
@@ -112,31 +119,21 @@ public class PageFive extends Page implements View.OnTouchListener {
             if (cloud.getX() + (cloud.getWidth() / 2) < (masterView.getWidth() / 3)) {
                 Log.e("sound","start");
                 seedbutt1.setBackground(seedstattes1.update());
-                if(!mp.isPlaying()) {
-                    mp = MediaPlayer.create(_context, R.raw.slurp);
-                mp.start();
-                }
+
             } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
                 Log.e("sound","start");
 
                 seedbutt2.setBackground(seedstates2.update());
-                if(!mp.isPlaying()) {
-                    mp = MediaPlayer.create(_context, R.raw.slurp);
-                mp.start();
-                }
-                mp.start();
+
             } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth()) {
                 Log.e("sound","start");
 
                 seedbutt3.setBackground(seedstates3.update());
-                if(!mp.isPlaying()) {
-                    mp = MediaPlayer.create(_context, R.raw.slurp);
-                    mp.start();
-                }
+
             }
         } else {
             Log.e("sound","pause");
-            mp.pause();
+
         }
     }
 
@@ -149,9 +146,9 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public void passMediaPlayer(Context context) {
-        mp = MediaPlayer.create(context, R.raw.slurp);
-_context=context;
-        mp.setLooping(true);
+      //  mp = MediaPlayer.create(context, R.raw.slurp);
+//_context=context;
+       // mp.setLooping(true);
     }
 
     @Override

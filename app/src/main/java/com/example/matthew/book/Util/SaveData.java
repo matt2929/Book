@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.example.matthew.book.Util.ReadingSession.*;
+
 /**
  * Created by Matthew on 1/9/2017.
  */
@@ -25,7 +27,7 @@ public class SaveData implements Serializable {
     private Context context;
     private File dir;
     private File file;
-    ArrayList<PageInfo> pageInfos = new ArrayList<>();
+    ArrayList<ReadingSession.PageInfo> pageInfos = new ArrayList<>();
 
     public SaveData(Context c) {
         dir = new File(c.getFilesDir() + "/serialisedBookSessions");
@@ -52,7 +54,8 @@ public class SaveData implements Serializable {
             ObjectOutputStream oout = new ObjectOutputStream(out);
             // write something in the file
             //String workoutname, int[] shakelist, String workoutinfo, int grade, boolean leftHand
-            arrayWork.add(0, new ReadingSession(startTime,endTime,pageInfos));
+            ReadingSession readingSession = new ReadingSession(startTime,endTime,pageInfos);
+            arrayWork.add(0, readingSession);
             oout.writeObject(arrayWork);
             oout.flush();
         } catch (FileNotFoundException e) {
@@ -65,8 +68,8 @@ public class SaveData implements Serializable {
 
     }
 
-    public void savePage(ArrayList<Touch> alltouch, long duration, int pageNum) {
-        PageInfo tempPageInfo = new PageInfo(alltouch, duration, pageNum);
+    public void savePage(ArrayList<ReadingSession.Touch> alltouch, int early, long duration, int pageNum) {
+        PageInfo tempPageInfo = new PageInfo(alltouch,early, duration, pageNum);
         pageInfos.add(tempPageInfo);
     }
 
@@ -78,7 +81,7 @@ public class SaveData implements Serializable {
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace();Log.e("HEY!","This is broken input stream");
         }
 
 
@@ -105,123 +108,5 @@ public class SaveData implements Serializable {
             Toast.makeText(c, "null", Toast.LENGTH_LONG).show();
             return new ArrayList<ReadingSession>();
         }
-    }
-
-    public static class ReadingSession implements Serializable {
-        Calendar StartTime, EndTime;
-        ArrayList<PageInfo> pageInfo = new ArrayList<>();
-
-        public ReadingSession(Calendar startTime, Calendar endTime, ArrayList<PageInfo> pageInfos) {
-            StartTime = startTime;
-            EndTime = endTime;
-            this.pageInfo=pageInfos;
-        }
-
-        public ArrayList<SaveData.PageInfo> getPageInfo() {
-            return pageInfo;
-        }
-
-        public Calendar getEndTime() {
-            return EndTime;
-        }
-
-        public Calendar getStartTime() {
-            return StartTime;
-        }
-
-        public void setEndTime(Calendar endTime) {
-            EndTime = endTime;
-        }
-
-        public void setPageInfo(ArrayList<SaveData.PageInfo> pageInfos) {
-            pageInfo = pageInfos;
-        }
-
-        public void setStartTime(Calendar startTime) {
-            StartTime = startTime;
-        }
-
-    }
-
-    public static class PageInfo implements Serializable {
-        public ArrayList<Touch> touches = new ArrayList<>();
-        public Long duration;
-        public int pageNum;
-
-        public PageInfo(ArrayList<Touch> alltouch, long duration, int pageNum) {
-
-        }
-
-        public ArrayList<Touch> getTouches() {
-            return touches;
-        }
-
-        public Long getDuration() {
-            return duration;
-        }
-
-        public int getPageNum() {
-            return pageNum;
-        }
-
-        public void setDuration(Long duration) {
-            this.duration = duration;
-        }
-
-        public void setTouches(ArrayList<Touch> touches) {
-            this.touches = touches;
-        }
-
-        public void setPageNum(int pageNum) {
-            this.pageNum = pageNum;
-        }
-    }
-
-
-    public static class Touch implements Serializable {
-        private float _X, _Y;
-        private boolean _Good;
-        private Calendar _Time;
-
-        public Touch(Calendar time, float x, float y, boolean good) {
-            _Time = time;
-            _X = x;
-            _Y = y;
-            _Good = good;
-            _Time = time;
-        }
-
-        public boolean is_Good() {
-            return _Good;
-        }
-
-        public float get_X() {
-            return _X;
-        }
-
-        public float get_Y() {
-            return _Y;
-        }
-
-        public Calendar get_Time() {
-            return _Time;
-        }
-
-        public void set_Good(boolean _Good) {
-            this._Good = _Good;
-        }
-
-        public void set_Time(Calendar _Time) {
-            this._Time = _Time;
-        }
-
-        public void set_X(float _X) {
-            this._X = _X;
-        }
-
-        public void set_Y(float _Y) {
-            this._Y = _Y;
-        }
-
     }
 }

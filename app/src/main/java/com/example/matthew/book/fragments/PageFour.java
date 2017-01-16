@@ -75,18 +75,18 @@ public class PageFour extends Page implements View.OnTouchListener {
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain4));
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain5));
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain6));
-         seeds = new DrawableMutlipleStates[3];
+        seeds = new DrawableMutlipleStates[3];
         seedstattes1 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
         seedstates2 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
         seedstates3 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
-        PageTurner.allButtons =  new ArrayList<>(butttemp);
+        PageTurner.allButtons = new ArrayList<>(butttemp);
 
         cloud.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
-                PageTurner.allButtons =  new ArrayList<>(butttemp);
+                PageTurner.allButtons = new ArrayList<>(butttemp);
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     cloudIsClicked = true;
                     mp = MediaPlayer.create(_context, R.raw.thunder);
@@ -133,11 +133,11 @@ public class PageFour extends Page implements View.OnTouchListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
-                PageTurner.allButtons =  new ArrayList<>(butttemp);
+                PageTurner.allButtons = new ArrayList<>(butttemp);
 
                 if (bool) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        mp= MediaPlayer.create(_context,R.raw.sunny);
+                        mp = MediaPlayer.create(_context, R.raw.sunny);
                         mp.setLooping(true);
                         sunIsClicked = true;
                         mp.start();
@@ -182,11 +182,9 @@ public class PageFour extends Page implements View.OnTouchListener {
     private void isRainOverlapping() {
         if (cloud.getX() + (cloud.getWidth() / 2) < (masterView.getWidth() / 3)) {
             seedbutt1.setBackground(seedstattes1.update(true));
-        }
-        else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f/3f)) {
+        } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
             seedbutt2.setBackground(seedstates2.update(true));
-        }
-        else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth()) {
+        } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth()) {
             seedbutt3.setBackground(seedstates3.update(true));
         }
 
@@ -196,11 +194,9 @@ public class PageFour extends Page implements View.OnTouchListener {
         if (sun.getX() + (sun.getWidth() / 2) < (masterView.getWidth() / 3)) {
             seedbutt1.setBackground(seedstattes1.update(false));
 
-        }
-        else if (sun.getX() + sun.getWidth() / 2 < masterView.getWidth() * (2f/3f)) {
+        } else if (sun.getX() + sun.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
             seedbutt2.setBackground(seedstates2.update(false));
-        }
-        else if (sun.getX() + sun.getWidth() / 2 < masterView.getWidth()) {
+        } else if (sun.getX() + sun.getWidth() / 2 < masterView.getWidth()) {
             seedbutt3.setBackground(seedstates3.update(false));
         }
 
@@ -215,7 +211,7 @@ public class PageFour extends Page implements View.OnTouchListener {
     @Override
     public void passMediaPlayer(Context context) {
         mp = MediaPlayer.create(context, R.raw.thunder);
-        _context=context;
+        _context = context;
 
         mp.setLooping(true);
     }
@@ -232,7 +228,11 @@ public class PageFour extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        return (seedstattes1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
+        if (seedstattes1 == null) {
+            return true;
+        } else {
+            return (seedstattes1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
+        }
     }
 
     @Override
@@ -251,9 +251,9 @@ public class PageFour extends Page implements View.OnTouchListener {
         }
 
         public void run() {
-            sr1.update(seedstattes1.getFirstFraction(),seedstattes1.getSecondFraction());
-            sr2.update(seedstates2.getFirstFraction(),seedstates2.getSecondFraction());
-            sr3.update(seedstates3.getFirstFraction(),seedstates3.getSecondFraction());
+            sr1.update(seedstattes1.getFirstFraction(), seedstattes1.getSecondFraction());
+            sr2.update(seedstates2.getFirstFraction(), seedstates2.getSecondFraction());
+            sr3.update(seedstates3.getFirstFraction(), seedstates3.getSecondFraction());
 
             if (cloudIsClicked) {
 

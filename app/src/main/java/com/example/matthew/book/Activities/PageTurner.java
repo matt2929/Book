@@ -1,29 +1,19 @@
 package com.example.matthew.book.Activities;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
-import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.text.Html;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,8 +37,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
-
-import static android.content.ContentValues.TAG;
 
 public class PageTurner extends Activity implements TextToSpeech.OnInitListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     TextView textView;
@@ -152,12 +140,12 @@ calendar = Calendar.getInstance();
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         startTime = System.currentTimeMillis();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (!canClick) {
                     goodBadTouch.touchedAheadOfTime((int) event.getRawX(), (int) event.getRawY());
-
                     fragCase.setBackground(getResources().getDrawable(R.drawable.listen));
                 }
                 x1 = event.getX();
@@ -169,17 +157,20 @@ calendar = Calendar.getInstance();
                 if (deltaX < -MIN_DISTANCE) {
                     resetPages();
                     if (_CurrentPage.doneTouching()) {
-                        saveData.savePage(goodBadTouch.get_Touches(), Math.abs(startTimeTouchable-System.currentTimeMillis()),currentPageIndex+1);
-                        goodBadTouch.lastTouchWasAGoodSwipe();
                         resetPages();
                         transaction = fragmentManager.beginTransaction();
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
+                        goodBadTouch.lastTouchWasAGoodSwipe();
+                        saveData.savePage(goodBadTouch.get_Touches(),goodBadTouch.getEarly(), Math.abs(startTimeTouchable-System.currentTimeMillis()),currentPageIndex+1);
+                        goodBadTouch.reset();
+
                         if (currentPageIndex == allPages.size() - 1) {
                             saveData.saveSession(getApplicationContext(),calendar, Calendar.getInstance());
                             Intent i = new Intent(getApplicationContext(), Authors.class);
                             startActivity(i);
                         } else {
                             _CurrentPage = allPages.get(++currentPageIndex);
+
                             if (currentPageIndex == allPages.size() - 1) {
                                 _CurrentPage = new PageOne();
                                 ll.setBackground(getDrawable(R.drawable.pastellegreenback));
@@ -214,13 +205,14 @@ calendar = Calendar.getInstance();
                 } else if (deltaX > MIN_DISTANCE) {
                     resetPages();
                     if (_CurrentPage.doneTouching()) {
-                        goodBadTouch.lastTouchWasAGoodSwipe();
+
                         transaction = fragmentManager.beginTransaction();
                         transaction.setCustomAnimations(R.animator.fadein2, R.animator.fadeout2);
                         if (currentPageIndex == 0) {
                         } else {
-                            saveData.savePage(goodBadTouch.get_Touches(), Math.abs(startTimeTouchable-System.currentTimeMillis()),currentPageIndex+1);
-
+                            goodBadTouch.lastTouchWasAGoodSwipe();
+                            saveData.savePage(goodBadTouch.get_Touches(),goodBadTouch.getEarly(), Math.abs(startTimeTouchable-System.currentTimeMillis()),currentPageIndex+1);
+                            goodBadTouch.reset();
                             _CurrentPage = allPages.get(--currentPageIndex);
                             if (currentPageIndex == allPages.size() - 1) {
                                 _CurrentPage = new PageOne();
@@ -444,6 +436,7 @@ calendar = Calendar.getInstance();
         }
 
         public void run() {
+
             if (_CurrentPage.doneTouching()) {
                 if (justClick == false) {
                     startTime = System.currentTimeMillis();

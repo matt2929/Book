@@ -29,8 +29,8 @@ public class PageFive extends Page implements View.OnTouchListener {
     boolean bool = false;
     public Handler handler;
     int index = 0;
-   // Context _context;
- //   MediaPlayer mp;
+    // Context _context;
+    //   MediaPlayer mp;
     boolean cloudIsClicked = false;
     DrawableMutlipleStates[] seeds;
     ArrayList<Drawable> myDrawablesSprout = new ArrayList<Drawable>();
@@ -47,7 +47,7 @@ public class PageFive extends Page implements View.OnTouchListener {
         seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page4Seed2);
         seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page6Seed3);
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
-        PageTurner.allButtons =  new ArrayList<>(butttemp);
+        PageTurner.allButtons = new ArrayList<>(butttemp);
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout9));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout10));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout11));
@@ -71,7 +71,7 @@ public class PageFive extends Page implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
-        PageTurner.allButtons =  new ArrayList<>(butttemp);
+        PageTurner.allButtons = new ArrayList<>(butttemp);
 
         if (bool) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -117,22 +117,22 @@ public class PageFive extends Page implements View.OnTouchListener {
 
         if (cloud.getY() + cloud.getHeight() > masterView.getHeight() * (4f / 5f)) {
             if (cloud.getX() + (cloud.getWidth() / 2) < (masterView.getWidth() / 3)) {
-                Log.e("sound","start");
+                Log.e("sound", "start");
                 seedbutt1.setBackground(seedstattes1.update());
 
             } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
-                Log.e("sound","start");
+                Log.e("sound", "start");
 
                 seedbutt2.setBackground(seedstates2.update());
 
             } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth()) {
-                Log.e("sound","start");
+                Log.e("sound", "start");
 
                 seedbutt3.setBackground(seedstates3.update());
 
             }
         } else {
-            Log.e("sound","pause");
+            Log.e("sound", "pause");
 
         }
     }
@@ -146,9 +146,9 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public void passMediaPlayer(Context context) {
-      //  mp = MediaPlayer.create(context, R.raw.slurp);
+        //  mp = MediaPlayer.create(context, R.raw.slurp);
 //_context=context;
-       // mp.setLooping(true);
+        // mp.setLooping(true);
     }
 
     @Override
@@ -163,7 +163,11 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        return (seedstattes1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
+        if (seedstattes1 == null) {
+            return true;
+        } else {
+            return (seedstattes1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
+        }
     }
 
     class Clock implements Runnable {

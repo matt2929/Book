@@ -23,7 +23,9 @@
         <activity android:name=".Activities.PageTurner" />
         <activity android:name=".fragments.Page6" />
         <activity android:name=".Activities.Authors" />
-        <activity android:name=".Activities.HistoricalSessions"></activity>
+        <activity android:name=".Activities.HistoricalSessions" />
+        <activity android:name=".Activities.HistoricalPages" />
+        <activity android:name=".Activities.HistoricalTouches"></activity>
     </application>
 
 </manifest>

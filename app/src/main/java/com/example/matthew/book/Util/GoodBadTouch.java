@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -14,10 +15,10 @@ import static com.example.matthew.book.Util.SaveData.*;
  * Created by Matthew on 1/8/2017.
  */
 
-public class GoodBadTouch {
+public class GoodBadTouch  implements Serializable{
     private ArrayList<Button> _ValidTouchableAreas;
-    private ArrayList<SaveData.Touch> _Touches = new ArrayList<>();
-
+    private ArrayList<ReadingSession.Touch> _Touches = new ArrayList<>();
+    private int early=0;
     public boolean checkTouchValidity(ArrayList<Button> allViews, int x, int y) {
         _ValidTouchableAreas = allViews;
         Calendar calendar = java.util.Calendar.getInstance();
@@ -31,7 +32,7 @@ public class GoodBadTouch {
                         && x <= vx + v.getWidth()
                         && y >= vy
                         && y <= vy + v.getHeight()) {
-                    _Touches.add(new SaveData.Touch(calendar, x, y, true));
+                    _Touches.add(new ReadingSession.Touch(calendar, x, y, true));
 
                     Log.e("Touch", "Good");
                     return true;
@@ -39,20 +40,31 @@ public class GoodBadTouch {
             }
         }
         Log.e("Touch", "Bad");
-        _Touches.add(new SaveData.Touch(calendar, x, y, false));
+        _Touches.add(new ReadingSession.Touch(calendar, x, y, false));
         return false;
     }
 
     public void touchedAheadOfTime(int x, int y) {
+        Log.e("Touch", "Bad");
+        early++;
         Calendar calendar = java.util.Calendar.getInstance();
-        _Touches.add(new SaveData.Touch(calendar, x, y, false));
+        _Touches.add(new ReadingSession.Touch(calendar, x, y, false));
     }
     public void lastTouchWasAGoodSwipe(){
         Log.e("Touch", "Undo");
         _Touches.remove(_Touches.size()-1);
     }
 
-    public ArrayList<Touch> get_Touches() {
+    public void reset(){
+        _Touches.clear();
+        early=0;
+    }
+    public ArrayList<ReadingSession.Touch> get_Touches() {
         return _Touches;
+    }
+
+
+    public int getEarly() {
+        return early;
     }
 }

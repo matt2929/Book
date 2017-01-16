@@ -147,7 +147,11 @@ public class PageSeven extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        return (seedstattes1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
+        if (seedstattes1 != null) {
+            return (seedstattes1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
+        } else {
+            return true;
+        }
     }
 
     class ClockSeven implements Runnable {

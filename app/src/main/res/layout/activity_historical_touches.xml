@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_historical_touches"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.matthew.book.Activities.HistoricalSessions">
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:fontFamily="serif"
+        android:text="Historical Touches"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="36sp"
+        android:textStyle="normal|bold" />
+
+    <ImageView
+        android:id="@+id/showwheretouchesare"
+        android:layout_width="320dp"
+        android:layout_height="180dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/textView5"
+        android:adjustViewBounds="false"
+        android:background="@drawable/atree"
+        android:contentDescription="view touches"
+        android:cropToPadding="false" />
+
+    <com.example.matthew.book.customview.DrawPointTransparent
+        android:id="@+id/DrawPoint"
+        android:layout_width="320dp"
+        android:layout_height="180dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/textView5"
+        android:background="@android:color/transparent"
+        />
+
+    <ListView
+        android:id="@+id/listViewTouch"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView5"
+        android:layout_toStartOf="@+id/showwheretouchesare"
+        android:background="@color/colorPrimaryDark" />
+</RelativeLayout>

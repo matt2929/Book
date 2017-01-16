@@ -279,7 +279,11 @@ public class PageSix extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        return (seedstates2.allComplete());
+        if (seedstates2==null) {
+            return true;
+        }else{
+            return (seedstates2.allComplete());
+        }
     }
 
     @Override

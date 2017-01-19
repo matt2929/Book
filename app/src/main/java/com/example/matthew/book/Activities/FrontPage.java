@@ -1,10 +1,13 @@
 package com.example.matthew.book.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +27,6 @@ Button button,button2,button3;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
         button = (Button) findViewById(R.id.titlereadtome);
         button2= (Button) findViewById(R.id.author);
         button3 = (Button) findViewById(R.id.ADMIN);

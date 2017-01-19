@@ -1,4 +1,5 @@
 package com.example.matthew.book.Activities;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.GoodBadTouch;
+import com.example.matthew.book.Util.SaveCSV;
 import com.example.matthew.book.Util.SaveData;
 import com.example.matthew.book.customview.PleaseSwipe;
 import com.example.matthew.book.fragments.Page;
@@ -47,11 +49,11 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     Clock clock;
     Clock2 clock2;
     Calendar calendar;
-    Long startTimeTouchable, endTimeTouchable;
+    Long startTimeTouchable;
     boolean goodTouch = false;
     PleaseSwipe pleaseSwipe;
     public static ArrayList<Button> allButtons;
-    GoodBadTouch goodBadTouch = new GoodBadTouch();
+    GoodBadTouch goodBadTouch;
     MediaPlayer mediaPlayer = new MediaPlayer();
     ArrayList<Integer> pageTextRecording = new ArrayList<>();
     ArrayList<Integer> touchDelayRecording = new ArrayList<>();
@@ -67,10 +69,10 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     Handler handler, handler2;
     Typeface tf;
     private float x1, x2;
-    static final int MIN_DISTANCE = 150;
+    static final int MIN_DISTANCE = 175;
     ArrayList<Page> allPages = new ArrayList<>();
     int currentPageIndex = 0;
-SaveData saveData;
+    SaveData saveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +80,10 @@ SaveData saveData;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_turner);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        saveData=new SaveData(getApplicationContext());
+        saveData = new SaveData(getApplicationContext());
         resetPages();
-calendar = Calendar.getInstance();
+        goodBadTouch = new GoodBadTouch(getApplicationContext());
+       calendar = Calendar.getInstance();
         pageTextRecording.add(R.raw.page1);
         pageTextRecording.add(R.raw.page2);
         pageTextRecording.add(R.raw.page3);
@@ -161,11 +164,11 @@ calendar = Calendar.getInstance();
                         transaction = fragmentManager.beginTransaction();
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                         goodBadTouch.lastTouchWasAGoodSwipe();
-                        saveData.savePage(goodBadTouch.get_Touches(),goodBadTouch.getEarly(), Math.abs(startTimeTouchable-System.currentTimeMillis()),currentPageIndex+1);
+                        saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
                         goodBadTouch.reset();
 
                         if (currentPageIndex == allPages.size() - 1) {
-                            saveData.saveSession(getApplicationContext(),calendar, Calendar.getInstance());
+                            saveData.saveSession(getApplicationContext(), calendar, Calendar.getInstance());
                             Intent i = new Intent(getApplicationContext(), Authors.class);
                             startActivity(i);
                         } else {
@@ -211,7 +214,7 @@ calendar = Calendar.getInstance();
                         if (currentPageIndex == 0) {
                         } else {
                             goodBadTouch.lastTouchWasAGoodSwipe();
-                            saveData.savePage(goodBadTouch.get_Touches(),goodBadTouch.getEarly(), Math.abs(startTimeTouchable-System.currentTimeMillis()),currentPageIndex+1);
+                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
                             goodBadTouch.reset();
                             _CurrentPage = allPages.get(--currentPageIndex);
                             if (currentPageIndex == allPages.size() - 1) {
@@ -259,10 +262,10 @@ calendar = Calendar.getInstance();
                 goodTouch = false;
             } else {
 
-                if (goodBadTouch.checkTouchValidity(allButtons, (int) event.getRawX(), (int) event.getRawY())) {
-                    goodTouch=true;
-                }else{
-                    goodTouch=false;
+                if (goodBadTouch.checkTouchValidity(currentPageIndex+1,allButtons, (int) event.getRawX(), (int) event.getRawY())) {
+                    goodTouch = true;
+                } else {
+                    goodTouch = false;
                 }
             }
 
@@ -293,7 +296,7 @@ calendar = Calendar.getInstance();
     public void onCompletion(MediaPlayer mp) {
         canClick = true;
         _CurrentPage.enabledisabletouch(true);
-        startTimeTouchable=System.currentTimeMillis();
+        startTimeTouchable = System.currentTimeMillis();
     }
 
 
@@ -390,10 +393,10 @@ calendar = Calendar.getInstance();
             }
             if (count == listOfWords.size() - 1) {
                 handler.postDelayed(this, 750);
-            }else if( count > listOfWords.size() - 1){
+            } else if (count > listOfWords.size() - 1) {
                 textView.setText(_CurrentPage.getString());
 
-            } else{
+            } else {
                 String nextWord = listOfWords.get(count + 1);
                 int delay = 0;
                 if (currentPageIndex == 0) {
@@ -402,7 +405,8 @@ calendar = Calendar.getInstance();
                     delay = nextWord.length() * 150;
 
                 } else if (currentPageIndex == 3) {
-                    delay = nextWord.length() * 110;
+                    delay = nextWord.length() * 140;
+                    Log.e("page index",""+3);
                 } else {
                     delay = nextWord.length() * 150;
                 }

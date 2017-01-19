@@ -86,7 +86,7 @@ RotationalMovement rotationalMovement;
                         buttons[i].setY((relativeLayout.getHeight() / 2) + (float) (Math.sin(Math.toRadians(degreeCount)) * 250f) - (buttons[i].getHeight() / 2));
                         degreeCount += degreevariation;
                     }
-                    rotationalMovement = new RotationalMovement(relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2, 250f, buttons);
+                    rotationalMovement = new RotationalMovement(relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2, 150f, buttons);
                     final ClockOne clock = new ClockOne(handler, relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2);
                     clock.run();
                 }

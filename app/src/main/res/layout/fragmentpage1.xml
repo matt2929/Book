@@ -4,19 +4,20 @@
      android:layout_width="match_parent"
      android:layout_height="match_parent">
 
-    <AbsoluteLayout
-        android:layout_width="500dp"
-        android:layout_height="550dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/nospinzone">
 
 
         <Button
             android:id="@+id/cycle4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="50dp"
-            android:layout_y="250dp"
+
             android:scaleX=".75"
             android:scaleY=".75" />
 
@@ -24,8 +25,6 @@
             android:id="@+id/cycle3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="300dp"
-            android:layout_y="250dp"
             android:elevation="0dp"
             android:scaleX=".75"
             android:scaleY=".75" />
@@ -34,8 +33,7 @@
             android:id="@+id/cycle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="350dp"
-            android:layout_y="100dp"
+
             android:scaleY=".75"
             android:scaleX=".75" />
 
@@ -43,8 +41,7 @@
             android:id="@+id/cycle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="175dp"
-            android:layout_y="0dp"
+
             android:scaleY=".75"
             android:scaleX=".75"
              />
@@ -53,12 +50,11 @@
             android:id="@+id/cycle5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="1dp"
-            android:layout_y="100dp"
+
             android:scaleX=".75"
             android:scaleY=".75" />
 
-    </AbsoluteLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
 

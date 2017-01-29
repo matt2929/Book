@@ -3,6 +3,8 @@ package com.example.matthew.book.Util;
 import android.content.Context;
 import android.os.Environment;
 
+import com.example.matthew.book.Activities.FrontPage;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +39,7 @@ public class SaveCSV {
         FileOutputStream outputStream;
         FileInputStream inputStream;
         _context = context;
-        _fileName = "Book_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
+        _fileName = FrontPage.name+"_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
     }
 
     public void saveData(int page,float x, float y, boolean good) {
@@ -62,7 +64,7 @@ public class SaveCSV {
                     csvWriter = new PrintWriter(new FileWriter(file, true));
                     int last = 0;
                     int count = 0;
-                    csvWriter.print("Reading Session [" + (month + 1) + "/" + day + "/" + year + "]\nTime,Page,X,Y,Good");
+                    csvWriter.print(FrontPage.name+"Reading Session [" + (month + 1) + "/" + day + "/" + year + "]\nTime,Page,X,Y,Good");
                     csvWriter.append('\n');
                     for (int i = 0; i < string.length(); i++) {
                         if (string.charAt(i) == ';') {

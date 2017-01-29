@@ -21,14 +21,6 @@
         android:layout_alignParentStart="true">
 
         <Button
-            android:id="@+id/Page4Sun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/page5sun1"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
-
-        <Button
             android:id="@+id/Page4Cloud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,6 +78,14 @@
             android:background="@drawable/sprout0"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/Page4Sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/page5sun1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

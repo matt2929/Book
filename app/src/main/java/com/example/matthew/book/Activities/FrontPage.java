@@ -1,43 +1,38 @@
 package com.example.matthew.book.Activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.widget.EditText;
 
 import com.example.matthew.book.R;
-import com.example.matthew.book.fragments.Page;
-import com.example.matthew.book.fragments.PageRule;
-import com.example.matthew.book.fragments.PageOne;
-import com.example.matthew.book.fragments.PageTwo;
 
 public class FrontPage extends Activity {
-Button button,button2,button3;
+    Button start, author, history,confirmName;
+    EditText editText;
+    public static String name="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        button = (Button) findViewById(R.id.titlereadtome);
-        button2= (Button) findViewById(R.id.author);
-        button3 = (Button) findViewById(R.id.ADMIN);
-        button.setOnClickListener(new View.OnClickListener() {
+        start = (Button) findViewById(R.id.titlereadtome);
+        author = (Button) findViewById(R.id.author);
+        history = (Button) findViewById(R.id.ADMIN);
+        confirmName = (Button) findViewById(R.id.savename);
+        editText=(EditText) findViewById(R.id.editText);
+        mainButtons();
+        start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), PageTurner.class);
-                startActivity(i);
+                enterNameView();
+
             }
         });
-        button2.setOnClickListener(new View.OnClickListener() {
+        author.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), Authors.class);
@@ -45,7 +40,7 @@ Button button,button2,button3;
 
             }
         });
-        button3.setOnClickListener(new View.OnClickListener() {
+        history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), HistoricalSessions.class);
@@ -53,5 +48,28 @@ Button button,button2,button3;
 
             }
         });
+        confirmName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), PageTurner.class);
+                startActivity(i);
+                name=confirmName.getText().toString();
+            }
+        });
+    }
+    public void mainButtons(){
+        start.setVisibility(View.VISIBLE);
+        author.setVisibility(View.VISIBLE);
+        history.setVisibility(View.VISIBLE);
+        confirmName.setVisibility(View.GONE);
+        editText.setVisibility(View.GONE);
+
+    }
+    public void enterNameView(){
+        start.setVisibility(View.GONE);
+        author.setVisibility(View.GONE);
+        history.setVisibility(View.GONE);
+        confirmName.setVisibility(View.VISIBLE);
+        editText.setVisibility(View.VISIBLE);
     }
 }

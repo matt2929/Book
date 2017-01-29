@@ -7,11 +7,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/gre2"
     android:duplicateParentState="true"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.matthew.book.Activities.FrontPage">
+    tools:context="com.example.matthew.book.Activities.FrontPage"
+    android:paddingBottom="15dp">
 
     <FrameLayout
         android:id="@+id/fragmentcase"
@@ -57,10 +55,9 @@
         android:typeface="serif"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/repeatspeaks"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp" />
+        android:padding="25dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp" />
 
 
 </RelativeLayout>

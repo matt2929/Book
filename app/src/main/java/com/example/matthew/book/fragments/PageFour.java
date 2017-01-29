@@ -157,8 +157,13 @@ public class PageFour extends Page implements View.OnTouchListener {
                     } else {
                         float xdiff = lastX - event.getRawX();
                         float ydiff = lastY - event.getRawY();
-                        v.setX((v.getX() - xdiff));
-                        v.setY((v.getY() - ydiff));
+                        if ((v.getX() - xdiff) >= 0 && (v.getX() - xdiff) + v.getWidth() < masterView.getWidth()) {
+                            v.setX((v.getX() - xdiff));
+                        }
+                        if (((v.getY() - ydiff) >= 0 && (v.getY() - ydiff) + v.getHeight() < masterView.getHeight())) {
+                            v.setY((v.getY() - ydiff));
+                        }
+
                         lastX = event.getRawX();
                         lastY = event.getRawY();
                         Button imageView = (Button) v;

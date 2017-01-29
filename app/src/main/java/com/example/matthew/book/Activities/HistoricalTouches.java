@@ -31,7 +31,6 @@ public class HistoricalTouches extends AppCompatActivity {
         ArrayList<String> strings = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("h:mm:ss a");
         ImageView imageView = (ImageView) findViewById(R.id.showwheretouchesare);
-
         for (int i = 0; i < readingSessions.getTouches().size(); i++) {
             String temp = "";
             String good = "";
@@ -65,29 +64,28 @@ public class HistoricalTouches extends AppCompatActivity {
         switch (HistoricalPages.pageIndex) {
 
             case 0:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot1));
-
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book1));
                 break;
             case 1:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot2));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book2));
                 break;
             case 2:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot3));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book3));
                 break;
             case 3:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot4));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book4));
                 break;
             case 4:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot5));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book5));
                 break;
             case 5:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot6));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book6));
                 break;
             case 6:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot7));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book7));
                 break;
             case 7:
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.screenshot8));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.book8));
                 break;
          }
     }

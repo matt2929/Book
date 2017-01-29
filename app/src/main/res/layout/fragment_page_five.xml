@@ -42,7 +42,6 @@
             android:background="@drawable/minerals1"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
-
     </RelativeLayout>
 
 </RelativeLayout>

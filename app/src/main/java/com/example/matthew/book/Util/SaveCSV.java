@@ -39,7 +39,7 @@ public class SaveCSV {
         FileOutputStream outputStream;
         FileInputStream inputStream;
         _context = context;
-        _fileName = FrontPage.name+"_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
+        _fileName = "Book_"+FrontPage.name+"_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
     }
 
     public void saveData(int page,float x, float y, boolean good) {

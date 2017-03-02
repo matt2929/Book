@@ -36,16 +36,18 @@ import java.util.List;
 
 public class PageOne extends Page implements View.OnTouchListener {
     String thisPagesText = "So, my life is a cycle: from seed, to sapling, to full-grown tree, to blossom, to apple, and back to seed again.";
-    Button seed, seedling, tree, treeFlower, treeApple;
+    Button seed, seedling, tree, treeFlower, treeApple, arrows;
     Button[] buttons;
-RotationalMovement rotationalMovement;
+    RotationalMovement rotationalMovement;
     HashMap<Button, Boolean> didITouch = new HashMap<Button, Boolean>();
-    int count =0;
+    int count = 0;
+    float rotate = 0;
     Drawable drawable;
-    String strings[] = {"Seed", "Sapling", "Young Tree", "Tree With Flowers", "Tree With Apples"};
+    String strings[] = { "Seed", "Sapling", "Young Tree", "Tree With Flowers", "Tree With Apples" };
     Boolean currentBool = false;
     public Handler handler;
     RelativeLayout relativeLayout;
+    Context _context;
 
     @Nullable
     @Override
@@ -54,7 +56,7 @@ RotationalMovement rotationalMovement;
         View viewHierarchy =
                 inflater.inflate(R.layout.fragmentpage1, container, false);
         handler = new Handler();
-
+        arrows = (Button) viewHierarchy.findViewById(R.id.arrows);
         seed = (Button) viewHierarchy.findViewById(R.id.cycle1);
         seed.setBackgroundResource(R.drawable.seedling);
         seedling = (Button) viewHierarchy.findViewById(R.id.cycle2);
@@ -66,10 +68,10 @@ RotationalMovement rotationalMovement;
         treeApple = (Button) viewHierarchy.findViewById(R.id.cycle5);
         treeApple.setBackgroundResource(R.drawable.treewithapples);
         relativeLayout = (RelativeLayout) viewHierarchy.findViewById(R.id.nospinzone);
-        buttons = new Button[]{seed, seedling, tree, treeFlower, treeApple};
+        buttons = new Button[]{ seed, seedling, tree, treeFlower, treeApple };
         PageTurner.allButtons = new ArrayList<>(Arrays.asList(buttons));
 
-        for (int i = 0; i < buttons.length; i++) {
+        for ( int i = 0; i < buttons.length; i++ ) {
             didITouch.put(buttons[i], false);
             buttons[i].setOnTouchListener(this);
             buttons[i].setTextColor(Color.WHITE);
@@ -78,15 +80,15 @@ RotationalMovement rotationalMovement;
         viewHierarchy.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (count <= 1) {
+                if ( count <= 1 ) {
                     float degreevariation = 360f / 5f;
                     float degreeCount = 0f;
-                    for (int i = 0; i < buttons.length; i++) {
-                        buttons[i].setX((relativeLayout.getWidth() / 2) + (float) (Math.cos(Math.toRadians(degreeCount)) * 250f) - (buttons[i].getWidth() / 2));
-                        buttons[i].setY((relativeLayout.getHeight() / 2) + (float) (Math.sin(Math.toRadians(degreeCount)) * 250f) - (buttons[i].getHeight() / 2));
+                    for ( int i = 0; i < buttons.length; i++ ) {
+                        buttons[i].setX((relativeLayout.getWidth() / 2) + (float) (Math.cos(Math.toRadians(degreeCount)) * 200f) - (buttons[i].getWidth() / 2));
+                        buttons[i].setY((relativeLayout.getHeight() / 2) + (float) (Math.sin(Math.toRadians(degreeCount)) * 140f) - (buttons[i].getHeight() / 2));
                         degreeCount += degreevariation;
                     }
-                    rotationalMovement = new RotationalMovement(relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2, 150f, buttons);
+                    rotationalMovement = new RotationalMovement(relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2, 75f, buttons);
                     final ClockOne clock = new ClockOne(handler, relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2);
                     clock.run();
                 }
@@ -106,28 +108,47 @@ RotationalMovement rotationalMovement;
 
         Button imageView = (Button) view;
         didITouch.put(imageView, true);
-        if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
-            buttons = new Button[]{seed, seedling, tree, treeFlower, treeApple};
+        if ( event.getAction() == android.view.MotionEvent.ACTION_DOWN ) {
+            buttons = new Button[]{ seed, seedling, tree, treeFlower, treeApple };
             PageTurner.allButtons = new ArrayList<>(Arrays.asList(buttons));
             drawable = imageView.getBackground();
             view.setBackgroundResource(R.drawable.emptybox);
-            if (imageView.equals(seed)) {
+            if ( imageView.equals(seed) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.seed);
+                    mp.start();
+                }
                 imageView.setText(strings[0]);
-            } else if (imageView.equals(seedling)) {
+            } else if ( imageView.equals(seedling) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.sappling);
+                    mp.start();
+                }
                 imageView.setText(strings[1]);
 
-            } else if (imageView.equals(tree)) {
+            } else if ( imageView.equals(tree) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.fullGrownTree);
+                    mp.start();
+                }
                 imageView.setText(strings[2]);
 
-            } else if (imageView.equals(treeFlower)) {
+            } else if ( imageView.equals(treeFlower) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.Blossom);
+                    mp.start();
+                }
                 imageView.setText(strings[3]);
 
-            } else if (imageView.equals(treeApple)) {
+            } else if ( imageView.equals(treeApple) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.apple);
+                    mp.start();
+                }
                 imageView.setText(strings[4]);
-
             }
 
-        } else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+        } else if ( event.getAction() == android.view.MotionEvent.ACTION_UP ) {
             imageView.setText("");
             view.setBackground(drawable);
             view.setAlpha(.5f);
@@ -147,13 +168,13 @@ RotationalMovement rotationalMovement;
 
     @Override
     public void passMediaPlayer(Context context) {
-
+        _context = context;
     }
 
     @Override
     public boolean doneTouching() {
-        for (Boolean b : didITouch.values()) {
-            if (b == false) {
+        for ( Boolean b : didITouch.values() ) {
+            if ( b == false ) {
                 return false;
             }
         }
@@ -176,9 +197,9 @@ RotationalMovement rotationalMovement;
         }
 
         public void run() {
-            rotationalMovement.rotate();
-            rotationalMovement.nextPos();
-            handler.postDelayed(this, 100);
+            rotate += 2;
+            arrows.setRotation(rotate);
+            handler.postDelayed(this, 50);
 
         }
 

@@ -61,8 +61,9 @@ public class HistoricalSessions extends AppCompatActivity {
                 localGood=0;
             }
             SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM d, yyyy 'at' h:mm a");
-            strings.add("User Name: "+FrontPage.name
-                    + "Session Number: " + (++count)
+            strings.add(
+                    "Session Number: " + (++count)
+                    +"\nUserName: "+ r.getName()
                     + "\nStart Time: " + format.format(start.getTime())
                     + "\nEnd Time: " + format.format(end.getTime())
                     + "\nAccuracy: " + ((double) good / (double) (good + bad)) * 100.0 + "%"

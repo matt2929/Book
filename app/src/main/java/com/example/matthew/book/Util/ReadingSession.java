@@ -1,5 +1,7 @@
 package com.example.matthew.book.Util;
 
+import com.example.matthew.book.Activities.FrontPage;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,11 +13,21 @@ import java.util.Calendar;
 public class ReadingSession implements Serializable {
     Calendar StartTime, EndTime;
     ArrayList<PageInfo> pageInfo = new ArrayList<>();
+    String Name = "";
 
     public ReadingSession(Calendar startTime, Calendar endTime, ArrayList<PageInfo> pageInfos) {
         StartTime = startTime;
         EndTime = endTime;
         this.pageInfo=pageInfos;
+        Name= FrontPage.name;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 
     public ArrayList<PageInfo> getPageInfo() {

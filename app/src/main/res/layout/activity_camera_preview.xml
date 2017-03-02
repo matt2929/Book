@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/* ======================================================================
+*  Copyright (c) 2014 Qualcomm Technologies, Inc. All Rights Reserved.
+*  QTI Proprietary and Confidential.
+*  =====================================================================
+*
+* @file    activity_camera_preview.xml
+* @brief   Android application manifest file for DeviceInfo API.
+*/-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:gravity="top"
+    tools:context=".Activities.CameraPreviewActivity">
+
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <view
+        android:id="@+id/pointcalibration"
+        class="com.example.matthew.book.EyeTracking.NinePointCalibrationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/darker_gray" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:cropToPadding="true"
+        android:scaleType="centerCrop"
+        app:srcCompat="@android:drawable/presence_video_busy" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="160dp"
+        android:layout_marginRight="160dp"
+        android:background="@android:color/transparent"
+        android:indeterminate="false" />
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:id="@+id/coordinateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:text="To begin calibration wait for the bottom bar to fill up, That means you have consistent face detection. When Calibration begins look at the yellow dot wherever it moves. If the camera looses calibration the activity will pause" />
+
+        <Button
+            android:id="@+id/Record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:text="Record" />
+
+        <Button
+            android:id="@+id/restartcalibration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:text="Skip Calibration" />
+    </LinearLayout>
+
+
+</RelativeLayout>

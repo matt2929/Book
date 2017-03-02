@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('sd-sdk-facial-processing.jar'))

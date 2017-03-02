@@ -59,6 +59,15 @@
         android:layout_marginLeft="64dp"
         android:layout_marginRight="64dp" />
 
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/previewviewturn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+    </FrameLayout>
+
 
 </RelativeLayout>
 

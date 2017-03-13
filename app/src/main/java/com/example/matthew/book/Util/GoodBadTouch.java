@@ -6,11 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.matthew.book.EyeTracking.Calibration9Point;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import static com.example.matthew.book.Util.SaveData.*;
 
 /**
  * Created by Matthew on 1/8/2017.
@@ -19,28 +19,31 @@ import static com.example.matthew.book.Util.SaveData.*;
 public class GoodBadTouch implements Serializable {
     private ArrayList<Button> _ValidTouchableAreas;
     private ArrayList<ReadingSession.Touch> _Touches = new ArrayList<>();
-    private SaveCSV _SaveCSV;
+    private ArrayList<ReadingSession.Touch> _EyeCoordinates = new ArrayList<>();
+    private SaveCSV _saveCSVTouch;
+    private SaveCSV _saveCSVEye;
     private int early = 0;
 
     public GoodBadTouch(Context context) {
-        _SaveCSV = new SaveCSV(context);
+        _saveCSVTouch = new SaveCSV("touch", context);
+        _saveCSVEye = new SaveCSV("eye", context);
     }
 
-    public boolean checkTouchValidity(int page,ArrayList<Button> allViews, int x, int y) {
+    public boolean checkTouchValidity(int page, ArrayList<Button> allViews, int x, int y) {
         _ValidTouchableAreas = allViews;
         Calendar calendar = java.util.Calendar.getInstance();
-        for (View v : _ValidTouchableAreas) {
+        for ( View v : _ValidTouchableAreas ) {
             int[] location = new int[2];
-            if (v != null) {
+            if ( v != null ) {
                 v.getLocationInWindow(location);
                 int vx = location[0];
                 int vy = location[1];
-                if (x >= vx
+                if ( x >= vx
                         && x <= vx + v.getWidth()
                         && y >= vy
-                        && y <= vy + v.getHeight()) {
+                        && y <= vy + v.getHeight() ) {
                     _Touches.add(new ReadingSession.Touch(calendar, x, y, true));
-                    _SaveCSV.saveData(page,x,y,true);
+                    _saveCSVTouch.saveData(page, x, y, true);
                     Log.e("Touch", "Good");
                     return true;
                 }
@@ -48,8 +51,31 @@ public class GoodBadTouch implements Serializable {
         }
         Log.e("Touch", "Bad");
         _Touches.add(new ReadingSession.Touch(calendar, x, y, false));
-        _SaveCSV.saveData(page,x,y,false);
+        _saveCSVTouch.saveData(page, x, y, false);
         return false;
+    }
+
+    public void checkEyeValidity(int page, ArrayList<View> allViews, float x, float y) {
+        Calendar calendar = java.util.Calendar.getInstance();
+        for ( View v : allViews ) {
+            int[] location = new int[2];
+            if ( v != null ) {
+                v.getLocationInWindow(location);
+                int vx = location[0];
+                int vy = location[1];
+                if ( x >= vx
+                        && x <= vx + v.getWidth()
+                        && y >= vy
+                        && y <= vy + v.getHeight() ) {
+                    _EyeCoordinates.add(new ReadingSession.Touch(calendar, x, y, true));
+                    _saveCSVEye.saveData(page, x, y, true);
+                }
+            }
+        }
+        _EyeCoordinates.add(new ReadingSession.Touch(calendar, x, y, false));
+        _saveCSVEye.saveData(page, x, y, false);
+
+
     }
 
     public void touchedAheadOfTime(int x, int y) {
@@ -73,6 +99,9 @@ public class GoodBadTouch implements Serializable {
         return _Touches;
     }
 
+    public ArrayList<ReadingSession.Touch> get_EyeCoordinates() {
+        return _EyeCoordinates;
+    }
 
     public int getEarly() {
         return early;

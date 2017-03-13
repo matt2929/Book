@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.matthew.book">
+          package="com.example.matthew.book">
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.READ_Internal_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.READ_Internal_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/seedicon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.FrontPage">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.PageTurner" />
-        <activity android:name=".fragments.Page6" />
-        <activity android:name=".Activities.Authors" />
-        <activity android:name=".Activities.HistoricalSessions" />
-        <activity android:name=".Activities.HistoricalPages" />
+        <activity android:name=".Activities.PageTurner"/>
+        <activity android:name=".fragments.Page6"/>
+        <activity android:name=".Activities.Authors"/>
+        <activity android:name=".Activities.HistoricalSessions"/>
+        <activity android:name=".Activities.HistoricalPages"/>
         <activity android:name=".Activities.CameraPreviewActivity"/>
         <activity android:name=".Activities.HistoricalTouches">
+        </activity>
+        <activity android:name=".Activities.HistoricalGaze">
         </activity>
     </application>
 

@@ -59,12 +59,18 @@
         android:layout_marginLeft="64dp"
         android:layout_marginRight="64dp" />
 
+    <Button
+        android:id="@+id/testsave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"/>
+
     <FrameLayout
-        android:layout_width="100dp"
-        android:layout_height="100dp"
         android:id="@+id/previewviewturn"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
     </FrameLayout>
 

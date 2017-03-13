@@ -68,8 +68,8 @@ public class SaveData implements Serializable {
 
     }
 
-    public void savePage(ArrayList<ReadingSession.Touch> alltouch, int early, long duration, int pageNum) {
-        PageInfo tempPageInfo = new PageInfo(alltouch,early, duration, pageNum);
+    public void savePage(ArrayList<ReadingSession.Touch> alltouch,ArrayList<ReadingSession.Touch>alleye, int early, long duration, int pageNum) {
+        PageInfo tempPageInfo = new PageInfo(alltouch,alleye,early, duration, pageNum);
         pageInfos.add(tempPageInfo);
     }
 

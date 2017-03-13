@@ -1,6 +1,5 @@
 package com.example.matthew.book.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -8,17 +7,12 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.matthew.book.Activities.PageTurner;
@@ -28,7 +22,6 @@ import com.example.matthew.book.Util.RotationalMovement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Matthew on 9/29/2016.
@@ -116,6 +109,7 @@ public class PageOne extends Page implements View.OnTouchListener {
             if ( imageView.equals(seed) ) {
                 if(view.getAlpha()!=.5f) {
                     MediaPlayer mp = MediaPlayer.create(_context, R.raw.seed);
+
                     mp.start();
                 }
                 imageView.setText(strings[0]);
@@ -128,14 +122,14 @@ public class PageOne extends Page implements View.OnTouchListener {
 
             } else if ( imageView.equals(tree) ) {
                 if(view.getAlpha()!=.5f) {
-                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.fullGrownTree);
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.fullgrowntree);
                     mp.start();
                 }
                 imageView.setText(strings[2]);
 
             } else if ( imageView.equals(treeFlower) ) {
                 if(view.getAlpha()!=.5f) {
-                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.Blossom);
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossom);
                     mp.start();
                 }
                 imageView.setText(strings[3]);

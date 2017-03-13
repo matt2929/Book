@@ -35,11 +35,11 @@ public class SaveCSV {
     private int minute = cal.get(Calendar.MINUTE);
     private int second = cal.get(Calendar.SECOND);
 
-    public SaveCSV(Context context) {
+    public SaveCSV(String name,Context context) {
         FileOutputStream outputStream;
         FileInputStream inputStream;
         _context = context;
-        _fileName = "Book_"+FrontPage.name+"_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
+        _fileName = "Book"+name+"_"+FrontPage.name+"_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
     }
 
     public void saveData(int page,float x, float y, boolean good) {

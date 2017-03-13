@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -63,7 +64,7 @@ import java.util.Locale;
 
 public class PageTurner extends Activity implements TextToSpeech.OnInitListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, Camera.PreviewCallback {
     TextView textView;
-    Button nextPage, Repeat;
+    Button nextPage, Repeat, test;
     RelativeLayout ll;
     FrameLayout fragCase;
     Clock clock;
@@ -82,18 +83,19 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     int clickCount = 0;
     android.app.FragmentManager fragmentManager;
     android.app.FragmentTransaction transaction;
-    Page _CurrentPage = new PageEight();
+    Page _CurrentPage = new PageOne();
     ArrayList<String> listOfWords = convertPageToList(_CurrentPage);
     TextToSpeech tts;
     boolean canClick = false;
     Handler handler2;
-    boolean canRecord=false;
+    boolean canRecord = false;
     Typeface tf;
     private float x1, x2;
     static final int MIN_DISTANCE = 175;
     ArrayList<Page> allPages = new ArrayList<>();
     int currentPageIndex = 0;
     SaveData saveData;
+    private float width=0,height=0;
     /////////////////////////////////////////camera
     ///////////////////
     Camera cameraObj;
@@ -117,6 +119,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     boolean fpFeatureSupported = false;
     static boolean cameraSwitch = false;    // Boolean to check if the camera is switched to back camera or no.
     boolean landScapeMode = false;      // Boolean to check if the phone orientation is in landscape mode or portrait mode.
+///test button
 
     int cameraIndex;// Integer to keep track of which camera is open.
     int smileValue = 0;
@@ -171,13 +174,21 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         touchDelayRecording.add(R.raw.slurp);
         touchDelayRecording.add(R.raw.slurp);
         touchDelayRecording.add(R.raw.slurp);
-
         handler = new Handler();
         handler2 = new Handler();
 
         clock = new Clock(handler);
         clock2 = new Clock2(handler2);
 
+        Button testButt = (Button) findViewById(R.id.testsave);
+        testButt.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                                            saveData.saveSession(getApplicationContext(), calendar, Calendar.getInstance());
+                                        }
+                                    }
+        );
         ll = (RelativeLayout) findViewById(R.id.activity_page_turner);
         textView = (TextView) findViewById(R.id.textonpage);
         textView.setText(_CurrentPage.getString());
@@ -187,8 +198,10 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         pleaseSwipe.setVisibility(View.GONE);
         tts = new TextToSpeech(this, this);
         mediaPlayer = MediaPlayer.create(this, R.raw.page1);
+        mediaPlayer.setVolume(10, 10);
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setVolume(10, 10);
         clock2.run();
         tf = Typeface.createFromAsset(getAssets(), "fonts/calibri.otf");
         textView.setTypeface(tf);
@@ -208,39 +221,41 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         });
 
         fragCase = (FrameLayout) findViewById(R.id.fragmentcase);
-        calibration9Point = CameraPreviewActivity.calibration9Point;
-        movingAverageX = CameraPreviewActivity.movingAverageX;
-        movingAverageY = CameraPreviewActivity.movingAverageY;
-        fpFeatureSupported = FacialProcessing
-                .isFeatureSupported(FacialProcessing.FEATURE_LIST.FEATURE_FACIAL_PROCESSING);
+        if ( FrontPage.EYETRACK ) {
+            calibration9Point = CameraPreviewActivity.calibration9Point;
+            movingAverageX = CameraPreviewActivity.movingAverageX;
+            movingAverageY = CameraPreviewActivity.movingAverageY;
+            fpFeatureSupported = FacialProcessing
+                    .isFeatureSupported(FacialProcessing.FEATURE_LIST.FEATURE_FACIAL_PROCESSING);
 
-        if ( fpFeatureSupported && faceProc == null ) {
-            Log.e("TAG", "Feature is supported");
-            faceProc = FacialProcessing.getInstance();  // Calling the Facial Processing Constructor.
-            faceProc.setProcessingMode(FacialProcessing.FP_MODES.FP_MODE_VIDEO);
-        } else {
-            Log.e("TAG", "Feature is NOT supported");
-            return;
+            if ( fpFeatureSupported && faceProc == null ) {
+                Log.e("TAG", "Feature is supported");
+                faceProc = FacialProcessing.getInstance();  // Calling the Facial Processing Constructor.
+                faceProc.setProcessingMode(FacialProcessing.FP_MODES.FP_MODE_VIDEO);
+            } else {
+                Log.e("TAG", "Feature is NOT supported");
+                return;
+            }
+
+            cameraIndex = Camera.getNumberOfCameras() - 1;// Start with front Camera
+            try {
+                cameraObj = Camera.open(cameraIndex); // attempt to get a Camera instance
+            } catch (Exception e) {
+                Log.d("TAG", "Camera Does Not exist");// Camera is not available (in use or does not exist)
+            }
+            // Change the sizes according to phone's compatibility.
+            mPreview = new CameraSurfacePreview(PageTurner.this, cameraObj, faceProc);
+            preview.removeView(mPreview);
+            preview.addView(mPreview);
+            cameraObj.setPreviewCallback(PageTurner.this);
+
+            orientationListener();
         }
-
-        cameraIndex = Camera.getNumberOfCameras() - 1;// Start with front Camera
-        try {
-            cameraObj = Camera.open(cameraIndex); // attempt to get a Camera instance
-        } catch (Exception e) {
-            Log.d("TAG", "Camera Does Not exist");// Camera is not available (in use or does not exist)
-        }
-        // Change the sizes according to phone's compatibility.
-        mPreview = new CameraSurfacePreview(PageTurner.this, cameraObj, faceProc);
-        preview.removeView(mPreview);
-        preview.addView(mPreview);
-        cameraObj.setPreviewCallback(PageTurner.this);
-
-        orientationListener();
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
         getFragmentManager().beginTransaction().replace(R.id.fragmentcase, _CurrentPage).commit();
 
     }
+
     private void orientationListener() {
         orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
@@ -249,12 +264,13 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
             }
         };
 
-        if (orientationEventListener.canDetectOrientation()) {
+        if ( orientationEventListener.canDetectOrientation() ) {
             orientationEventListener.enable();
         }
 
         presentOrientation = 90 * (deviceOrientation / 360) % 360;
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -262,7 +278,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if ( !canClick ) {
-                    goodBadTouch.touchedAheadOfTime((int) event.getRawX(), (int) event.getRawY());
+                    goodBadTouch.checkTouchValidity(currentPageIndex,allButtons,(int) event.getRawX(), (int) event.getRawY());
                     //  fragCase.setBackground(getResources().getDrawable(R.drawable.listen));
                 }
                 x1 = event.getX();
@@ -278,7 +294,8 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         transaction = fragmentManager.beginTransaction();
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                         goodBadTouch.lastTouchWasAGoodSwipe();
-                        saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                        saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+
                         goodBadTouch.reset();
 
                         if ( currentPageIndex == allPages.size() - 1 ) {
@@ -327,7 +344,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         if ( currentPageIndex == 0 ) {
                         } else {
                             goodBadTouch.lastTouchWasAGoodSwipe();
-                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
                             goodBadTouch.reset();
                             _CurrentPage = allPages.get(--currentPageIndex);
                             if ( currentPageIndex == allPages.size() - 1 ) {
@@ -366,28 +383,37 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         }
         return super.onTouchEvent(event);
     }
+
     public void setUI(int numFaces, int smileValue, int leftEyeBlink, int rightEyeBlink, int faceRollValue,
                       int faceYawValue, int facePitchValue, PointF gazePointValue, int horizontalGazeAngle, int verticalGazeAngle) {
+        if ( FrontPage.EYETRACK ) {
+            if ( numFaces > 0 ) {
+                canRecord = true;
 
-        if (numFaces > 0) {
-            canRecord = true;
+            } else {
 
-        } else {
-
-            canRecord = false;
+                canRecord = false;
             }
-        if (gazePointValue != null && canRecord) {
-            double x = Math.round(gazePointValue.x * 100.0) / 100.0;// Rounding the gaze point value.
-            double y = Math.round(gazePointValue.y * 100.0) / 100.0;
-            movingAverageX.update(x);
-            movingAverageY.update(y);
+            if ( gazePointValue != null && canRecord ) {
+                double x = Math.round(gazePointValue.x * 100.0) / 100.0;// Rounding the gaze point value.
+                double y = Math.round(gazePointValue.y * 100.0) / 100.0;
+                movingAverageX.update(x);
+                movingAverageY.update(y);
+                ArrayList<View> allButtonsT  = new ArrayList<View>(allButtons);
+                allButtonsT.add(textView);
+                double[] xy  = calibration9Point.getXYPoportional(movingAverageX.getCurrent(),movingAverageY.getCurrent(),width,height);
+                goodBadTouch.checkEyeValidity(currentPageIndex,allButtonsT,(int) xy[0],(int) xy[1]);
+            }
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        stopCamera();
+        if ( FrontPage.EYETRACK )
+            stopCamera();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -396,17 +422,21 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     @Override
     protected void onResume() {
         super.onResume();
-        if (cameraObj != null) {
-            stopCamera();
+        if ( cameraObj != null ) {
+            if ( FrontPage.EYETRACK )
+                stopCamera();
         }
 
-        if (!cameraSwitch)
-            startCamera(FRONT_CAMERA_INDEX);
-        else
-            startCamera(BACK_CAMERA_INDEX);
+        if ( !cameraSwitch )
+            if ( FrontPage.EYETRACK )
+                startCamera(FRONT_CAMERA_INDEX);
+            else if ( FrontPage.EYETRACK )
+                startCamera(BACK_CAMERA_INDEX);
     }
+
     public void stopCamera() {
-        if (cameraObj != null) {
+
+        if ( cameraObj != null && FrontPage.EYETRACK ) {
             cameraObj.stopPreview();
             cameraObj.setPreviewCallback(null);
             preview.removeView(mPreview);
@@ -417,9 +447,10 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
 
         cameraObj = null;
     }
+
     public void startCamera(int cameraIndex) {
 
-        if (fpFeatureSupported && faceProc == null) {
+        if ( fpFeatureSupported && faceProc == null ) {
 
             Log.e("TAG", "Feature is supported");
             faceProc = FacialProcessing.getInstance();// Calling the Facial Processing Constructor.
@@ -437,6 +468,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         cameraObj.setPreviewCallback(PageTurner.this);
 
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if ( event.getAction() == MotionEvent.ACTION_DOWN ) {
@@ -537,116 +569,118 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
 
     @Override
     public void onPreviewFrame(byte[] data, Camera arg1) {
-        presentOrientation = (90 * Math.round(deviceOrientation / 90)) % 360;
-        int dRotation = display.getRotation();
-        FacialProcessing.PREVIEW_ROTATION_ANGLE angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_0;
+        if ( FrontPage.EYETRACK ) {
+            presentOrientation = (90 * Math.round(deviceOrientation / 90)) % 360;
+            int dRotation = display.getRotation();
+            FacialProcessing.PREVIEW_ROTATION_ANGLE angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_0;
 
-        switch (dRotation) {
-            case 0:
-                displayAngle = 90;
-                angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_90;
-                break;
+            switch (dRotation) {
+                case 0:
+                    displayAngle = 90;
+                    angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_90;
+                    break;
 
-            case 1:
-                displayAngle = 0;
-                angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_0;
-                break;
+                case 1:
+                    displayAngle = 0;
+                    angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_0;
+                    break;
 
-            case 2:
-                // This case is never reached.
-                break;
+                case 2:
+                    // This case is never reached.
+                    break;
 
-            case 3:
-                displayAngle = 180;
-                angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_180;
-                break;
-        }
-
-        if ( faceProc == null ) {
-            faceProc = FacialProcessing.getInstance();
-        }
-
-        Camera.Parameters params = cameraObj.getParameters();
-        Camera.Size previewSize = params.getPreviewSize();
-        surfaceWidth = mPreview.getWidth();
-        surfaceHeight = mPreview.getHeight();
-
-        // Landscape mode - front camera
-        if ( this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !cameraSwitch ) {
-            faceProc.setFrame(data, previewSize.width, previewSize.height, true, angleEnum);
-            cameraObj.setDisplayOrientation(displayAngle);
-            landScapeMode = true;
-        }
-        // landscape mode - back camera
-        else if ( this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
-                && cameraSwitch ) {
-            faceProc.setFrame(data, previewSize.width, previewSize.height, false, angleEnum);
-            cameraObj.setDisplayOrientation(displayAngle);
-            landScapeMode = true;
-        }
-        // Portrait mode - front camera
-        else if ( this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
-                && !cameraSwitch ) {
-            faceProc.setFrame(data, previewSize.width, previewSize.height, true, angleEnum);
-            cameraObj.setDisplayOrientation(displayAngle);
-            landScapeMode = false;
-        }
-        // Portrait mode - back camera
-        else {
-            faceProc.setFrame(data, previewSize.width, previewSize.height, false, angleEnum);
-            cameraObj.setDisplayOrientation(displayAngle);
-            landScapeMode = false;
-        }
-
-        int numFaces = faceProc.getNumFaces();
-
-        if ( numFaces == 0 ) {
-            Log.d("TAG", "No Face Detected");
-            if ( drawView != null ) {
-                preview.removeView(drawView);
-
-                drawView = new DrawView(this, null, false, 0, 0, null, landScapeMode);
-                preview.addView(drawView);
+                case 3:
+                    displayAngle = 180;
+                    angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_180;
+                    break;
             }
-            canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-            setUI(0, 0, 0, 0, 0, 0, 0, null, 0, 0);
-        } else {
 
-            Log.d("TAG", "Face Detected");
-            faceArray = faceProc.getFaceData(EnumSet.of(FacialProcessing.FP_DATA.FACE_RECT,
-                    FacialProcessing.FP_DATA.FACE_COORDINATES, FacialProcessing.FP_DATA.FACE_CONTOUR,
-                    FacialProcessing.FP_DATA.FACE_SMILE, FacialProcessing.FP_DATA.FACE_ORIENTATION,
-                    FacialProcessing.FP_DATA.FACE_BLINK, FacialProcessing.FP_DATA.FACE_GAZE));
-            // faceArray = faceProc.getFaceData(); // Calling getFaceData() alone will give you all facial data except the
-            // face
-            // contour. Face Contour might be a heavy operation, it is recommended that you use it only when you need it.
-            if ( faceArray == null ) {
-                Log.e("TAG", "Face array is null");
+            if ( faceProc == null ) {
+                faceProc = FacialProcessing.getInstance();
+            }
+
+            Camera.Parameters params = cameraObj.getParameters();
+            Camera.Size previewSize = params.getPreviewSize();
+            surfaceWidth = mPreview.getWidth();
+            surfaceHeight = mPreview.getHeight();
+
+            // Landscape mode - front camera
+            if ( this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !cameraSwitch ) {
+                faceProc.setFrame(data, previewSize.width, previewSize.height, true, angleEnum);
+                cameraObj.setDisplayOrientation(displayAngle);
+                landScapeMode = true;
+            }
+            // landscape mode - back camera
+            else if ( this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                    && cameraSwitch ) {
+                faceProc.setFrame(data, previewSize.width, previewSize.height, false, angleEnum);
+                cameraObj.setDisplayOrientation(displayAngle);
+                landScapeMode = true;
+            }
+            // Portrait mode - front camera
+            else if ( this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                    && !cameraSwitch ) {
+                faceProc.setFrame(data, previewSize.width, previewSize.height, true, angleEnum);
+                cameraObj.setDisplayOrientation(displayAngle);
+                landScapeMode = false;
+            }
+            // Portrait mode - back camera
+            else {
+                faceProc.setFrame(data, previewSize.width, previewSize.height, false, angleEnum);
+                cameraObj.setDisplayOrientation(displayAngle);
+                landScapeMode = false;
+            }
+
+            int numFaces = faceProc.getNumFaces();
+
+            if ( numFaces == 0 ) {
+                Log.d("TAG", "No Face Detected");
+                if ( drawView != null ) {
+                    preview.removeView(drawView);
+
+                    drawView = new DrawView(this, null, false, 0, 0, null, landScapeMode);
+                    preview.addView(drawView);
+                }
+                canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+                setUI(0, 0, 0, 0, 0, 0, 0, null, 0, 0);
             } else {
-                if ( faceArray[0].leftEyeObj == null ) {
-                    Log.e(TAG, "Eye Object NULL");
+
+                Log.d("TAG", "Face Detected");
+                faceArray = faceProc.getFaceData(EnumSet.of(FacialProcessing.FP_DATA.FACE_RECT,
+                        FacialProcessing.FP_DATA.FACE_COORDINATES, FacialProcessing.FP_DATA.FACE_CONTOUR,
+                        FacialProcessing.FP_DATA.FACE_SMILE, FacialProcessing.FP_DATA.FACE_ORIENTATION,
+                        FacialProcessing.FP_DATA.FACE_BLINK, FacialProcessing.FP_DATA.FACE_GAZE));
+                // faceArray = faceProc.getFaceData(); // Calling getFaceData() alone will give you all facial data except the
+                // face
+                // contour. Face Contour might be a heavy operation, it is recommended that you use it only when you need it.
+                if ( faceArray == null ) {
+                    Log.e("TAG", "Face array is null");
                 } else {
-                    Log.e(TAG, "Eye Object not NULL");
-                }
+                    if ( faceArray[0].leftEyeObj == null ) {
+                        Log.e(TAG, "Eye Object NULL");
+                    } else {
+                        Log.e(TAG, "Eye Object not NULL");
+                    }
 
-                faceProc.normalizeCoordinates(surfaceWidth, surfaceHeight);
-                preview.removeView(drawView);// Remove the previously created view to avoid unnecessary stacking of Views.
-                drawView = new DrawView(this, faceArray, true, surfaceWidth, surfaceHeight, cameraObj, landScapeMode);
-                preview.addView(drawView);
+                    faceProc.normalizeCoordinates(surfaceWidth, surfaceHeight);
+                    preview.removeView(drawView);// Remove the previously created view to avoid unnecessary stacking of Views.
+                    drawView = new DrawView(this, faceArray, true, surfaceWidth, surfaceHeight, cameraObj, landScapeMode);
+                    preview.addView(drawView);
 
-                for ( int j = 0; j < numFaces; j++ ) {
-                    smileValue = faceArray[j].getSmileValue();
-                    leftEyeBlink = faceArray[j].getLeftEyeBlink();
-                    rightEyeBlink = faceArray[j].getRightEyeBlink();
-                    faceRollValue = faceArray[j].getRoll();
-                    gazePointValue = faceArray[j].getEyeGazePoint();
-                    pitch = faceArray[j].getPitch();
-                    yaw = faceArray[j].getYaw();
-                    horizontalGaze = faceArray[j].getEyeHorizontalGazeAngle();
-                    verticalGaze = faceArray[j].getEyeVerticalGazeAngle();
+                    for ( int j = 0; j < numFaces; j++ ) {
+                        smileValue = faceArray[j].getSmileValue();
+                        leftEyeBlink = faceArray[j].getLeftEyeBlink();
+                        rightEyeBlink = faceArray[j].getRightEyeBlink();
+                        faceRollValue = faceArray[j].getRoll();
+                        gazePointValue = faceArray[j].getEyeGazePoint();
+                        pitch = faceArray[j].getPitch();
+                        yaw = faceArray[j].getYaw();
+                        horizontalGaze = faceArray[j].getEyeHorizontalGazeAngle();
+                        verticalGaze = faceArray[j].getEyeVerticalGazeAngle();
+                    }
+                    setUI(numFaces, smileValue, leftEyeBlink, rightEyeBlink, faceRollValue, yaw, pitch, gazePointValue,
+                            horizontalGaze, verticalGaze);
                 }
-                setUI(numFaces, smileValue, leftEyeBlink, rightEyeBlink, faceRollValue, yaw, pitch, gazePointValue,
-                        horizontalGaze, verticalGaze);
             }
         }
     }
@@ -734,11 +768,16 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         private View view;
         private int count = 0;
 
+
+        DisplayMetrics metrics;
         public Clock2(Handler handler) {
             this.handler = handler;
+            metrics = getApplicationContext().getResources().getDisplayMetrics();
         }
 
         public void run() {
+            width = metrics.widthPixels;
+            height= metrics.heightPixels;
 
             if ( _CurrentPage.doneTouching() ) {
                 if ( justClick == false ) {

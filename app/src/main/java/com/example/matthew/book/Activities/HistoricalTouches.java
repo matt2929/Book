@@ -12,7 +12,6 @@ import com.example.matthew.book.R;
 import com.example.matthew.book.Util.ReadingSession;
 import com.example.matthew.book.Util.SaveData;
 import com.example.matthew.book.customview.DrawPointTransparent;
-import com.example.matthew.book.fragments.Page;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class HistoricalTouches extends AppCompatActivity {
         ReadingSession.PageInfo readingSessions = saveData.getReadingSessions(getApplicationContext()).get(HistoricalSessions.IndexClicked).getPageInfo().get(HistoricalPages.pageIndex);
         ArrayList<String> strings = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("h:mm:ss a");
-        ImageView imageView = (ImageView) findViewById(R.id.showwheretouchesare);
+        ImageView imageView = (ImageView) findViewById(R.id.showwheretouchare);
         for (int i = 0; i < readingSessions.getTouches().size(); i++) {
             String temp = "";
             String good = "";

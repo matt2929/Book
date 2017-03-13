@@ -58,11 +58,14 @@ public class ReadingSession implements Serializable {
 
     public static class PageInfo implements Serializable {
         private ArrayList<Touch> touches = new ArrayList<>();
+        private ArrayList<Touch> eye = new ArrayList<>();
+
         private Long duration;
         private int pageNum;
         private int numEarly=0;
 
-        public PageInfo(ArrayList<Touch> allTouch, int numEarly, long duration, int pageNum) {
+        public PageInfo(ArrayList<Touch> allTouch,ArrayList<Touch> allEye, int numEarly, long duration, int pageNum) {
+            eye=new ArrayList<>(allEye);
             touches=new ArrayList<Touch>(allTouch);
             this.duration=duration;
             this.pageNum=pageNum;
@@ -71,6 +74,14 @@ public class ReadingSession implements Serializable {
 
         public ArrayList<Touch> getTouches() {
             return touches;
+        }
+
+        public ArrayList<Touch> getEye() {
+            return eye;
+        }
+
+        public void setEye(ArrayList<Touch> eye) {
+            this.eye = eye;
         }
 
         public Long getDuration() {

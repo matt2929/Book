@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.matthew.book.R;
@@ -35,7 +36,8 @@ public class HistoricalGaze extends AppCompatActivity {
     int position = 0;
     ReadingSession.PageInfo readingSessions;
     DrawGazeRepeat drawGazeRepeat;
-
+    SeekBar seekBar;
+    int delay = 55;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +53,7 @@ public class HistoricalGaze extends AppCompatActivity {
         checkBox = (CheckBox) findViewById(R.id.gazeCheckBox);
         progressBar = (ProgressBar) findViewById(R.id.gazeProgress);
         progressBar.setMax(100);
-
+        seekBar = (SeekBar) findViewById(R.id.seekBarEye);
         Handler handler = new Handler();
         drawGazeRepeat = new DrawGazeRepeat(handler);
         drawGazeRepeat.run();
@@ -77,6 +79,22 @@ public class HistoricalGaze extends AppCompatActivity {
             }
         });
 
+seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        delay = (seekBar.getMax()-seekBar.getProgress())+5;
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+});
 
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
@@ -119,6 +137,7 @@ public class HistoricalGaze extends AppCompatActivity {
         float progress = (float) position / (float) readingSessions.getEye().size();
 
         progressBar.setProgress((int) (progress * 100));
+
     }
 
     class DrawGazeRepeat implements Runnable {
@@ -137,7 +156,7 @@ public class HistoricalGaze extends AppCompatActivity {
                 }
                 updateView();
             }
-            handler.postDelayed(this, 55);
+            handler.postDelayed(this, delay);
         }
     }
 }

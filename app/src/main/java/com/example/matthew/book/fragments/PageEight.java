@@ -1,119 +1,201 @@
 package com.example.matthew.book.fragments;
 
-
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
-import com.example.matthew.book.Util.DrawableMutlipleStates;
+import com.example.matthew.book.Util.RotationalMovement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
-public class PageEight extends Page {
-    Button seedbutt1, seedbutt2, seedbutt3;
-    View masterView;
-    boolean bool = false;
+/**
+ * Created by Matthew on 9/29/2016.
+ */
+
+public class PageEight extends Page implements View.OnTouchListener {
+    String thisPagesText = "So, my life is a cycle: from seed, to sapling, to full-grown tree, to blossom, to apple, and back to seed again.";
+    Button seed, seedling, tree, treeFlower, treeApple, arrows;
+    Button[] buttons;
+    RotationalMovement rotationalMovement;
+    HashMap<Button, Boolean> didITouch = new HashMap<Button, Boolean>();
+    int count = 0;
+    float rotate = 0;
+    Drawable drawable;
+    String strings[] = { "Seed", "Sapling", "Young Tree", "Tree With Flowers", "Tree With Apples" };
+    Boolean currentBool = false;
     public Handler handler;
-    int index = 0;
+    RelativeLayout relativeLayout;
     Context _context;
-    MediaPlayer mp;
-    ArrayList<Drawable> myDrawablesSprout = new ArrayList<Drawable>();
-    int seedCount[] = new int[3];
-    View viewHierarchy;
-    ArrayList<Button> butttemp = new ArrayList<>();
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         viewHierarchy = inflater.inflate(R.layout.fragment_page_eight, container, false);
+
+        View viewHierarchy =
+                inflater.inflate(R.layout.fragmentpageeight, container, false);
         handler = new Handler();
-        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.page8seed1);
-        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.page8seed2);
-        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.page8seed3);
-        butttemp.add(seedbutt1);
-        butttemp.add(seedbutt2);
-        butttemp.add(seedbutt3);
-        PageTurner.allButtons =  butttemp;
-        myDrawablesSprout.add(getResources().getDrawable(R.drawable.page77));
-        myDrawablesSprout.add(getResources().getDrawable(R.drawable.page81));
-        myDrawablesSprout.add(getResources().getDrawable(R.drawable.page82));
-        myDrawablesSprout.add(getResources().getDrawable(R.drawable.page83));
-        seedbutt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(bool) {
-                    seedCount[0] = seedCount[0] + 1;
-                    if (seedCount[0] >= myDrawablesSprout.size()) {
+        arrows = (Button) viewHierarchy.findViewById(R.id.arrows);
+        seed = (Button) viewHierarchy.findViewById(R.id.cycle1);
+        seed.setBackgroundResource(R.drawable.seedling);
+        seedling = (Button) viewHierarchy.findViewById(R.id.cycle2);
+        seedling.setBackgroundResource(R.drawable.sapling);
+        tree = (Button) viewHierarchy.findViewById(R.id.cycle3);
+        tree.setBackgroundResource(R.drawable.atree);
+        treeFlower = (Button) viewHierarchy.findViewById(R.id.cycle4);
+        treeFlower.setBackgroundResource(R.drawable.treewithflowers);
+        treeApple = (Button) viewHierarchy.findViewById(R.id.cycle5);
+        treeApple.setBackgroundResource(R.drawable.treewithapples);
+        relativeLayout = (RelativeLayout) viewHierarchy.findViewById(R.id.nospinzone);
+        buttons = new Button[]{ seed, seedling, tree, treeFlower, treeApple };
+        PageTurner.allButtons = new ArrayList<>(Arrays.asList(buttons));
 
-                    } else {
-                        v.setBackground(myDrawablesSprout.get(seedCount[0]));
-                    }
-                }
-            }
-        });
-        seedbutt2.setOnClickListener(new View.OnClickListener() {
+        for ( int i = 0; i < buttons.length; i++ ) {
+            didITouch.put(buttons[i], false);
+            buttons[i].setOnTouchListener(this);
+            buttons[i].setTextColor(Color.WHITE);
+            buttons[i].setShadowLayer(10, 10, 10, Color.BLACK);
+        }
+        viewHierarchy.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onClick(View v) {
-                if(bool) {
-                    seedCount[1] = seedCount[1] + 1;
-                    if (seedCount[1] >= myDrawablesSprout.size()) {
-                    } else {
-                        v.setBackground(myDrawablesSprout.get(seedCount[1]));
+            public void onGlobalLayout() {
+                if ( count <= 1 ) {
+                    float degreevariation = 360f / 5f;
+                    float degreeCount = 0f;
+                    for ( int i = 0; i < buttons.length; i++ ) {
+                        buttons[i].setX((relativeLayout.getWidth() / 2) + (float) (Math.cos(Math.toRadians(degreeCount)) * 200f) - (buttons[i].getWidth() / 2));
+                        buttons[i].setY((relativeLayout.getHeight() / 2) + (float) (Math.sin(Math.toRadians(degreeCount)) * 140f) - (buttons[i].getHeight() / 2));
+                        degreeCount += degreevariation;
                     }
+                    rotationalMovement = new RotationalMovement(relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2, 75f, buttons);
+                    final ClockOne clock = new ClockOne(handler, relativeLayout.getWidth() / 2, relativeLayout.getHeight() / 2);
+                    clock.run();
                 }
+                count++;
             }
-        });
 
-        seedbutt3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(bool) {
-                    seedCount[2] = seedCount[2] + 1;
-                    if (seedCount[2] >= myDrawablesSprout.size()) {
-                    } else {
-                        v.setBackground(myDrawablesSprout.get(seedCount[2]));
-                    }
-                }
-            }
         });
-        masterView = viewHierarchy;
+        enabledisabletouch(false);
+
         return viewHierarchy;
+
+
     }
 
-
-
-
-
     @Override
-    public void passMediaPlayer(Context context) {
-        mp = MediaPlayer.create(context, R.raw.slurp);
-        _context = context;
-        mp.setLooping(true);
+    public boolean onTouch(View view, MotionEvent event) {
+
+        Button imageView = (Button) view;
+        didITouch.put(imageView, true);
+        if ( event.getAction() == android.view.MotionEvent.ACTION_DOWN ) {
+            buttons = new Button[]{ seed, seedling, tree, treeFlower, treeApple };
+            PageTurner.allButtons = new ArrayList<>(Arrays.asList(buttons));
+            drawable = imageView.getBackground();
+            view.setBackgroundResource(R.drawable.emptybox);
+            if ( imageView.equals(seed) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.seed);
+
+                    mp.start();
+                }
+                imageView.setText(strings[0]);
+            } else if ( imageView.equals(seedling) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.sappling);
+                    mp.start();
+                }
+                imageView.setText(strings[1]);
+
+            } else if ( imageView.equals(tree) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.fullgrowntree);
+                    mp.start();
+                }
+                imageView.setText(strings[2]);
+
+            } else if ( imageView.equals(treeFlower) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossom);
+                    mp.start();
+                }
+                imageView.setText(strings[3]);
+
+            } else if ( imageView.equals(treeApple) ) {
+                if(view.getAlpha()!=.5f) {
+                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.apple);
+                    mp.start();
+                }
+                imageView.setText(strings[4]);
+            }
+
+        } else if ( event.getAction() == android.view.MotionEvent.ACTION_UP ) {
+            imageView.setText("");
+            view.setBackground(drawable);
+            view.setAlpha(.5f);
+        }
+        return true;
     }
 
     @Override
     public String getString() {
-        return "All living things have a life cycle. This is the story of my life cycle, which starts with me as a tiny seed. I am nestled safely inside of an apple. Can you find me?";
+        return thisPagesText;
     }
 
     @Override
-    public void enabledisabletouch(boolean b) {
-        bool = b;
+    public void getSound(int id) {
+        super.getSound(id);
+    }
+
+    @Override
+    public void passMediaPlayer(Context context) {
+        _context = context;
     }
 
     @Override
     public boolean doneTouching() {
-        return (seedCount[0] + seedCount[1] + seedCount[2] >= 9);
+        for ( Boolean b : didITouch.values() ) {
+            if ( b == false ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void enabledisabletouch(boolean b) {
+        currentBool = b;
+
+
+    }
+
+    class ClockOne implements Runnable {
+        private Handler handler;
+
+        public ClockOne(Handler handler, float x, float y) {
+            this.handler = handler;
+
+        }
+
+        public void run() {
+            rotate += 2;
+            arrows.setRotation(rotate);
+            handler.postDelayed(this, 50);
+
+        }
+
     }
 }

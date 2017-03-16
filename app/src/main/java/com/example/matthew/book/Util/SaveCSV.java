@@ -2,6 +2,7 @@ package com.example.matthew.book.Util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.example.matthew.book.Activities.FrontPage;
 
@@ -24,7 +25,7 @@ public class SaveCSV {
     private FileOutputStream outputStream;
     private FileInputStream inputStream;
     private Context _context;
-    public static String _fileName;
+    public String _fileName;
     File _file;
     int count = 0;
     private Calendar cal = Calendar.getInstance();
@@ -39,10 +40,11 @@ public class SaveCSV {
         FileOutputStream outputStream;
         FileInputStream inputStream;
         _context = context;
-        _fileName = "Book"+name+"_"+FrontPage.name+"_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
+        _fileName = "Book<"+name+">_"+FrontPage.name+"_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
     }
 
-    public void saveData(int page,float x, float y, boolean good) {
+    public void saveData(int page,float x, float y, boolean good,String id) {
+        Log.e(""+_fileName,"saved");
         Calendar calendar = Calendar.getInstance();
 
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -58,7 +60,7 @@ public class SaveCSV {
             }else{
                 value="No";
             }
-            string += hour+":"+minute+":"+second+","+page+","+x+","+y+","+value+";";
+            string += hour+":"+minute+":"+second+","+page+","+x+","+y+","+value+","+id+";";
             outputStream = _context.openFileOutput(_fileName, Context.MODE_WORLD_READABLE);
             outputStream.write(string.getBytes());
             outputStream.close();
@@ -70,7 +72,7 @@ public class SaveCSV {
                     csvWriter = new PrintWriter(new FileWriter(file, true));
                     int last = 0;
                     int count = 0;
-                    csvWriter.print(FrontPage.name+"Reading Session [" + (month + 1) + "/" + day + "/" + year + "]\nTime,Page,X,Y,Hotspot Congruent With Content");
+                    csvWriter.print(FrontPage.name+"Reading Session [" + (month + 1) + "/" + day + "/" + year + "]\nTime,Page,X,Y,Hotspot Congruent With Content,Hotspot ID");
                     csvWriter.append('\n');
                     for (int i = 0; i < string.length(); i++) {
                         if (string.charAt(i) == ';') {
@@ -90,7 +92,7 @@ public class SaveCSV {
                     file.createNewFile();
                     csvWriter = new PrintWriter(new FileWriter(file, true));
 
-                    csvWriter.print("Reading Session [" + (month + 1) + "/" + day + "/" + year + "]\nTime,Page,X,Y,Hotspot Congruent With Content");
+                    csvWriter.print("Reading Session [" + (month + 1) + "/" + day + "/" + year + "]\nTime,Page,X,Y,Hotspot Congruent With Content,Hotspot ID");
                     csvWriter.append('\n');
                     int last = 0;
 
@@ -134,5 +136,9 @@ public class SaveCSV {
             error = e.getMessage();
         }
         return line1;
+    }
+
+    public String get_fileName() {
+        return _fileName;
     }
 }

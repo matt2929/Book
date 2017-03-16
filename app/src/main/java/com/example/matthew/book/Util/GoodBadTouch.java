@@ -26,7 +26,9 @@ public class GoodBadTouch implements Serializable {
 
     public GoodBadTouch(Context context) {
         _saveCSVTouch = new SaveCSV("touch", context);
+        Log.e("touch",_saveCSVTouch.get_fileName());
         _saveCSVEye = new SaveCSV("eye", context);
+        Log.e("touch",_saveCSVTouch.get_fileName());
     }
 
     public boolean checkTouchValidity(int page, ArrayList<Button> allViews, int x, int y) {
@@ -43,7 +45,7 @@ public class GoodBadTouch implements Serializable {
                         && y >= vy
                         && y <= vy + v.getHeight() ) {
                     _Touches.add(new ReadingSession.Touch(calendar, x, y, true));
-                    _saveCSVTouch.saveData(page, x, y, true);
+                    _saveCSVTouch.saveData(page, x, y, true, v.getResources().getResourceName(v.getId()));
                     Log.e("Touch", "Good");
                     return true;
                 }
@@ -51,7 +53,7 @@ public class GoodBadTouch implements Serializable {
         }
         Log.e("Touch", "Bad");
         _Touches.add(new ReadingSession.Touch(calendar, x, y, false));
-        _saveCSVTouch.saveData(page, x, y, false);
+        _saveCSVTouch.saveData(page, x, y, false," ");
         return false;
     }
 
@@ -67,16 +69,18 @@ public class GoodBadTouch implements Serializable {
                         && x <= vx + v.getWidth()
                         && y >= vy
                         && y <= vy + v.getHeight() ) {
+
                     _EyeCoordinates.add(new ReadingSession.Touch(calendar, x, y, true));
-                    _saveCSVEye.saveData(page, x, y, true);
+                    _saveCSVEye.saveData(page, x, y, true, v.getResources().getResourceName(v.getId()));
                 }
             }
         }
         _EyeCoordinates.add(new ReadingSession.Touch(calendar, x, y, false));
-        _saveCSVEye.saveData(page, x, y, false);
+        _saveCSVEye.saveData(page, x, y, false," ");
 
 
     }
+/*
 
     public void touchedAheadOfTime(int x, int y) {
         Log.e("Touch", "Bad");
@@ -84,6 +88,7 @@ public class GoodBadTouch implements Serializable {
         Calendar calendar = java.util.Calendar.getInstance();
         _Touches.add(new ReadingSession.Touch(calendar, x, y, false));
     }
+*/
 
     public void lastTouchWasAGoodSwipe() {
         Log.e("Touch", "Undo");

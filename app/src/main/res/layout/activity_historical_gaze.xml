@@ -81,6 +81,14 @@
             android:text="Heat Map"
             android:textColor="@android:color/background_light"/>
 
+        <SeekBar
+            android:id="@+id/seekBarEye"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="200"
+            android:progress="50"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,6 +127,7 @@
             android:layout_height="wrap_content"
 
             />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -25,10 +25,8 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,14 +38,13 @@ import com.example.matthew.book.EyeTracking.MovingAverage;
 import com.example.matthew.book.EyeTracking.NinePointCalibrationView;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.GoodBadTouch;
-import com.example.matthew.book.Util.SaveCSV;
 import com.example.matthew.book.Util.SaveData;
 import com.example.matthew.book.customview.PleaseSwipe;
 import com.example.matthew.book.fragments.Page;
-import com.example.matthew.book.fragments.PageEight;
+import com.example.matthew.book.fragments.PageOne;
 import com.example.matthew.book.fragments.PageFive;
 import com.example.matthew.book.fragments.PageFour;
-import com.example.matthew.book.fragments.PageOne;
+import com.example.matthew.book.fragments.PageEight;
 import com.example.matthew.book.fragments.PageSeven;
 import com.example.matthew.book.fragments.PageSix;
 import com.example.matthew.book.fragments.PageThree;
@@ -295,7 +292,6 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                         goodBadTouch.lastTouchWasAGoodSwipe();
                         saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
-
                         goodBadTouch.reset();
 
                         if ( currentPageIndex == allPages.size() - 1 ) {
@@ -306,7 +302,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             _CurrentPage = allPages.get(++currentPageIndex);
 
                             if ( currentPageIndex == allPages.size() - 1 ) {
-                                _CurrentPage = new PageOne();
+                                _CurrentPage = new PageEight();
                                 ll.setBackground(getDrawable(R.drawable.pastellegreenback));
                                 textView.setTextColor(Color.WHITE);
                                 textView.setShadowLayer(10, 10, 10, Color.BLACK);
@@ -348,7 +344,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             goodBadTouch.reset();
                             _CurrentPage = allPages.get(--currentPageIndex);
                             if ( currentPageIndex == allPages.size() - 1 ) {
-                                _CurrentPage = new PageOne();
+                                _CurrentPage = new PageEight();
                                 ll.setBackground(getDrawable(R.drawable.pastellegreenback));
                                 textView.setTextColor(Color.WHITE);
                                 textView.setShadowLayer(10, 10, 10, Color.BLACK);
@@ -401,7 +397,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                 movingAverageY.update(y);
                 ArrayList<View> allButtonsT  = new ArrayList<View>(allButtons);
                 allButtonsT.add(textView);
-                double[] xy  = calibration9Point.getXYPoportional(movingAverageX.getCurrent(),movingAverageY.getCurrent(),width,height);
+                double[] xy  = calibration9Point.getXYPoportional(movingAverageX.getCurrentNeg(),movingAverageY.getCurrentNeg(),width,height);
                 goodBadTouch.checkEyeValidity(currentPageIndex,allButtonsT,(int) xy[0],(int) xy[1]);
             }
         }
@@ -496,14 +492,14 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
 
     public void resetPages() {
         allPages.clear();
-        allPages.add(new PageEight());
+        allPages.add(new PageOne());
         allPages.add(new PageTwo());
         allPages.add(new PageThree());
         allPages.add(new PageFour());
         allPages.add(new PageFive());
         allPages.add(new PageSix());
         allPages.add(new PageSeven());
-        allPages.add(new PageOne());
+        allPages.add(new PageEight());
     }
 
 

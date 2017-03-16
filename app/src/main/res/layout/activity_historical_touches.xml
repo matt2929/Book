@@ -54,6 +54,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView5"
-        android:layout_toStartOf="@+id/showwhereeyeare"
+        android:layout_toStartOf="@+id/showwheretouchare"
         android:background="@color/colorPrimaryDark" />
 </RelativeLayout>

@@ -15,17 +15,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static android.R.attr.x;
 
 /**
- * Created by Matthew on 1/17/2017.
+ * Created by Matthew on 3/20/2017.
  */
 
-public class SaveCSV {
+public class SaveAverages {
+    File _myFile;
     private FileOutputStream outputStream;
     private FileInputStream inputStream;
     private Context _context;
     public String _fileName;
-
+    File _file;
+    int count = 0;
     private Calendar cal = Calendar.getInstance();
     private int month = cal.get(Calendar.MONTH) + 1;
     private int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -34,31 +41,31 @@ public class SaveCSV {
     private int minute = cal.get(Calendar.MINUTE);
     private int second = cal.get(Calendar.SECOND);
 
-    public SaveCSV(String name, Context context) {
+    public SaveAverages(Context context) {
         FileOutputStream outputStream;
         FileInputStream inputStream;
         _context = context;
-        _fileName = "Book_" + name + "_" + FrontPage.name + "_" + (month) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
+        _fileName = "Book_Totals_" + FrontPage.name + "_" + (month + 1) + "M" + day + "D" + year + "Y_" + hour + "h" + minute + "m" + second + "s.csv";
     }
 
-    public void saveData(int page, float x, float y, boolean good, String id) {
-        Log.e("" + _fileName, "saved");
-        Calendar calendar = Calendar.getInstance();
-
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
-
+    public void saveData(int chapter, HashMap<String, Integer> hm) {
         try {
             String string = "";
             string += load();
-            String value = "";
-            if ( good ) {
-                value = "Yes";
-            } else {
-                value = "No";
+
+            String titleBar=" Chapter "+chapter+",";
+            String valueBar=",";
+            Integer sum=0;
+            for ( Map.Entry<String, Integer> entry : hm.entrySet() ) {
+                sum+=entry.getValue();
+                titleBar+=readableId(entry.getKey())+",";
             }
-            string += hour + ":" + minute + ":" + second + "," + page + "," + x + "," + y + "," + value + "," + readableId(id) + ";";
+            titleBar+=";";
+            for ( Map.Entry<String, Integer> entry : hm.entrySet() ) {
+                valueBar+=""+((float)entry.getValue()/(float)sum)+",";
+            }
+            valueBar+=";";
+            string+=titleBar+valueBar;
             outputStream = _context.openFileOutput(_fileName, Context.MODE_WORLD_READABLE);
             outputStream.write(string.getBytes());
             outputStream.close();
@@ -72,7 +79,7 @@ public class SaveCSV {
                 csvWriter = new PrintWriter(new FileWriter(file, true));
                 int last = 0;
                 int count = 0;
-                csvWriter.print(FrontPage.name + "Reading Session [" + (month + 1) + "/" + day + "/" + year + "]\nTime,Page,X,Y,Hotspot Congruent With Content,Hotspot ID");
+                csvWriter.print(FrontPage.name + " Reading Session [" + (month + 1) + "/" + day + "/" + year + "]");
                 csvWriter.append('\n');
                 for ( int i = 0; i < string.length(); i++ ) {
                     if ( string.charAt(i) == ';' ) {
@@ -115,10 +122,8 @@ public class SaveCSV {
         }
         return line1;
     }
+
     public String readableId(String s){
         return s.substring(28);
-    }
-    public String get_fileName() {
-        return _fileName;
     }
 }

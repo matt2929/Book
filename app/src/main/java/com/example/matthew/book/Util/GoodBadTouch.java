@@ -11,6 +11,7 @@ import com.example.matthew.book.EyeTracking.Calibration9Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by Matthew on 1/8/2017.
@@ -22,6 +23,8 @@ public class GoodBadTouch implements Serializable {
     private ArrayList<ReadingSession.Touch> _EyeCoordinates = new ArrayList<>();
     private SaveCSV _saveCSVTouch;
     private SaveCSV _saveCSVEye;
+    private SaveAverages _saveAverages;
+    private HashMap<String,Integer> hashMap=new HashMap<>();
     private int early = 0;
 
     public GoodBadTouch(Context context) {
@@ -29,6 +32,7 @@ public class GoodBadTouch implements Serializable {
         Log.e("touch",_saveCSVTouch.get_fileName());
         _saveCSVEye = new SaveCSV("eye", context);
         Log.e("touch",_saveCSVTouch.get_fileName());
+        _saveAverages = new SaveAverages(context);
     }
 
     public boolean checkTouchValidity(int page, ArrayList<Button> allViews, int x, int y) {
@@ -46,6 +50,10 @@ public class GoodBadTouch implements Serializable {
                         && y <= vy + v.getHeight() ) {
                     _Touches.add(new ReadingSession.Touch(calendar, x, y, true));
                     _saveCSVTouch.saveData(page, x, y, true, v.getResources().getResourceName(v.getId()));
+                    if(!hashMap.containsKey(v.getResources().getResourceName(v.getId()))){
+                        hashMap.put(v.getResources().getResourceName(v.getId()),0);
+                    }
+                    hashMap.put(v.getResources().getResourceName(v.getId()), hashMap.get(v.getResources().getResourceName(v.getId()))+1);
                     Log.e("Touch", "Good");
                     return true;
                 }
@@ -95,9 +103,12 @@ public class GoodBadTouch implements Serializable {
         _Touches.remove(_Touches.size() - 1);
     }
 
-    public void reset() {
+    public void reset(int chapter) {
+        _saveAverages.saveData(chapter,hashMap);
         _Touches.clear();
+        _EyeCoordinates.clear();
         early = 0;
+        hashMap.clear();
     }
 
     public ArrayList<ReadingSession.Touch> get_Touches() {
@@ -111,4 +122,6 @@ public class GoodBadTouch implements Serializable {
     public int getEarly() {
         return early;
     }
+
+
 }

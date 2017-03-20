@@ -481,8 +481,117 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
             }
 
         }
+
+        startTime = System.currentTimeMillis();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                
+                if ( !canClick ) {
+                    goodBadTouch.checkTouchValidity(currentPageIndex,allButtons,(int) event.getRawX(), (int) event.getRawY());
+                    //  fragCase.setBackground(getResources().getDrawable(R.drawable.listen));
+                }
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float deltaX = x2 - x1;
+                fragCase.setBackground(null);
+                if ( deltaX < -MIN_DISTANCE ) {
+                    resetPages();
+                    if ( _CurrentPage.doneTouching() ) {
+                        resetPages();
+                        transaction = fragmentManager.beginTransaction();
+                        transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
+                        goodBadTouch.lastTouchWasAGoodSwipe();
+                        saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                        goodBadTouch.reset(currentPageIndex);
+
+                        if ( currentPageIndex == allPages.size() - 1 ) {
+                            saveData.saveSession(getApplicationContext(), calendar, Calendar.getInstance());
+                            Intent i = new Intent(getApplicationContext(), Authors.class);
+                            startActivity(i);
+                        } else {
+                            _CurrentPage = allPages.get(++currentPageIndex);
+
+                            if ( currentPageIndex == allPages.size() - 1 ) {
+                                _CurrentPage = new PageEight();
+                                ll.setBackground(getDrawable(R.drawable.pastellegreenback));
+                                textView.setTextColor(Color.WHITE);
+                                textView.setShadowLayer(10, 10, 10, Color.BLACK);
+
+                            } else {
+                                ll.setBackground(getDrawable(R.drawable.gre2));
+                                textView.setTextColor(Color.BLACK);
+                            }
+                            transaction.replace(fragCase.getId(), _CurrentPage);
+                            textView.setText(_CurrentPage.getString());
+                            transaction.commit();
+                            clickCount++;
+                            HashMap<String, String> map = new HashMap<String, String>();
+                            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+                            mediaPlayer = MediaPlayer.create(this, pageTextRecording.get(currentPageIndex));
+                            mediaPlayer.setOnPreparedListener(this);
+                            mediaPlayer.setOnCompletionListener(this);
+
+                            //      tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                            _CurrentPage.passMediaPlayer(getApplicationContext());
+                            clock.reset();
+                            clock.run();
+                            _CurrentPage.enabledisabletouch(false);
+                            canClick = false;
+
+                        }
+                    } else if ( canClick ) {
+                    }
+                } else if ( deltaX > MIN_DISTANCE ) {
+                    resetPages();
+                    if ( _CurrentPage.doneTouching() ) {
+
+                        transaction = fragmentManager.beginTransaction();
+                        transaction.setCustomAnimations(R.animator.fadein2, R.animator.fadeout2);
+                        if ( currentPageIndex == 0 ) {
+                        } else {
+                            goodBadTouch.lastTouchWasAGoodSwipe();
+                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                            goodBadTouch.reset(currentPageIndex);
+                            _CurrentPage = allPages.get(--currentPageIndex);
+                            if ( currentPageIndex == allPages.size() - 1 ) {
+                                _CurrentPage = new PageEight();
+                                ll.setBackground(getDrawable(R.drawable.pastellegreenback));
+                                textView.setTextColor(Color.WHITE);
+                                textView.setShadowLayer(10, 10, 10, Color.BLACK);
+
+                            } else {
+                                ll.setBackground(getDrawable(R.drawable.gre2));
+                                textView.setTextColor(Color.BLACK);
+                            }
+                            transaction.replace(fragCase.getId(), _CurrentPage);
+
+                            textView.setText(_CurrentPage.getString());
+                            transaction.commit();
+                            clickCount++;
+                            HashMap<String, String> map = new HashMap<String, String>();
+                            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+                            //   tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                            mediaPlayer = MediaPlayer.create(this, pageTextRecording.get(currentPageIndex));
+                            mediaPlayer.setOnCompletionListener(this);
+                            mediaPlayer.setOnPreparedListener(this);
+                            _CurrentPage.passMediaPlayer(getApplicationContext());
+                            clock.reset();
+                            clock.run();
+                            _CurrentPage.enabledisabletouch(false);
+                            canClick = false;
+                        }
+                    } else if ( canClick ) {
+
+                    }
+                }
+
+                break;
+        }
         boolean ret = super.dispatchTouchEvent(event);
         return ret;
+
     }
 
     public ArrayList<String> convertPageToList(Page page) {

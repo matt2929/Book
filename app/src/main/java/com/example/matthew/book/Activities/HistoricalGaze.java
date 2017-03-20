@@ -1,5 +1,7 @@
 package com.example.matthew.book.Activities;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -20,6 +23,7 @@ import com.example.matthew.book.R;
 import com.example.matthew.book.Util.ReadingSession;
 import com.example.matthew.book.Util.SaveData;
 import com.example.matthew.book.customview.DrawPointTransparent;
+import com.example.matthew.book.customview.HeatView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,17 +31,18 @@ import java.util.ArrayList;
 public class HistoricalGaze extends AppCompatActivity {
 
     DrawPointTransparent drawPointTransparent;
-
     Button start, stop, restart;
     TextView textView;
-    CheckBox checkBox;
     ProgressBar progressBar;
     boolean running = false;
     int position = 0;
     ReadingSession.PageInfo readingSessions;
     DrawGazeRepeat drawGazeRepeat;
     SeekBar seekBar;
+    private CheckBox checkBox;
+    private HeatView heatView;
     int delay = 55;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +51,13 @@ public class HistoricalGaze extends AppCompatActivity {
         drawPointTransparent = (DrawPointTransparent) findViewById(R.id.DrawPointEye);
         readingSessions = saveData.getReadingSessions(getApplicationContext()).get(HistoricalSessions.IndexClicked).getPageInfo().get(HistoricalPages.pageIndex);
         ImageView imageView = (ImageView) findViewById(R.id.showwhereeyeare);
+        checkBox = (CheckBox) findViewById(R.id.gazeCheckBox);
         start = (Button) findViewById(R.id.gazeStart);
         stop = (Button) findViewById(R.id.gazeStop);
         restart = (Button) findViewById(R.id.gazeRestart);
         textView = (TextView) findViewById(R.id.gazeText);
         checkBox = (CheckBox) findViewById(R.id.gazeCheckBox);
+        heatView = (HeatView) findViewById(R.id.HeatMap);
         progressBar = (ProgressBar) findViewById(R.id.gazeProgress);
         progressBar.setMax(100);
         seekBar = (SeekBar) findViewById(R.id.seekBarEye);
@@ -64,38 +71,52 @@ public class HistoricalGaze extends AppCompatActivity {
 
             }
         });
-
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 running = false;
             }
         });
-
         restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position = 0;
             }
         });
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        delay = (seekBar.getMax()-seekBar.getProgress())+5;
-    }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                delay = (seekBar.getMax() - seekBar.getProgress()) + 5;
+            }
 
-    }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
+            }
 
-    }
-});
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if ( b ) {
+                    DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+                    int width = metrics.widthPixels;
+                    int height = metrics.heightPixels;
+                    heatView.init(readingSessions.getEye(),width,height);
+                    heatView.turnOn();
+                } else {
+                    heatView.turnOff();
+                }
+            }
+        });
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         switch (HistoricalPages.pageIndex) {
@@ -127,6 +148,7 @@ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
     }
 
     public void drawPointTouch(float x, float y, boolean good) {
+
         drawPointTransparent.setPoint(x, y, good);
     }
 
@@ -135,9 +157,17 @@ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
         ReadingSession.Touch touch = readingSessions.getEye().get(position);
         drawPointTouch(touch.get_X(), touch.get_Y(), touch.is_Good());
         float progress = (float) position / (float) readingSessions.getEye().size();
-
+        textView.setText("Coordinate:["+touch.get_X()+","+touch.get_Y()+"]");
         progressBar.setProgress((int) (progress * 100));
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        heatView.init(readingSessions.getEye(),width,height);
     }
 
     class DrawGazeRepeat implements Runnable {
@@ -149,7 +179,7 @@ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
         public void run() {
             if ( running ) {
-                if ( position+1 == readingSessions.getEye().size() ) {
+                if ( position + 1 == readingSessions.getEye().size() ) {
 
                 } else {
                     position++;

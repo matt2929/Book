@@ -21,11 +21,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/page3relativeview"
-        android:layout_alignBottom="@+id/linearLayout"
         android:layout_alignParentStart="true">
 
         <Button
-            android:id="@+id/Page3Dirt1"
+            android:id="@+id/Page3DirtAndSeedLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -34,7 +33,7 @@
             android:background="@drawable/dirt_with_seeds" />
 
         <Button
-            android:id="@+id/Page3Dirt3"
+            android:id="@+id/Page3DirtAndSeedCenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -43,7 +42,7 @@
             android:background="@drawable/dirt_with_seeds" />
 
         <Button
-            android:id="@+id/Page3Dirt2"
+            android:id="@+id/Page3DirtAndSeedRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -52,31 +51,31 @@
             android:background="@drawable/dirt_with_seeds" />
 
         <Button
-            android:id="@+id/small2"
+            android:id="@+id/MainDirt1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/page3dirt3"
             android:layout_marginBottom="76dp"
-            android:layout_above="@+id/Page3Dirt2"
-            android:layout_alignStart="@+id/Page3Dirt2" />
+            android:layout_above="@+id/Page3DirtAndSeedRight"
+            android:layout_alignStart="@+id/Page3DirtAndSeedRight" />
 
         <Button
-            android:id="@+id/Page3MainPile"
+            android:id="@+id/MainDirt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/page3dirt3"
-            android:layout_alignBaseline="@+id/small2"
-            android:layout_alignBottom="@+id/small2"
-            android:layout_alignStart="@+id/small2" />
+            android:layout_alignBaseline="@+id/MainDirt1"
+            android:layout_alignBottom="@+id/MainDirt1"
+            android:layout_alignStart="@+id/MainDirt1" />
 
         <Button
-            android:id="@+id/small1"
+            android:id="@+id/MainDirt3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/page3dirt3"
-            android:layout_alignBaseline="@+id/small2"
-            android:layout_alignBottom="@+id/small2"
-            android:layout_alignStart="@+id/small2" />
+            android:layout_alignBaseline="@+id/MainDirt1"
+            android:layout_alignBottom="@+id/MainDirt1"
+            android:layout_alignStart="@+id/MainDirt1" />
 
     </RelativeLayout>
 

@@ -292,7 +292,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                         goodBadTouch.lastTouchWasAGoodSwipe();
                         saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
-                        goodBadTouch.reset();
+                        goodBadTouch.reset(currentPageIndex);
 
                         if ( currentPageIndex == allPages.size() - 1 ) {
                             saveData.saveSession(getApplicationContext(), calendar, Calendar.getInstance());
@@ -341,7 +341,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         } else {
                             goodBadTouch.lastTouchWasAGoodSwipe();
                             saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
-                            goodBadTouch.reset();
+                            goodBadTouch.reset(currentPageIndex);
                             _CurrentPage = allPages.get(--currentPageIndex);
                             if ( currentPageIndex == allPages.size() - 1 ) {
                                 _CurrentPage = new PageEight();

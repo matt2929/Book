@@ -14,10 +14,8 @@ import android.widget.Button;
 
 import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
-import com.example.matthew.book.Util.DrawMultipleStates2Input;
 import com.example.matthew.book.Util.DrawMultipleStates3Input;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
-import com.example.matthew.book.customview.SunAndRain;
 import com.example.matthew.book.customview.SunAndRainAndMineral;
 
 import java.util.ArrayList;
@@ -58,7 +56,7 @@ public class PageSix extends Page implements View.OnTouchListener {
         sun = (Button) viewHierarchy.findViewById(R.id.page6sun);
         cloud = (Button) viewHierarchy.findViewById(R.id.Page6Cloud);
         mineral = (Button) viewHierarchy.findViewById(R.id.Page6mineral);
-        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page6Seed2);
+        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page6Seed);
 
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt2, cloud, sun, mineral}));
         PageTurner.allButtons = new ArrayList<>(butttemp);

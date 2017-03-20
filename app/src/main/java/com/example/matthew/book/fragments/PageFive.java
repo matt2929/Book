@@ -2,7 +2,6 @@ package com.example.matthew.book.fragments;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -42,10 +41,10 @@ public class PageFive extends Page implements View.OnTouchListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewHierarchy = inflater.inflate(R.layout.fragment_page_five, container, false);
         handler = new Handler();
-        cloud = (Button) viewHierarchy.findViewById(R.id.Page4Cloud);
-        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.page4seed1);
-        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page4Seed2);
-        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page6Seed3);
+        cloud = (Button) viewHierarchy.findViewById(R.id.Page5Minerals);
+        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.page5seedLeft);
+        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page5SeedCenter);
+        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page5SeedRight);
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
         PageTurner.allButtons = new ArrayList<>(butttemp);
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout9));

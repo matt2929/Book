@@ -26,7 +26,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page2Dirt1"
+            android:id="@+id/Page2DirtLeft"
             android:layout_weight="1"
             android:background="@drawable/dirt_bare"
             android:layout_alignParentBottom="true"
@@ -35,7 +35,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page2Dirt3"
+            android:id="@+id/Page2DirtRight"
             android:layout_weight="1"
             android:background="@drawable/dirt_bare"
             android:layout_alignParentBottom="true"
@@ -44,7 +44,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page2Dirt2"
+            android:id="@+id/Page2DirtCenter"
             android:layout_weight="1"
             android:background="@drawable/dirt_bare"
             android:layout_alignParentBottom="true"
@@ -53,29 +53,29 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page3MainPile"
+            android:id="@+id/MainDirt2"
             android:background="@drawable/page2appleseed"
             android:layout_marginBottom="130dp"
-            android:layout_above="@+id/Page2Dirt1"
-            android:layout_toEndOf="@+id/Page2Seed2" />
+            android:layout_above="@+id/Page2DirtLeft"
+            android:layout_toEndOf="@+id/Page2AppleCenter" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page2Seed2"
+            android:id="@+id/Page2AppleCenter"
             android:background="@drawable/page2appleseed"
-            android:layout_alignBaseline="@+id/Page3MainPile"
-            android:layout_alignBottom="@+id/Page3MainPile"
+            android:layout_alignBaseline="@+id/MainDirt2"
+            android:layout_alignBottom="@+id/MainDirt2"
             android:layout_centerHorizontal="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Page2Seed3"
+            android:id="@+id/Page2AppleLeft"
             android:background="@drawable/page2appleseed"
-            android:layout_alignBaseline="@+id/Page2Seed2"
-            android:layout_alignBottom="@+id/Page2Seed2"
-            android:layout_toStartOf="@+id/Page2Seed2" />
+            android:layout_alignBaseline="@+id/Page2AppleCenter"
+            android:layout_alignBottom="@+id/Page2AppleCenter"
+            android:layout_toStartOf="@+id/Page2AppleCenter" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -33,9 +33,9 @@ public class PageOne extends Page {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          viewHierarchy = inflater.inflate(R.layout.fragment_page_one, container, false);
         handler = new Handler();
-        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.page8seed1);
-        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.page8seed2);
-        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.page8seed3);
+        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.treeLeft);
+        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.treeCenter);
+        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.treeRight);
         butttemp.add(seedbutt1);
         butttemp.add(seedbutt2);
         butttemp.add(seedbutt3);

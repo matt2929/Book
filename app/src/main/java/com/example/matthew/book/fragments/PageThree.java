@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.example.matthew.book.Activities.PageTurner;
@@ -38,15 +36,15 @@ public class PageThree extends Page implements View.OnTouchListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewHierarchy =
                 inflater.inflate(R.layout.fragmentpage3, container, false);
-        Seeds1 = (Button) viewHierarchy.findViewById(R.id.Page3MainPile);
-        Seeds2 = (Button) viewHierarchy.findViewById(R.id.small1);
-        Seeds3 = (Button) viewHierarchy.findViewById(R.id.small2);
+        Seeds1 = (Button) viewHierarchy.findViewById(R.id.MainDirt2);
+        Seeds2 = (Button) viewHierarchy.findViewById(R.id.MainDirt3);
+        Seeds3 = (Button) viewHierarchy.findViewById(R.id.MainDirt1);
 
 
         seeds = new Button[]{Seeds1, Seeds2, Seeds3};
-        Dirt1 = (Button) viewHierarchy.findViewById(R.id.Page3Dirt1);
-        Dirt2 = (Button) viewHierarchy.findViewById(R.id.Page3Dirt2);
-        Dirt3 = (Button) viewHierarchy.findViewById(R.id.Page3Dirt3);
+        Dirt1 = (Button) viewHierarchy.findViewById(R.id.Page3DirtAndSeedLeft);
+        Dirt2 = (Button) viewHierarchy.findViewById(R.id.Page3DirtAndSeedRight);
+        Dirt3 = (Button) viewHierarchy.findViewById(R.id.Page3DirtAndSeedCenter);
         dirt = new Button[]{Dirt1, Dirt2, Dirt3};
         for (int i = 0; i < seeds.length; i++) {
             seeds[i].setOnTouchListener(this);

@@ -22,15 +22,14 @@
             android:id="@+id/arrows" />
 
         <Button
-            android:id="@+id/cycle4"
+            android:id="@+id/blossom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:scaleX=".75"
             android:scaleY=".75" />
 
         <Button
-            android:id="@+id/cycle3"
+            android:id="@+id/tree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="0dp"
@@ -38,7 +37,7 @@
             android:scaleY=".75" />
 
         <Button
-            android:id="@+id/cycle2"
+            android:id="@+id/sprout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -46,16 +45,15 @@
             android:scaleX=".75" />
 
         <Button
-            android:id="@+id/cycle1"
+            android:id="@+id/seed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:scaleY=".75"
             android:scaleX=".75"
              />
 
         <Button
-            android:id="@+id/cycle5"
+            android:id="@+id/apple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 

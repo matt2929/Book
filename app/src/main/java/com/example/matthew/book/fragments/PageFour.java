@@ -49,10 +49,10 @@ public class PageFour extends Page implements View.OnTouchListener {
         handler = new Handler();
 
         sun = (Button) viewHierarchy.findViewById(R.id.Page4Sun);
-        cloud = (Button) viewHierarchy.findViewById(R.id.Page4Cloud);
-        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.Page4Seed1);
-        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page4Seed2);
-        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page6Seed3);
+        cloud = (Button) viewHierarchy.findViewById(R.id.Page5Minerals);
+        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.Page4SeedLeft);
+        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page5SeedCenter);
+        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page5SeedRight);
         sr1 = (SunAndRain) viewHierarchy.findViewById(R.id.rainsun1);
         sr2 = (SunAndRain) viewHierarchy.findViewById(R.id.rainsun2);
         sr3 = (SunAndRain) viewHierarchy.findViewById(R.id.rainsunmineral3);

@@ -12,28 +12,28 @@
         android:layout_alignParentStart="true">
 
         <Button
+            android:id="@+id/treeLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:background="@drawable/page77"
-            android:id="@+id/page8seed1" />
+            android:background="@drawable/page77"/>
 
         <Button
-            android:id="@+id/page8seed2"
+            android:id="@+id/treeCenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/page77" />
+            android:background="@drawable/page77"/>
 
         <Button
-            android:id="@+id/page8seed3"
+            android:id="@+id/treeRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/page77"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/page77"/>
 
     </RelativeLayout>
 

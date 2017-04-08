@@ -43,12 +43,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matthew.book.EyeTracking.Calibration9Point;
-import com.example.matthew.book.EyeTracking.CameraSurfacePreview;
 import com.example.matthew.book.EyeTracking.DrawView;
 import com.example.matthew.book.EyeTracking.MovingAverage;
 import com.example.matthew.book.EyeTracking.NinePointCalibrationView;
 import com.example.matthew.book.R;
-import com.example.matthew.book.Util.SaveCSV;
 import com.qualcomm.snapdragon.sdk.face.FaceData;
 import com.qualcomm.snapdragon.sdk.face.FacialProcessing;
 import com.qualcomm.snapdragon.sdk.face.FacialProcessing.FP_MODES;
@@ -166,7 +164,7 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
         mPreview = new CameraSurfacePreview(CameraPreviewActivity.this, cameraObj, faceProc);
         preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.removeView(mPreview);
-         preview.addView(mPreview);
+        preview.addView(mPreview);
         cameraObj.setPreviewCallback(CameraPreviewActivity.this);
 
         orientationListener();
@@ -252,7 +250,9 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
             progressBar.setProgress(progressCurent);
 
         } else {
-            progressCurent--;
+            if(progressCurent!=0) {
+                progressCurent--;
+            }
             progressBar.setProgress(progressCurent);
             canRecord = false;
             imageView.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_video_busy));
@@ -351,9 +351,9 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
     @Override
     public void onPreviewFrame(byte[] data, Camera arg1) {
 
-        presentOrientation = (90 * Math.round(deviceOrientation / 90)) % 360;
-        int dRotation = display.getRotation();
-        PREVIEW_ROTATION_ANGLE angleEnum = PREVIEW_ROTATION_ANGLE.ROT_0;
+        presentOrientation = (90 * Math.round(deviceOrientation / 90)) % 360 - 90;
+        int dRotation = display.getRotation()-90;
+        FacialProcessing.PREVIEW_ROTATION_ANGLE angleEnum = FacialProcessing.PREVIEW_ROTATION_ANGLE.ROT_0;
 
         switch (dRotation) {
             case 0:
@@ -533,4 +533,3 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
     }
 
 }
-

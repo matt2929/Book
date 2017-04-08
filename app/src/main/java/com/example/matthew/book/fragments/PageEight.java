@@ -89,6 +89,7 @@ public class PageEight extends Page implements View.OnTouchListener {
             }
 
         });
+
         enabledisabletouch(false);
 
         return viewHierarchy;

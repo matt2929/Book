@@ -86,8 +86,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@android:drawable/ic_media_play"
                         android:padding="10dp"
+                        android:text="PLay"
                         android:textAllCaps="false"/>
 
                     <Button
@@ -96,8 +96,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@android:drawable/ic_media_pause"
                         android:padding="10dp"
+                        android:text="Pause"
                         android:textAllCaps="false"/>
 
                     <Button
@@ -106,8 +106,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@android:drawable/ic_menu_rotate"
                         android:padding="10dp"
+                        android:text="Restart"
                         android:textAllCaps="false"/>
                 </LinearLayout>
 

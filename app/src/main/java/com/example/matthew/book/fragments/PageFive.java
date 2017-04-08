@@ -57,9 +57,9 @@ public class PageFive extends Page implements View.OnTouchListener {
         myDrawablesCloud.add(getResources().getDrawable(R.drawable.minerals3));
         myDrawablesCloud.add(getResources().getDrawable(R.drawable.minerals4));
         seeds = new DrawableMutlipleStates[3];
-        seedstattes1 = new DrawableMutlipleStates(myDrawablesSprout, 50);
-        seedstates2 = new DrawableMutlipleStates(myDrawablesSprout, 50);
-        seedstates3 = new DrawableMutlipleStates(myDrawablesSprout, 50);
+        seedstattes1 = new DrawableMutlipleStates(myDrawablesSprout, 40);
+        seedstates2 = new DrawableMutlipleStates(myDrawablesSprout, 40);
+        seedstates3 = new DrawableMutlipleStates(myDrawablesSprout, 40);
         cloud.setOnTouchListener(this);
         masterView = viewHierarchy;
         final Clock clock = new Clock(handler, cloud);

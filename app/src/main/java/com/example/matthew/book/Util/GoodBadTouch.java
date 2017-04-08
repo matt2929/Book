@@ -100,8 +100,9 @@ public class GoodBadTouch implements Serializable {
 
     public void lastTouchWasAGoodSwipe() {
         Log.e("Touch", "Undo");
+        if (_Touches.size()>0 ){
         _Touches.remove(_Touches.size() - 1);
-    }
+    }}
 
     public void reset(int chapter) {
         _saveAverages.saveData(chapter,hashMap);

@@ -25,11 +25,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.PageTurner"/>
-        <activity android:name=".fragments.Page6"/>
         <activity android:name=".Activities.Authors"/>
         <activity android:name=".Activities.HistoricalSessions"/>
         <activity android:name=".Activities.HistoricalPages"/>
-        <activity android:name=".Activities.CameraPreviewActivity"/>
+        <activity android:name="com.example.matthew.book.Activities.CameraPreviewActivity"/>
         <activity android:name=".Activities.HistoricalTouches">
         </activity>
         <activity android:name=".Activities.HistoricalGaze">

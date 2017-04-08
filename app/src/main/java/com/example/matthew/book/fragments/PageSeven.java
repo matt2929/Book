@@ -53,9 +53,9 @@ public class PageSeven extends Page implements View.OnTouchListener {
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
         PageTurner.allButtons = new ArrayList<>(butttemp);
         seeds = new DrawableMutlipleStates[3];
-        seedstattes1 = new DrawableMutlipleStates(myDrawablesSprout, 75);
-        seedstates2 = new DrawableMutlipleStates(myDrawablesSprout, 75);
-        seedstates3 = new DrawableMutlipleStates(myDrawablesSprout, 75);
+        seedstattes1 = new DrawableMutlipleStates(myDrawablesSprout, 45);
+        seedstates2 = new DrawableMutlipleStates(myDrawablesSprout, 45);
+        seedstates3 = new DrawableMutlipleStates(myDrawablesSprout, 45);
         cloud.setOnTouchListener(this);
         masterView = viewHierarchy;
         final ClockSeven clock = new ClockSeven(handler);

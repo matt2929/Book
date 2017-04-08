@@ -93,6 +93,8 @@ public class FrontPage extends Activity {
             public void onClick(View v) {
                 name = editText.getText().toString();
                 Log.e("NAME", name);
+
+
                 Intent i;
                 if ( EYETRACK ) {
                     i = new Intent(getApplicationContext(), CameraPreviewActivity.class);

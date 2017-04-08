@@ -6,7 +6,7 @@
  * @file: CameraSurfacePreview.java
  */
 
-package com.example.matthew.book.EyeTracking;
+package com.example.matthew.book.Activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;

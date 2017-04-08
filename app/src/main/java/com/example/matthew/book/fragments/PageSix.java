@@ -82,7 +82,7 @@ public class PageSix extends Page implements View.OnTouchListener {
         myDrawablesMineral.add(getResources().getDrawable(R.drawable.minerals3));
         myDrawablesMineral.add(getResources().getDrawable(R.drawable.minerals4));
         seeds = new DrawableMutlipleStates[3];
-        seedstates2 = new DrawMultipleStates3Input(myDrawablesSprout, 250);
+        seedstates2 = new DrawMultipleStates3Input(myDrawablesSprout, 100);
         cloud.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

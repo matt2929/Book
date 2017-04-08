@@ -76,9 +76,9 @@ public class PageFour extends Page implements View.OnTouchListener {
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain5));
         myDrawablesRain.add(getResources().getDrawable(R.drawable.page4rain6));
         seeds = new DrawableMutlipleStates[3];
-        seedstattes1 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
-        seedstates2 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
-        seedstates3 = new DrawMultipleStates2Input(myDrawablesSprout, 100);
+        seedstattes1 = new DrawMultipleStates2Input(myDrawablesSprout, 50);
+        seedstates2 = new DrawMultipleStates2Input(myDrawablesSprout, 50);
+        seedstates3 = new DrawMultipleStates2Input(myDrawablesSprout, 50);
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
         PageTurner.allButtons = new ArrayList<>(butttemp);
 

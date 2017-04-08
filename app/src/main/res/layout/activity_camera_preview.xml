@@ -8,20 +8,13 @@
 * @brief   Android application manifest file for DeviceInfo API.
 */-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#000000"
-    android:gravity="top"
-    tools:context=".Activities.CameraPreviewActivity">
-
-    <FrameLayout
-        android:id="@+id/camera_preview"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:gravity="top"
+                tools:context=".Activities.CameraPreviewActivity">
 
     <view
         android:id="@+id/pointcalibration"
@@ -56,6 +49,13 @@
         android:background="@android:color/transparent"
         android:indeterminate="false" />
 
+
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="300dp"
+        android:layout_height="180dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
     <LinearLayout
         android:orientation="vertical"

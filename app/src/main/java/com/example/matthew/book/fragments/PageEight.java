@@ -108,38 +108,28 @@ public class PageEight extends Page implements View.OnTouchListener {
             drawable = imageView.getBackground();
             view.setBackgroundResource(R.drawable.emptybox);
             if ( imageView.equals(seed) ) {
-                if(view.getAlpha()!=.5f) {
-                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.seed);
 
-                    mp.start();
-                }
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.seed);
+                mp.start();
                 imageView.setText(strings[0]);
             } else if ( imageView.equals(seedling) ) {
-                if(view.getAlpha()!=.5f) {
-                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.sappling);
-                    mp.start();
-                }
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.sappling);
+                mp.start();
                 imageView.setText(strings[1]);
 
             } else if ( imageView.equals(tree) ) {
-                if(view.getAlpha()!=.5f) {
-                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.fullgrowntree);
-                    mp.start();
-                }
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.fullgrowntree);
+                mp.start();
                 imageView.setText(strings[2]);
 
             } else if ( imageView.equals(treeFlower) ) {
-                if(view.getAlpha()!=.5f) {
-                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossom);
-                    mp.start();
-                }
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossom);
+                mp.start();
                 imageView.setText(strings[3]);
 
             } else if ( imageView.equals(treeApple) ) {
-                if(view.getAlpha()!=.5f) {
-                    MediaPlayer mp = MediaPlayer.create(_context, R.raw.apple);
-                    mp.start();
-                }
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.apple);
+                mp.start();
                 imageView.setText(strings[4]);
             }
 

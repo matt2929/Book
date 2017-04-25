@@ -18,8 +18,8 @@ public class ReadingSession implements Serializable {
     public ReadingSession(Calendar startTime, Calendar endTime, ArrayList<PageInfo> pageInfos) {
         StartTime = startTime;
         EndTime = endTime;
-        this.pageInfo=pageInfos;
-        Name= FrontPage.name;
+        this.pageInfo = pageInfos;
+        Name = FrontPage.name;
     }
 
     public String getName() {
@@ -55,33 +55,42 @@ public class ReadingSession implements Serializable {
     }
 
 
-
     public static class PageInfo implements Serializable {
         private ArrayList<Touch> touches = new ArrayList<>();
-        private ArrayList<Touch> eye = new ArrayList<>();
+        private ArrayList<Touch> eyePre = new ArrayList<>();
+        private ArrayList<Touch> eyePost = new ArrayList<>();
 
         private Long duration;
         private int pageNum;
-        private int numEarly=0;
+        private int numEarly = 0;
 
-        public PageInfo(ArrayList<Touch> allTouch,ArrayList<Touch> allEye, int numEarly, long duration, int pageNum) {
-            eye=new ArrayList<>(allEye);
-            touches=new ArrayList<Touch>(allTouch);
-            this.duration=duration;
-            this.pageNum=pageNum;
-            this.numEarly=numEarly;
+        public PageInfo(ArrayList<Touch> allTouch, ArrayList<Touch> allEye, ArrayList<Touch> allEyePost, int numEarly, long duration, int pageNum) {
+            eyePre = new ArrayList<>(allEye);
+            touches = new ArrayList<Touch>(allTouch);
+            eyePost = new ArrayList<>(allEyePost);
+            this.duration = duration;
+            this.pageNum = pageNum;
+            this.numEarly = numEarly;
         }
 
         public ArrayList<Touch> getTouches() {
             return touches;
         }
 
-        public ArrayList<Touch> getEye() {
-            return eye;
+        public ArrayList<Touch> getEyePre() {
+            return eyePre;
         }
 
-        public void setEye(ArrayList<Touch> eye) {
-            this.eye = eye;
+        public void setEyePost(ArrayList<Touch> eyePost) {
+            this.eyePost = eyePost;
+        }
+
+        public ArrayList<Touch> getEyePost() {
+            return eyePost;
+        }
+
+        public void setEyePre(ArrayList<Touch> eyePre) {
+            this.eyePre = eyePre;
         }
 
         public Long getDuration() {
@@ -113,6 +122,7 @@ public class ReadingSession implements Serializable {
         }
 
     }
+
     public static class Touch implements Serializable {
         private float _X, _Y;
         private boolean _Good;

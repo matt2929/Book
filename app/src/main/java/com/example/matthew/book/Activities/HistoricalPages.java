@@ -14,9 +14,7 @@ import com.example.matthew.book.R;
 import com.example.matthew.book.Util.ReadingSession;
 import com.example.matthew.book.Util.SaveData;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class HistoricalPages extends AppCompatActivity {
     public static int pageIndex = -1;
@@ -62,7 +60,7 @@ public class HistoricalPages extends AppCompatActivity {
             }
             int pageNum = p.getPageNum();
             int[] goodbadTouch = getGoodBadTouches(p.getTouches());
-            int[] goodbadEye = getGoodBadTouches(p.getEye());
+            int[] goodbadEye = getGoodBadTouches(p.getEyePre());
             int goodEye = goodbadEye[0];
             int badEye = goodbadEye[1];
             float eyeAccuracy= (float)goodEye/(float)badEye;
@@ -82,7 +80,7 @@ public class HistoricalPages extends AppCompatActivity {
             temp += "Page #: " + pageNum + "\n";
             temp += "Duration Spent Completing Page: " + h + " Hour(s) " + m + " Minute(s) " + s + " Second(s) " + duration + " Millisecond(s) " + "\n";
             temp += "Good Touches: " + goodTouch + " Bad Touches: " + badTouch + "\nPercentage of Bad Touches that where early: " + percentage + "%\n";
-            temp += "Eye Accuracy: " + p.getEye().size()+"%\n";
+            temp += "Eye Accuracy: " + p.getEyePre().size()+"%\n";
             strings.add(temp);
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(

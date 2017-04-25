@@ -126,7 +126,7 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
         restartCalibration = (Button) findViewById(R.id.restartcalibration);
         record.setTextColor(Color.GREEN);
 
-        preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview = (FrameLayout) findViewById(R.id.camera_preview_calib);
         coordinateText = (TextView) findViewById(R.id.coordinateText);
         imageView = (ImageView) findViewById(R.id.imageView);
         ninePointCalibration = (NinePointCalibrationView) findViewById(R.id.pointcalibration);
@@ -139,8 +139,8 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
         clock2 = new Clock2(handler);
         clock2.run();
         ///smoothing algorithm
-        movingAverageX = new MovingAverage(20);
-        movingAverageY = new MovingAverage(20);
+        movingAverageX = new MovingAverage(15);
+        movingAverageY = new MovingAverage(15);
         // Check to see if the FacialProc feature is supported in the device or no.
         fpFeatureSupported = FacialProcessing
                 .isFeatureSupported(FacialProcessing.FEATURE_LIST.FEATURE_FACIAL_PROCESSING);
@@ -162,7 +162,7 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
         }
         // Change the sizes according to phone's compatibility.
         mPreview = new CameraSurfacePreview(CameraPreviewActivity.this, cameraObj, faceProc);
-        preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview = (FrameLayout) findViewById(R.id.camera_preview_calib);
         preview.removeView(mPreview);
         preview.addView(mPreview);
         cameraObj.setPreviewCallback(CameraPreviewActivity.this);
@@ -211,7 +211,10 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
         record.setTextColor(Color.YELLOW);
         coordinateText.setVisibility(View.INVISIBLE);
         restartCalibration.setVisibility(View.GONE);
+        preview.setVisibility(View.GONE);
+
     }
+
 
 
     private void orientationListener() {
@@ -330,7 +333,7 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
 
         mPreview = new CameraSurfacePreview(CameraPreviewActivity.this, cameraObj, faceProc);
         preview.removeView(mPreview);
-        preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview = (FrameLayout) findViewById(R.id.camera_preview_calib);
         preview.addView(mPreview);
         cameraObj.setPreviewCallback(CameraPreviewActivity.this);
 
@@ -371,8 +374,8 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
                 break;
 
             case 3:
-                displayAngle = 180;
-                angleEnum = PREVIEW_ROTATION_ANGLE.ROT_180;
+                displayAngle = 0;
+                angleEnum = PREVIEW_ROTATION_ANGLE.ROT_0;
                 break;
         }
 
@@ -509,6 +512,8 @@ public class CameraPreviewActivity extends Activity implements Camera.PreviewCal
         Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
         recordingMovement = !recordingMovement;
         calibrationAvailable = true;
+        preview.setVisibility(View.VISIBLE);
+
         coordinateText.setVisibility(View.VISIBLE);
         restartCalibration.setVisibility(View.VISIBLE);
         coordinateText.setText("Look around, is the yellow dot accurate?");

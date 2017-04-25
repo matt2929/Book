@@ -16,7 +16,7 @@ public class NinePointCalibrationView extends RelativeLayout {
     private Paint paintYellow, paintRed;
     private float positionX = -45, positionY = -45;
     private Point[] points;
-    private final int GAZETIME = 2000, MOVEMENTTIME = 3000;
+    private final int GAZETIME = 2000, MOVEMENTTIME = 1500;
     private boolean moving = true;
     private long startTime = System.currentTimeMillis();
     private int calibrationIndex = 0;

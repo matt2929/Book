@@ -96,7 +96,6 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     ///////////////////
     Camera cameraObj;
     FrameLayout preview;
-
     FacialProcessing faceProc;
     FaceData[] faceArray = null;// Array in which all the face data values will be returned for each face detected.
     //calibration////
@@ -180,7 +179,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         testButt.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_ReadEyeCoordinates(),goodBadTouch.get_PostReadEyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
                                             saveData.saveSession(getApplicationContext(), calendar, Calendar.getInstance());
                                         }
                                     }
@@ -284,7 +283,12 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                 ArrayList<View> allButtonsT = new ArrayList<View>(allButtons);
                 allButtonsT.add(textView);
                 double[] xy = calibration9Point.getXYPoportional(movingAverageX.getCurrentNeg(), movingAverageY.getCurrentNeg(), width, height);
-                goodBadTouch.checkEyeValidity(currentPageIndex, allButtonsT, (int) xy[0], (int) xy[1]);
+                if(canClick) {
+                    goodBadTouch.checkEyePostReadValidity(currentPageIndex, allButtonsT, (int) xy[0], (int) xy[1]);
+                }else{
+                    goodBadTouch.checkEyeDuringReadValidity(currentPageIndex, allButtonsT, (int) xy[0], (int) xy[1]);
+
+                }
             }
         }
     }
@@ -389,7 +393,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         transaction = fragmentManager.beginTransaction();
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
                         goodBadTouch.lastTouchWasAGoodSwipe();
-                        saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                        saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_ReadEyeCoordinates(), goodBadTouch.get_PostReadEyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
                         goodBadTouch.reset(currentPageIndex);
 
                         if ( currentPageIndex == allPages.size() - 1 ) {
@@ -438,7 +442,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                         if ( currentPageIndex == 0 ) {
                         } else {
                             goodBadTouch.lastTouchWasAGoodSwipe();
-                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_EyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_ReadEyeCoordinates(),goodBadTouch.get_PostReadEyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
                             goodBadTouch.reset(currentPageIndex);
                             _CurrentPage = allPages.get(--currentPageIndex);
                             if ( currentPageIndex == allPages.size() - 1 ) {
@@ -724,9 +728,9 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                 String nextWord = listOfWords.get(count + 1);
                 int delay = 0;
                 if ( currentPageIndex == 0 ) {
-                    delay = nextWord.length() * 75;
+                    delay = nextWord.length() * 60;
                 } else if ( currentPageIndex == allPages.size() - 1 ) {
-                    delay = nextWord.length() * 150;
+                    delay = nextWord.length() * 140;
 
                 } else if ( currentPageIndex == 3 ) {
                     delay = nextWord.length() * 140;

@@ -49,7 +49,6 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
 
 
         Camera.Parameters pm = mCamera.getParameters();
-
         int index = 0;
         List<Size> previewSize = pm.getSupportedPreviewSizes();
         for (int i = 0; i < previewSize.size(); i++) {

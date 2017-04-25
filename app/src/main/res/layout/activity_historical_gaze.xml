@@ -70,6 +70,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:text="Coordinates: [0,0]"
+                    android:textAlignment="center"
                     android:textColor="@android:color/background_light"/>
 
                 <LinearLayout
@@ -128,14 +129,33 @@
                     android:max="200"
                     android:progress="50"/>
 
-                <CheckBox
-                    android:id="@+id/gazeCheckBox"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:buttonTint="@color/colorAccent"
-                    android:text="Heat Map"
-                    android:textColor="@android:color/background_light"/>
+                    android:layout_height="0dip"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/beforeOrAfterRead"
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/colorAccent"
+                        android:text="Post Read"
+                        android:textColor="@android:color/background_light"
+                        />
+
+                    <CheckBox
+                        android:id="@+id/gazeCheckBox"
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/colorAccent"
+                        android:text="Heat Map"
+                        android:textAlignment="textStart"
+                        android:textColor="@android:color/background_light"/>
+                </LinearLayout>
 
             </LinearLayout>
 

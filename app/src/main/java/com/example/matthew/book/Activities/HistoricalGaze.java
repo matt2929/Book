@@ -8,13 +8,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -24,9 +21,6 @@ import com.example.matthew.book.Util.ReadingSession;
 import com.example.matthew.book.Util.SaveData;
 import com.example.matthew.book.customview.DrawPointTransparent;
 import com.example.matthew.book.customview.HeatView;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 public class HistoricalGaze extends AppCompatActivity {
 
@@ -39,8 +33,9 @@ public class HistoricalGaze extends AppCompatActivity {
     ReadingSession.PageInfo readingSessions;
     DrawGazeRepeat drawGazeRepeat;
     SeekBar seekBar;
-    private CheckBox checkBox;
+    private CheckBox checkBox, checkBoxRead;
     private HeatView heatView;
+    private boolean pre = true;
     int delay = 55;
 
     @Override
@@ -57,6 +52,7 @@ public class HistoricalGaze extends AppCompatActivity {
         restart = (Button) findViewById(R.id.gazeRestart);
         textView = (TextView) findViewById(R.id.gazeText);
         checkBox = (CheckBox) findViewById(R.id.gazeCheckBox);
+        checkBoxRead = (CheckBox) findViewById(R.id.beforeOrAfterRead);
         heatView = (HeatView) findViewById(R.id.HeatMap);
         progressBar = (ProgressBar) findViewById(R.id.gazeProgress);
         progressBar.setMax(100);
@@ -110,10 +106,33 @@ public class HistoricalGaze extends AppCompatActivity {
                     DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
                     int width = metrics.widthPixels;
                     int height = metrics.heightPixels;
-                    heatView.init(readingSessions.getEye(),width,height);
+                    if ( pre ) {
+                        heatView.init(readingSessions.getEyePre(), width, height);
+                    } else {
+                        heatView.init(readingSessions.getEyePost(), width, height);
+                    }
                     heatView.turnOn();
                 } else {
                     heatView.turnOff();
+                }
+            }
+        });
+        checkBoxRead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+                int width = metrics.widthPixels;
+                int height = metrics.heightPixels;
+                if ( b ) {
+                    pre = false;
+                    position=0;
+                    heatView.init(readingSessions.getEyePost(), width, height);
+                } else {
+                    pre = true;
+                    position=0;
+
+                    heatView.init(readingSessions.getEyePre(), width, height);
+
                 }
             }
         });
@@ -153,11 +172,15 @@ public class HistoricalGaze extends AppCompatActivity {
     }
 
     public void updateView() {
-        Log.e("data: ", " " + position);
-        ReadingSession.Touch touch = readingSessions.getEye().get(position);
+        ReadingSession.Touch touch;
+        if ( pre ){
+             touch = readingSessions.getEyePre().get(position);
+        }else{
+            touch = readingSessions.getEyePost().get(position);
+        }
         drawPointTouch(touch.get_X(), touch.get_Y(), touch.is_Good());
-        float progress = (float) position / (float) readingSessions.getEye().size();
-        textView.setText("Coordinate:["+touch.get_X()+","+touch.get_Y()+"]");
+        float progress = (float) position / (float) readingSessions.getEyePre().size();
+        textView.setText("Coordinate:[" + touch.get_X() + "," + touch.get_Y() + "]");
         progressBar.setProgress((int) (progress * 100));
 
     }
@@ -167,7 +190,7 @@ public class HistoricalGaze extends AppCompatActivity {
         DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
-        heatView.init(readingSessions.getEye(),width,height);
+        heatView.init(readingSessions.getEyePre(), width, height);
     }
 
     class DrawGazeRepeat implements Runnable {
@@ -178,13 +201,26 @@ public class HistoricalGaze extends AppCompatActivity {
         }
 
         public void run() {
-            if ( running ) {
-                if ( position + 1 == readingSessions.getEye().size() ) {
+            if ( pre ) {
+                if ( running ) {
+                    if ( position + 1 == readingSessions.getEyePre().size() ) {
 
-                } else {
-                    position++;
+                    } else {
+                        position++;
+                    }
+                    updateView();
                 }
-                updateView();
+
+            } else {
+                if ( running ) {
+                    if ( position + 1 == readingSessions.getEyePost().size() ) {
+
+                    } else {
+                        position++;
+                    }
+                    updateView();
+                }
+
             }
             handler.postDelayed(this, delay);
         }

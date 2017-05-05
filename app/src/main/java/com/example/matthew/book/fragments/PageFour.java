@@ -16,7 +16,7 @@ import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawMultipleStates2Input;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
-import com.example.matthew.book.customview.SunAndRain;
+import com.example.matthew.book.customview.SunAndRainProgress;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +34,7 @@ public class PageFour extends Page implements View.OnTouchListener {
     int indexSun = 0;
     MediaPlayer mp;
     Context _context;
-    SunAndRain sr1, sr2, sr3;
+    SunAndRainProgress sr1, sr2, sr3;
     boolean cloudIsClicked = false;
     boolean sunIsClicked = false;
     DrawableMutlipleStates[] seeds;
@@ -51,11 +51,11 @@ public class PageFour extends Page implements View.OnTouchListener {
         sun = (Button) viewHierarchy.findViewById(R.id.Page4Sun);
         cloud = (Button) viewHierarchy.findViewById(R.id.Page5Minerals);
         seedbutt1 = (Button) viewHierarchy.findViewById(R.id.Page4SeedLeft);
-        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page5SeedCenter);
-        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page5SeedRight);
-        sr1 = (SunAndRain) viewHierarchy.findViewById(R.id.rainsun1);
-        sr2 = (SunAndRain) viewHierarchy.findViewById(R.id.rainsun2);
-        sr3 = (SunAndRain) viewHierarchy.findViewById(R.id.rainsunmineral3);
+        seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page4SeedCenter);
+        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page4SeedRight);
+        sr1 = (SunAndRainProgress) viewHierarchy.findViewById(R.id.rainsun1);
+        sr2 = (SunAndRainProgress) viewHierarchy.findViewById(R.id.rainsun2);
+        sr3 = (SunAndRainProgress) viewHierarchy.findViewById(R.id.rainsunmineral3);
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout0));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout1));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout2));

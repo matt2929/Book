@@ -179,9 +179,15 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         testButt.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_ReadEyeCoordinates(),goodBadTouch.get_PostReadEyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
-                                            saveData.saveSession(getApplicationContext(), calendar, Calendar.getInstance());
-                                        }
+                                            Thread thread = new Thread(new Runnable(){
+                                                @Override
+                                                public void run(){
+                                                    saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_ReadEyeCoordinates(),goodBadTouch.get_PostReadEyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                                                    saveData.saveSession(getApplicationContext(), calendar, Calendar.getInstance());
+                                                }
+                                            });
+                                            thread.start();
+                                             }
                                     }
         );
         ll = (RelativeLayout) findViewById(R.id.activity_page_turner);
@@ -791,7 +797,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                 justClick = false;
                 pleaseSwipe.setVisibility(View.GONE);
             }
-            handler.postDelayed(this, 125);
+            handler.postDelayed(this, 140);
         }
     }
 }

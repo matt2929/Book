@@ -58,6 +58,7 @@ public class SaveCSV {
             } else {
                 value = "No";
             }
+
             string += hour + ":" + minute + ":" + second + "," + page + "," + x + "," + y + "," + value + "," + readableId(id) + ";";
             outputStream = _context.openFileOutput(_fileName, Context.MODE_WORLD_READABLE);
             outputStream.write(string.getBytes());

@@ -16,7 +16,7 @@ import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawMultipleStates3Input;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
-import com.example.matthew.book.customview.SunAndRainAndMineral;
+import com.example.matthew.book.customview.SunAndRainAndMineralProgress;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class PageSix extends Page implements View.OnTouchListener {
     int indexMineral = 0;
     MediaPlayer mp;
     Context _context;
-    SunAndRainAndMineral sr2;
+    SunAndRainAndMineralProgress sr2;
     boolean cloudIsClicked = false;
     boolean sunIsClicked = false;
     boolean mineralIsClicked = false;
@@ -61,7 +61,7 @@ public class PageSix extends Page implements View.OnTouchListener {
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt2, cloud, sun, mineral}));
         PageTurner.allButtons = new ArrayList<>(butttemp);
 
-        sr2 = (SunAndRainAndMineral) viewHierarchy.findViewById(R.id.rainsunmineral2);
+        sr2 = (SunAndRainAndMineralProgress) viewHierarchy.findViewById(R.id.rainsunmineral2);
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree1));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree2));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.page6tree3));

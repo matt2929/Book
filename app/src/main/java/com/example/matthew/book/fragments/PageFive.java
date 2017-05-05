@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.example.matthew.book.Activities.PageTurner;
 import com.example.matthew.book.R;
 import com.example.matthew.book.Util.DrawableMutlipleStates;
+import com.example.matthew.book.customview.MineralProgress;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,8 @@ import java.util.Arrays;
 
 public class PageFive extends Page implements View.OnTouchListener {
     Button seedbutt1, seedbutt2, seedbutt3, cloud;
-    DrawableMutlipleStates seedstattes1, seedstates2, seedstates3;
+    DrawableMutlipleStates seedstates1, seedstates2, seedstates3;
+    MineralProgress mineralProgress1, mineralProgress2, mineralProgress3;
     View masterView;
     int updateLimiter = 0;
     Float lastX = 0f, lastY = 0f;
@@ -35,17 +37,17 @@ public class PageFive extends Page implements View.OnTouchListener {
     ArrayList<Drawable> myDrawablesSprout = new ArrayList<Drawable>();
     ArrayList<Drawable> myDrawablesCloud = new ArrayList<Drawable>();
     Button[] seedButts;
-    boolean[] completeGrowth = new boolean[]{false, false, false};
+    boolean[] completeGrowth = new boolean[]{ false, false, false };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewHierarchy = inflater.inflate(R.layout.fragment_page_five, container, false);
         handler = new Handler();
         cloud = (Button) viewHierarchy.findViewById(R.id.Page5Minerals);
-        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.page5seedLeft);
+        seedbutt1 = (Button) viewHierarchy.findViewById(R.id.Page5SeedLeft);
         seedbutt2 = (Button) viewHierarchy.findViewById(R.id.Page5SeedCenter);
-        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page5SeedRight);
-        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
+        seedbutt3 = (Button) viewHierarchy.findViewById(R.id.Page5seedRight);
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{ seedbutt1, seedbutt2, seedbutt3, cloud }));
         PageTurner.allButtons = new ArrayList<>(butttemp);
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout9));
         myDrawablesSprout.add(getResources().getDrawable(R.drawable.sprout10));
@@ -57,9 +59,12 @@ public class PageFive extends Page implements View.OnTouchListener {
         myDrawablesCloud.add(getResources().getDrawable(R.drawable.minerals3));
         myDrawablesCloud.add(getResources().getDrawable(R.drawable.minerals4));
         seeds = new DrawableMutlipleStates[3];
-        seedstattes1 = new DrawableMutlipleStates(myDrawablesSprout, 40);
+        seedstates1 = new DrawableMutlipleStates(myDrawablesSprout, 40);
         seedstates2 = new DrawableMutlipleStates(myDrawablesSprout, 40);
         seedstates3 = new DrawableMutlipleStates(myDrawablesSprout, 40);
+        mineralProgress1 = (MineralProgress) viewHierarchy.findViewById(R.id.minProg1);
+        mineralProgress2 = (MineralProgress) viewHierarchy.findViewById(R.id.minProg2);
+        mineralProgress3 = (MineralProgress) viewHierarchy.findViewById(R.id.minProg3);
         cloud.setOnTouchListener(this);
         masterView = viewHierarchy;
         final Clock clock = new Clock(handler, cloud);
@@ -69,15 +74,15 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
+        ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{ seedbutt1, seedbutt2, seedbutt3, cloud }));
         PageTurner.allButtons = new ArrayList<>(butttemp);
 
-        if (bool) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        if ( bool ) {
+            if ( event.getAction() == MotionEvent.ACTION_DOWN ) {
                 cloudIsClicked = true;
 
                 Log.e("click", "down");
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            } else if ( event.getAction() == MotionEvent.ACTION_UP ) {
 
                 index = 0;
                 cloud.setBackground(getResources().getDrawable(R.drawable.minerals1));
@@ -85,7 +90,7 @@ public class PageFive extends Page implements View.OnTouchListener {
 
                 //    cloud.setBackground(getResources().getDrawable(R.drawable.page4rain0));
             }
-            if (lastY == 0) {
+            if ( lastY == 0 ) {
                 lastX = event.getRawX();
                 lastY = event.getRawY();
 
@@ -100,7 +105,7 @@ public class PageFive extends Page implements View.OnTouchListener {
                 lastY = event.getRawY();
 //                }
                 Button imageView = (Button) v;
-                if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+                if ( event.getAction() == android.view.MotionEvent.ACTION_UP ) {
                     lastY = 0f;
                     lastX = 0f;
                 }
@@ -114,21 +119,23 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     private void isViewOverlapping() {
 
-        if (cloud.getY() + cloud.getHeight() > masterView.getHeight() * (4f / 5f)) {
-            if (cloud.getX() + (cloud.getWidth() / 2) < (masterView.getWidth() / 3)) {
+        if ( cloud.getY() + cloud.getHeight() > masterView.getHeight() * (4f / 5f) ) {
+            if ( cloud.getX() + (cloud.getWidth() / 2) < (masterView.getWidth() / 3) ) {
                 Log.e("sound", "start");
-                seedbutt1.setBackground(seedstattes1.update());
-
-            } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f)) {
+                seedbutt1.setBackground(seedstates1.update());
+                seedbutt1.setScaleY(1f + (seedstates1.getProgress()/10f));
+                mineralProgress1.update(seedstates1.getProgress());
+            } else if ( cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() * (2f / 3f) ) {
                 Log.e("sound", "start");
-
                 seedbutt2.setBackground(seedstates2.update());
+                seedbutt2.setScaleY(1f + (seedstates2.getProgress()/10f));
+                mineralProgress2.update(seedstates2.getProgress());
 
-            } else if (cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth()) {
+            } else if ( cloud.getX() + cloud.getWidth() / 2 < masterView.getWidth() ) {
                 Log.e("sound", "start");
-
                 seedbutt3.setBackground(seedstates3.update());
-
+                seedbutt3.setScaleY(1f + (seedstates3.getProgress()/10f));
+                mineralProgress3.update(seedstates3.getProgress());
             }
         } else {
             Log.e("sound", "pause");
@@ -162,10 +169,10 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public boolean doneTouching() {
-        if (seedstattes1 == null) {
+        if ( seedstates1 == null ) {
             return true;
         } else {
-            return (seedstattes1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
+            return (seedstates1.allComplete() && seedstates2.allComplete() && seedstates3.allComplete());
         }
     }
 
@@ -179,11 +186,11 @@ public class PageFive extends Page implements View.OnTouchListener {
         }
 
         public void run() {
-            if (cloudIsClicked) {
+            if ( cloudIsClicked ) {
                 isViewOverlapping();
                 index++;
                 cloud.setBackground(myDrawablesCloud.get(index));
-                if (index + 1 == (myDrawablesCloud.size())) {
+                if ( index + 1 == (myDrawablesCloud.size()) ) {
                     index = 0;
                 }
             }

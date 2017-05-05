@@ -31,7 +31,6 @@ public class SaveData implements Serializable {
 
     public SaveData(Context c) {
         dir = new File(c.getFilesDir() + "/serialisedBookSessions");
-
         dir.mkdirs();
         file = new File(dir, "BookData.txt");
         if (!file.exists()) {
@@ -45,6 +44,7 @@ public class SaveData implements Serializable {
     }
 
     public void saveSession(Context context, Calendar startTime, Calendar endTime) {
+
         //UserList ul = new UserList(a);
         Log.e("length", "" + getReadingSessions(context).size());
         ArrayList<ReadingSession> arrayWork = getReadingSessions(context);

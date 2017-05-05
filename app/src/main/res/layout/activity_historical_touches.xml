@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_historical_touches"
     android:layout_width="match_parent"
@@ -9,7 +11,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.matthew.book.Activities.HistoricalSessions">
+    tools:context="com.example.matthew.book.Activities.HistoricalTouches">
 
     <TextView
         android:id="@+id/textView5"
@@ -20,40 +22,195 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
         android:fontFamily="serif"
-        android:text="Historical Touches"
+        android:text="Historical Gaze"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="@android:color/background_light"
         android:textSize="36sp"
-        android:textStyle="normal|bold" />
+        android:textStyle="normal|bold"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"/>
 
-    <ImageView
-        android:id="@+id/showwheretouchare"
-        android:layout_width="320dp"
-        android:layout_height="180dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView5"
-        android:adjustViewBounds="false"
-        android:background="@drawable/atree"
-        android:contentDescription="view touches"
-        android:cropToPadding="false" />
-
-    <com.example.matthew.book.customview.DrawPointTransparent
-        android:id="@+id/DrawPoint"
-        android:layout_width="320dp"
-        android:layout_height="180dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView5"
-        android:background="@android:color/transparent"
-        />
-
-    <ListView
-        android:id="@+id/listViewTouch"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView5"
-        android:layout_toStartOf="@+id/showwheretouchare"
-        android:background="@color/colorPrimaryDark" />
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView5"
+            android:layout_toStartOf="@+id/showwhereeyeare"
+            android:layout_weight="1"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="5dp"
+            android:scrollbarStyle="insideInset"
+            android:scrollbarThumbVertical="@color/colorPrimary"
+            android:scrollbarTrackVertical="?attr/colorPrimaryDark">
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView5"
+                android:layout_toStartOf="@+id/showwhereeyeare"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/gazeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Coordinates: [0,0]"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/background_light"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/background_dark"
+                    android:orientation="horizontal"
+                    android:scaleX=".9"
+                    android:scaleY=".9">
+
+                    <Button
+                        android:id="@+id/gazeStart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="PLay"
+                        android:textAllCaps="false"/>
+
+                    <Button
+                        android:id="@+id/gazeStop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="Pause"
+                        android:textAllCaps="false"/>
+
+                    <Button
+                        android:id="@+id/gazeRestart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="Restart"
+                        android:textAllCaps="false"/>
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/gazeProgress"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    />
+
+                <SeekBar
+                    android:id="@+id/seekBarEye"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:max="200"
+                    android:progress="50"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dip"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/stepBack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="&lt;-"/>
+
+                    <Button
+                        android:id="@+id/stepFoward"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="-&gt;"/>
+
+                    <CheckBox
+                        android:id="@+id/gazeCheckBox"
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/colorAccent"
+                        android:text="Heat Map"
+                        android:textAlignment="textStart"
+                        android:textColor="@android:color/background_light"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textView5"
+            android:layout_toEndOf="@+id/scrollView2"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/showwhereeyeare"
+                android:layout_width="320dp"
+                android:layout_height="180dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="false"
+                android:background="@drawable/atree"
+                android:contentDescription="view touches"
+                android:cropToPadding="false"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"/>
+
+            <com.example.matthew.book.customview.HeatView
+                android:id="@+id/HeatMap"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorPrimary"/>
+
+            <com.example.matthew.book.customview.DrawPointTransparent
+                android:id="@+id/DrawPointEye"
+                android:layout_width="320dp"
+                android:layout_height="180dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/transparent"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
 </RelativeLayout>

@@ -31,7 +31,7 @@
 
         <view
             android:layout_height="200dp"
-            class="com.example.matthew.book.customview.SunAndRainAndMineral"
+            class="com.example.matthew.book.customview.SunAndRainAndMineralProgress"
             android:id="@+id/rainsunmineral2"
             android:layout_width="75dp"
             android:background="@android:color/transparent"

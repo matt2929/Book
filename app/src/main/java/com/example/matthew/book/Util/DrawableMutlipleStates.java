@@ -36,6 +36,10 @@ public class DrawableMutlipleStates {
         }
         return myDrawables.get(0);
     }
+
+    public float getProgress(){
+        return (float)currentNum/(float)checkpoint.get(checkpoint.size()-1);
+    }
     public boolean allComplete(){
         return currentNum>=checkpoint.get(checkpoint.size()-2);
     }

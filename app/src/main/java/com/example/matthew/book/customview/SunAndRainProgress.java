@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
  * Created by Matthew on 11/9/2016.
  */
 
-public class SunAndRain extends RelativeLayout {
+public class SunAndRainProgress extends RelativeLayout {
     private float A = 0f;
     private float B = 0f;
     private Paint paintBlack=new Paint(),paintGrey=new Paint(),paintRed=new Paint(),paintBlue=new Paint();
@@ -21,22 +21,22 @@ public class SunAndRain extends RelativeLayout {
         paintRed.setColor(Color.rgb(255,216,60));
         paintBlue.setColor(Color.rgb(141,196,200));
     }
-    public SunAndRain(Context context) {
+    public SunAndRainProgress(Context context) {
         super(context);
         setUp();
     }
 
-    public SunAndRain(Context context, AttributeSet attrs) {
+    public SunAndRainProgress(Context context, AttributeSet attrs) {
         super(context, attrs);
         setUp();
     }
 
-    public SunAndRain(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SunAndRainProgress(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setUp();
     }
 
-    public SunAndRain(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SunAndRainProgress(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setUp();
     }

@@ -123,7 +123,7 @@ public class PageEight extends Page implements View.OnTouchListener {
                 imageView.setText(strings[2]);
 
             } else if ( imageView.equals(treeFlower) ) {
-                MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossom);
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossoms);
                 mp.start();
                 imageView.setText(strings[3]);
 

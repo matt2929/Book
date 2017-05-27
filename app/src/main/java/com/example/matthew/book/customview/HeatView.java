@@ -23,6 +23,7 @@ public class HeatView extends RelativeLayout {
     private HashMap<String, Integer> trackHeat = new HashMap<>();
     private HashMap<String, Integer> trackHeatColor = new HashMap<>();
     Integer[] colors = new Integer[]{ Color.TRANSPARENT, Color.argb(200,205,237,26),Color.argb(200,237,181,26),Color.argb(200,255,130,26), Color.argb(200,255,49,26) };
+    int max=0,min=0;
     public boolean ON = false;
     float width,height;
     public HeatView(Context context) {
@@ -106,7 +107,8 @@ public class HeatView extends RelativeLayout {
                 minEntry = entryVal;
             }
         }
-
+        max=maxEntry;
+        min=minEntry;
         int diff = Math.abs(maxEntry - minEntry);
         int[] heatCheck = new int[5];
         if ( diff >= 4 ) {
@@ -114,14 +116,32 @@ public class HeatView extends RelativeLayout {
                 heatCheck[i] = (int) ((float) i / (float) maxEntry);
             }
         }
+        heatCheck[0]=0;
+        heatCheck[1]=1;
 
         for ( Map.Entry<String, Integer> entry : trackHeat.entrySet() ) {
             int value=entry.getValue();
+
             int a =(int) (((((float)value/ ((float) maxEntry)) * 5f))+.5);
+
             if(a==5){
                 a=4;
             }
+            if(value!=0&&a==0){
+                a=1;
+            }
             trackHeatColor.put(entry.getKey(),a);
         }
+    }
+    public int[] getLegendValue(){
+        int[] legend=new int[6];
+        for ( int i = 0; i <5 ; i++ ) {
+            legend[i+1] = (int) ((float) i / (float) max);
+        }
+        legend[0]=0;
+        return legend;
+    }
+    public Integer[] getLegendColor(){
+        return colors;
     }
 }

@@ -7,12 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.example.matthew.book.Util.ReadingSession;
 import com.example.matthew.book.Util.SaveData;
 import com.example.matthew.book.customview.DrawPointTransparent;
 import com.example.matthew.book.customview.HeatView;
+import com.example.matthew.book.customview.LegendTransparent;
 
 public class HistoricalGaze extends AppCompatActivity {
 
@@ -35,7 +38,9 @@ public class HistoricalGaze extends AppCompatActivity {
     SeekBar seekBar;
     private CheckBox checkBox, checkBoxRead;
     private HeatView heatView;
-    private boolean pre = true;
+    private LegendTransparent legendTransparent;
+    int switcher=0;
+   private boolean pre = true;
     int delay = 55;
 
     @Override
@@ -50,6 +55,8 @@ public class HistoricalGaze extends AppCompatActivity {
         start = (Button) findViewById(R.id.gazeStart);
         stop = (Button) findViewById(R.id.gazeStop);
         restart = (Button) findViewById(R.id.gazeRestart);
+        legendTransparent = (LegendTransparent) findViewById(R.id.view);
+
         textView = (TextView) findViewById(R.id.gazeText);
         checkBox = (CheckBox) findViewById(R.id.gazeCheckBox);
         checkBoxRead = (CheckBox) findViewById(R.id.beforeOrAfterRead);
@@ -81,6 +88,45 @@ public class HistoricalGaze extends AppCompatActivity {
         });
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+        legendTransparent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (view == legendTransparent) {
+                    if (legendTransparent.getVisibility() == View.VISIBLE) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+                            float x = motionEvent.getRawX();
+                            float y = motionEvent.getRawY();
+                            int[] coor = new int[2];
+                            heatView.getLocationOnScreen(coor);
+                            if (x + legendTransparent.getWidth() < coor[0] + heatView.getWidth()) {
+                                Log.e("coor", "1");
+                                if (x >= 0) {
+                                    Log.e("coor", "2");
+                                    if (y + legendTransparent.getHeight() <= coor[1] + heatView.getHeight()) {
+                                        Log.e("coor", "3");
+                                        if (y >= 0) {
+                                            Log.e("coor", "4");
+                                            if (switcher == 1) {
+                                                x = x - coor[0];
+                                                y = y - coor[1];
+                                                legendTransparent.setX(x);
+                                                legendTransparent.setY(y);
+                                                switcher = 0;
+                                                return true;
+
+                                            } else {
+                                                switcher++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -102,18 +148,27 @@ public class HistoricalGaze extends AppCompatActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if ( b ) {
+                if (b) {
                     DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
                     int width = metrics.widthPixels;
                     int height = metrics.heightPixels;
-                    if ( pre ) {
+                    if(pre) {
                         heatView.init(readingSessions.getEyePre(), width, height);
-                    } else {
+                        legendTransparent.setParams(heatView.getLegendColor(), heatView.getLegendValue());
+
+                    }else{
+
                         heatView.init(readingSessions.getEyePost(), width, height);
+                        legendTransparent.setParams(heatView.getLegendColor(), heatView.getLegendValue());
+
                     }
-                    heatView.turnOn();
+                        heatView.turnOn();
+                   legendTransparent.setVisibility(View.VISIBLE);
+                    legendTransparent.setParams(heatView.getLegendColor(), heatView.getLegendValue());
+
                 } else {
                     heatView.turnOff();
+                   legendTransparent.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -123,13 +178,13 @@ public class HistoricalGaze extends AppCompatActivity {
                 DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
                 int width = metrics.widthPixels;
                 int height = metrics.heightPixels;
-                if ( b ) {
+                if (b) {
                     pre = false;
-                    position=0;
+                    position = 0;
                     heatView.init(readingSessions.getEyePost(), width, height);
                 } else {
                     pre = true;
-                    position=0;
+                    position = 0;
 
                     heatView.init(readingSessions.getEyePre(), width, height);
 
@@ -173,9 +228,9 @@ public class HistoricalGaze extends AppCompatActivity {
 
     public void updateView() {
         ReadingSession.Touch touch;
-        if ( pre ){
-             touch = readingSessions.getEyePre().get(position);
-        }else{
+        if (pre) {
+            touch = readingSessions.getEyePre().get(position);
+        } else {
             touch = readingSessions.getEyePost().get(position);
         }
         drawPointTouch(touch.get_X(), touch.get_Y(), touch.is_Good());
@@ -201,9 +256,9 @@ public class HistoricalGaze extends AppCompatActivity {
         }
 
         public void run() {
-            if ( pre ) {
-                if ( running ) {
-                    if ( position + 1 == readingSessions.getEyePre().size() ) {
+            if (pre) {
+                if (running) {
+                    if (position + 1 == readingSessions.getEyePre().size()) {
 
                     } else {
                         position++;
@@ -212,8 +267,8 @@ public class HistoricalGaze extends AppCompatActivity {
                 }
 
             } else {
-                if ( running ) {
-                    if ( position + 1 == readingSessions.getEyePost().size() ) {
+                if (running) {
+                    if (position + 1 == readingSessions.getEyePost().size()) {
 
                     } else {
                         position++;

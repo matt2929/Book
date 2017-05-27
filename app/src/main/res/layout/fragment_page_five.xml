@@ -14,88 +14,103 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5">
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="0dip"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight=".5"
             android:orientation="horizontal"
-            android:weightSum="1.5">
+            android:weightSum="3">
 
-            <view
-                android:id="@+id/minProg1"
-                class="com.example.matthew.book.customview.MineralProgress"
-                layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight=".5"
-                android:background="@android:color/transparent"/>
-
-            <Button
-                android:id="@+id/Page5SeedLeft"
-                android:layout_width="0dip"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
                 android:layout_weight="1"
-                android:background="@drawable/sprout9"/>
+                android:orientation="horizontal"
+                android:weightSum="1.5">
+
+                <view
+                    android:id="@+id/minProg1"
+                    class="com.example.matthew.book.customview.MineralProgress"
+                    layout_weight="1"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:background="@android:color/transparent" />
+
+                <Button
+                    android:id="@+id/Page5SeedLeft"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/sprout9" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="1.5">
+
+                <view
+                    android:id="@+id/minProg2"
+                    class="com.example.matthew.book.customview.MineralProgress"
+                    layout_weight="1"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:background="@android:color/transparent" />
+
+                <Button
+                    android:id="@+id/Page5SeedCenter"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/sprout9" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <view
+                    android:id="@+id/minProg3"
+                    class="com.example.matthew.book.customview.MineralProgress"
+                    layout_weight="1"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:background="@android:color/transparent" />
+
+                <Button
+                    android:id="@+id/Page5seedRight"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/sprout9" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="1.5">
-
-            <view
-                android:id="@+id/minProg2"
-                class="com.example.matthew.book.customview.MineralProgress"
-                layout_weight="1"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight=".5"
-                android:background="@android:color/transparent"/>
-
-            <Button
-                android:id="@+id/Page5SeedCenter"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"
-                android:background="@drawable/sprout9"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <view
-                android:id="@+id/minProg3"
-                class="com.example.matthew.book.customview.MineralProgress"
-                layout_weight="1"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight=".5"
-                android:background="@android:color/transparent"/>
-
-            <Button
-                android:id="@+id/Page5seedRight"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="1"
-                android:background="@drawable/sprout9"/>
-        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

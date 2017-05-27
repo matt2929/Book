@@ -189,13 +189,19 @@
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="0dp"/>
 
-            <com.example.matthew.book.customview.HeatView
-                android:id="@+id/HeatMap"
+            <RelativeLayout
+                android:id="@+id/HeatContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="match_parent">
 
-                android:layout_alignParentBottom="true"
-                android:background="@color/colorPrimary"/>
+                <com.example.matthew.book.customview.HeatView
+                    android:id="@+id/HeatMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimary" />
+            </RelativeLayout>
 
             <com.example.matthew.book.customview.DrawPointTransparent
                 android:id="@+id/DrawPointEye"
@@ -208,7 +214,18 @@
                 android:layout_alignParentTop="true"
                 android:background="@android:color/transparent"
                 tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp"/>
+                tools:layout_editor_absoluteY="0dp">
+
+            </com.example.matthew.book.customview.DrawPointTransparent>
+
+            <view
+                android:id="@+id/Legend"
+                class="com.example.matthew.book.customview.LegendTransparent"
+                id="@+id/view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
     </LinearLayout>

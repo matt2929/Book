@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -23,6 +27,7 @@ import com.example.matthew.book.Util.ReadingSession;
 import com.example.matthew.book.Util.SaveData;
 import com.example.matthew.book.customview.DrawPointTransparent;
 import com.example.matthew.book.customview.HeatView;
+import com.example.matthew.book.customview.LegendTransparent;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,11 +40,14 @@ public class HistoricalTouches extends AppCompatActivity {
     ProgressBar progressBar;
     boolean running = false;
     int position = 0;
+    int switcher=0;
+
     ReadingSession.PageInfo readingSessions;
     DrawGazeRepeat drawGazeRepeat;
     SeekBar seekBar;
     private CheckBox checkBox;
     private HeatView heatView;
+    private LegendTransparent legendTransparent;
     int delay = 55;
 
     @Override
@@ -48,6 +56,7 @@ public class HistoricalTouches extends AppCompatActivity {
         setContentView(R.layout.activity_historical_touches);
         SaveData saveData = new SaveData(getApplicationContext());
         drawPointTransparent = (DrawPointTransparent) findViewById(R.id.DrawPointEye);
+        legendTransparent = (LegendTransparent) findViewById(R.id.Legend);
         readingSessions = saveData.getReadingSessions(getApplicationContext()).get(HistoricalSessions.IndexClicked).getPageInfo().get(HistoricalPages.pageIndex);
         ImageView imageView = (ImageView) findViewById(R.id.showwhereeyeare);
         checkBox = (CheckBox) findViewById(R.id.gazeCheckBox);
@@ -59,6 +68,47 @@ public class HistoricalTouches extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.gazeText);
         checkBox = (CheckBox) findViewById(R.id.gazeCheckBox);
         heatView = (HeatView) findViewById(R.id.HeatMap);
+
+        legendTransparent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(view==legendTransparent) {
+                    if (legendTransparent.getVisibility() == View.VISIBLE) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+                            float x = motionEvent.getRawX();
+                            float y = motionEvent.getRawY();
+                            int[] coor=new int[2];
+                            heatView.getLocationOnScreen(coor);
+                           if (x+legendTransparent.getWidth() < coor[0] + heatView.getWidth()) {
+                                Log.e("coor", "1");
+                                if (x >= 0) {
+                                    Log.e("coor", "2");
+                                    if (y+legendTransparent.getHeight() <= coor[1] + heatView.getHeight()) {
+                                        Log.e("coor", "3");
+                                        if (y >= 0) {
+                                            Log.e("coor", "4");
+                                            if (switcher == 1) {
+                                                x= x-coor[0];
+                                                y= y-coor[1];
+                                                legendTransparent.setX(x);
+                                                legendTransparent.setY(y);
+                                                switcher = 0;
+                                                return true;
+
+                                            } else {
+                                                switcher++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        });
+
         progressBar = (ProgressBar) findViewById(R.id.gazeProgress);
         progressBar.setMax(100);
         seekBar = (SeekBar) findViewById(R.id.seekBarEye);
@@ -89,7 +139,7 @@ public class HistoricalTouches extends AppCompatActivity {
             public void onClick(View view) {
                 running = false;
                 position--;
-                if ( position < 0 )
+                if (position < 0)
                     position = 0;
                 ReadingSession.Touch touch = readingSessions.getTouches().get(position);
                 drawPointTouch(touch.get_X(), touch.get_Y(), touch.is_Good());
@@ -104,7 +154,7 @@ public class HistoricalTouches extends AppCompatActivity {
             public void onClick(View view) {
                 running = false;
                 position++;
-                if ( position == readingSessions.getTouches().size() )
+                if (position == readingSessions.getTouches().size())
                     position--;
                 ReadingSession.Touch touch = readingSessions.getTouches().get(position);
                 drawPointTouch(touch.get_X(), touch.get_Y(), touch.is_Good());
@@ -139,14 +189,18 @@ public class HistoricalTouches extends AppCompatActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if ( b ) {
+                if (b) {
                     DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
                     int width = metrics.widthPixels;
                     int height = metrics.heightPixels;
                     heatView.init(readingSessions.getTouches(), width, height);
                     heatView.turnOn();
+                    legendTransparent.setVisibility(View.VISIBLE);
+                    legendTransparent.setParams(heatView.getLegendColor(), heatView.getLegendValue());
+
                 } else {
                     heatView.turnOff();
+                    legendTransparent.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -212,8 +266,8 @@ public class HistoricalTouches extends AppCompatActivity {
         }
 
         public void run() {
-            if ( running ) {
-                if ( position + 1 == readingSessions.getTouches().size() ) {
+            if (running) {
+                if (position + 1 == readingSessions.getTouches().size()) {
 
                 } else {
                     position++;

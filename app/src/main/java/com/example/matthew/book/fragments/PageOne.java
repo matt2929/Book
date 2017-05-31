@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 public class PageOne extends Page {
     Button seedbutt1, seedbutt2, seedbutt3;
     View masterView;
-    boolean bool = false;
+    boolean bool = true;
+
+//    boolean bool = false;
     public Handler handler;
     int index = 0;
     Context _context;
@@ -47,7 +50,9 @@ public class PageOne extends Page {
         seedbutt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("happened","call");
                 if(bool) {
+                    Log.e("happened","true");
                     seedCount[0] = seedCount[0] + 1;
                     if (seedCount[0] >= myDrawablesSprout.size()) {
 

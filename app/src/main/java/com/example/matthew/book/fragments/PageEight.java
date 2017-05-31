@@ -37,7 +37,8 @@ public class PageEight extends Page implements View.OnTouchListener {
     float rotate = 0;
     Drawable drawable;
     String strings[] = { "Seed", "Sapling", "Young Tree", "Tree With Flowers", "Tree With Apples" };
-    Boolean currentBool = false;
+    Boolean currentBool = true;
+    //Boolean currentBool = false;
     public Handler handler;
     RelativeLayout relativeLayout;
     Context _context;
@@ -99,7 +100,9 @@ public class PageEight extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            PageTurner.dragginSomething = true;
+        }
         Button imageView = (Button) view;
         didITouch.put(imageView, true);
         if ( event.getAction() == android.view.MotionEvent.ACTION_DOWN ) {
@@ -118,12 +121,12 @@ public class PageEight extends Page implements View.OnTouchListener {
                 imageView.setText(strings[1]);
 
             } else if ( imageView.equals(tree) ) {
-                MediaPlayer mp = MediaPlayer.create(_context, R.raw.fullgrowntree);
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.full_grown_tree);
                 mp.start();
                 imageView.setText(strings[2]);
 
             } else if ( imageView.equals(treeFlower) ) {
-                MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossoms);
+                MediaPlayer mp = MediaPlayer.create(_context, R.raw.blossom);
                 mp.start();
                 imageView.setText(strings[3]);
 

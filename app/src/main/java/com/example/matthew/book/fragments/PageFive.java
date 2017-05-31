@@ -27,7 +27,8 @@ public class PageFive extends Page implements View.OnTouchListener {
     View masterView;
     int updateLimiter = 0;
     Float lastX = 0f, lastY = 0f;
-    boolean bool = false;
+    boolean bool = true;
+    //    boolean bool = false;
     public Handler handler;
     int index = 0;
     // Context _context;
@@ -74,6 +75,9 @@ public class PageFive extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            PageTurner.dragginSomething = true;
+        }
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{ seedbutt1, seedbutt2, seedbutt3, cloud }));
         PageTurner.allButtons = new ArrayList<>(butttemp);
 

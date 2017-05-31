@@ -29,7 +29,9 @@ public class PageThree extends Page implements View.OnTouchListener {
     View masterView;
     int updateLimiter = 0;
     Float lastX = 0f, lastY = 0f;
-    boolean bool = false;
+    boolean bool = true;
+
+    //    boolean bool = false;
     MediaPlayer mp;
 
     @Override
@@ -62,7 +64,10 @@ public class PageThree extends Page implements View.OnTouchListener {
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(dirt));
         butttemp.addAll(Arrays.asList(seeds));
         PageTurner.allButtons =  new ArrayList<>(butttemp);
-
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            PageTurner.dragginSomething = true;
+        }else if(event.getAction()==MotionEvent.ACTION_UP){
+        }
         if (bool) {
             v.setBackground(getResources().getDrawable(R.drawable.page3dirt1));
             if (!v.getBackground().equals(getResources().getDrawable(R.drawable.page3dirt1))&&event.getAction()==(MotionEvent.ACTION_DOWN)) {

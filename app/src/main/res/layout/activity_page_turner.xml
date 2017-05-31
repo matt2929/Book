@@ -11,6 +11,13 @@
     tools:context="com.example.matthew.book.Activities.FrontPage"
     android:paddingBottom="15dp">
 
+    <com.example.matthew.book.customview.PleaseSwipe
+        android:id="@+id/swipeAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_dark"
+        android:visibility="invisible"></com.example.matthew.book.customview.PleaseSwipe>
+
     <FrameLayout
         android:id="@+id/fragmentcase"
         android:layout_width="match_parent"
@@ -18,13 +25,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textonpage">
-        <com.example.matthew.book.customview.PleaseSwipe
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/swipeAnimation"
-            android:background="@android:color/background_dark">
-        </com.example.matthew.book.customview.PleaseSwipe>
+        android:layout_below="@+id/textonpage"
+        android:visibility="visible">
+
     </FrameLayout>
 
     <Button
@@ -64,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test"
-        android:visibility="visible"/>
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/previewviewturn"
@@ -72,7 +75,7 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:visibility="invisible">
+        android:visibility="gone">
 
     </FrameLayout>
 

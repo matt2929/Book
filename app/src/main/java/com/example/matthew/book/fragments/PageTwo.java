@@ -30,7 +30,9 @@ public class PageTwo extends Page implements View.OnTouchListener {
 
     int updateLimiter = 0;
     Float lastX = 0f, lastY = 0f;
-    boolean bool = false;
+    boolean bool = true;
+
+    //    boolean bool = false;
     MediaPlayer mp;
 
     @Override
@@ -60,6 +62,10 @@ public class PageTwo extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            PageTurner.dragginSomething = true;
+        }else if(event.getAction()==MotionEvent.ACTION_UP){
+        }
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(dirt));
         butttemp.addAll(Arrays.asList(seeds));
         PageTurner.allButtons =  new ArrayList<>(butttemp);

@@ -47,12 +47,14 @@ public class MineralProgress extends RelativeLayout{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawRect(getWidth()*(1f/4f),0,getWidth()*(3f/4f),getHeight(),paintDKGrey);
+
+        canvas.drawRect(getWidth()*(1f/3f),0,getWidth()*(2f/3f),getHeight(),paintLtGrey);
 
         for(int i=0;i<255;i++){
             paintBlack.setColor(Color.rgb(i,i,i));
             canvas.drawRect(getWidth()*((float)(i+256)/768f),getHeight()-(getHeight()*A),getWidth()*((float)(i+257)/768f),getHeight(),paintBlack);
         }
-        canvas.drawRect(getWidth()*(5f/15f),0,getWidth()*(10f/15f),10,paintRed);
        //
         /* canvas.drawRect(getWidth()*(5f/15f),getHeight()-(getHeight()*A),getWidth()*(6f/15f),getHeight(),paintBlack);
         canvas.drawRect(getWidth()*(6f/15f),getHeight()-(getHeight()*A),getWidth()*(7f/15f),getHeight(),paintDKGrey);

@@ -66,13 +66,12 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
     Clock clock;
     Clock2 clock2;
     Calendar calendar;
-    public static boolean dragginSomething = false;
-    Long startTimeTouchable = System.currentTimeMillis();
+    Long startTimeTouchable;
     boolean goodTouch = false;
     PleaseSwipe pleaseSwipe;
     public static ArrayList<Button> allButtons;
     GoodBadTouch goodBadTouch;
-    static MediaPlayer mediaPlayer = new MediaPlayer();
+    MediaPlayer mediaPlayer = new MediaPlayer();
     ArrayList<Integer> pageTextRecording = new ArrayList<>();
     ArrayList<Integer> touchDelayRecording = new ArrayList<>();
     Long startTime = System.currentTimeMillis();
@@ -144,6 +143,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_turner);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -197,20 +197,18 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         preview = (FrameLayout) findViewById(R.id.previewviewturn);
         myView = new View(PageTurner.this);
         pleaseSwipe.setVisibility(View.GONE);
-            Log.e("Initialize", "Initialize");
-            tts = new TextToSpeech(this, this);
-
-        if (savedInstanceState == null) {
-
-            mediaPlayer = MediaPlayer.create(this, R.raw.page1);
-            mediaPlayer.setVolume(10, 10);
-            mediaPlayer.setOnCompletionListener(this);
-            mediaPlayer.setOnPreparedListener(this);
-            mediaPlayer.setVolume(10, 10);
-        }
+        tts = new TextToSpeech(this, this);
+        mediaPlayer = MediaPlayer.create(this, R.raw.page1);
+        mediaPlayer.setVolume(10, 10);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setVolume(10, 10);
         clock2.run();
         tf = Typeface.createFromAsset(getAssets(), "fonts/calibri.otf");
         textView.setTypeface(tf);
+        mediaPlayer = MediaPlayer.create(PageTurner.this, R.raw.page1);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnPreparedListener(this);
         fragmentManager = getFragmentManager();
         _CurrentPage.passMediaPlayer(getApplicationContext());
         Repeat = (Button) findViewById(R.id.repeatspeaks);
@@ -256,8 +254,8 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         }
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         getFragmentManager().beginTransaction().replace(R.id.fragmentcase, _CurrentPage).commit();
-    }
 
+    }
 
     private void orientationListener() {
         orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
@@ -391,17 +389,12 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                 x1 = event.getX();
                 break;
             case MotionEvent.ACTION_UP:
-
                 x2 = event.getX();
                 float deltaX = x2 - x1;
                 fragCase.setBackground(null);
-                mediaPlayer.stop();
-                if(!dragginSomething) {
-                    if (deltaX < -MIN_DISTANCE) {
-
-                        resetPages();
-
-                        //if (_CurrentPage.doneTouching()) {
+                if (deltaX < -MIN_DISTANCE) {
+                    resetPages();
+                    if (_CurrentPage.doneTouching()) {
                         resetPages();
                         transaction = fragmentManager.beginTransaction();
                         transaction.setCustomAnimations(R.animator.fadein, R.animator.fadeout);
@@ -437,8 +430,6 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             clickCount++;
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-                            mediaPlayer.stop();
-                            mediaPlayer.release();
                             mediaPlayer = MediaPlayer.create(this, pageTextRecording.get(currentPageIndex));
                             mediaPlayer.setOnPreparedListener(this);
                             mediaPlayer.setOnCompletionListener(this);
@@ -447,63 +438,56 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
                             _CurrentPage.passMediaPlayer(getApplicationContext());
                             clock.reset();
                             clock.run();
-                            _CurrentPage.enabledisabletouch(true);
-
-//                        _CurrentPage.enabledisabletouch(false);
+                            _CurrentPage.enabledisabletouch(false);
                             canClick = false;
 
                         }
+                    } else if (canClick) {
+                    }
+                } else if (deltaX > 10000000) {
+                    resetPages();
+                    if (_CurrentPage.doneTouching()) {
 
-                        // } else if (canClick) {
-                        //}
+                        transaction = fragmentManager.beginTransaction();
+                        transaction.setCustomAnimations(R.animator.fadein2, R.animator.fadeout2);
+                        if (currentPageIndex == 0) {
+                        } else {
+                            goodBadTouch.lastTouchWasAGoodSwipe();
+                            saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_ReadEyeCoordinates(), goodBadTouch.get_PostReadEyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
+                            goodBadTouch.reset(currentPageIndex);
+                            _CurrentPage = allPages.get(--currentPageIndex);
+                            if (currentPageIndex == allPages.size() - 1) {
+                                _CurrentPage = new PageEight();
+                                ll.setBackground(getDrawable(R.drawable.pastellegreenback));
+                                textView.setTextColor(Color.WHITE);
+                                textView.setShadowLayer(10, 10, 10, Color.BLACK);
 
-                    } else if (deltaX > 10000000) {
-                        resetPages();
-                        if (_CurrentPage.doneTouching()) {
-
-                            transaction = fragmentManager.beginTransaction();
-                            transaction.setCustomAnimations(R.animator.fadein2, R.animator.fadeout2);
-                            if (currentPageIndex == 0) {
                             } else {
-                                goodBadTouch.lastTouchWasAGoodSwipe();
-                                saveData.savePage(goodBadTouch.get_Touches(), goodBadTouch.get_ReadEyeCoordinates(), goodBadTouch.get_PostReadEyeCoordinates(), goodBadTouch.getEarly(), Math.abs(startTimeTouchable - System.currentTimeMillis()), currentPageIndex + 1);
-                                goodBadTouch.reset(currentPageIndex);
-                                _CurrentPage = allPages.get(--currentPageIndex);
-                                if (currentPageIndex == allPages.size() - 1) {
-                                    _CurrentPage = new PageEight();
-                                    ll.setBackground(getDrawable(R.drawable.pastellegreenback));
-                                    textView.setTextColor(Color.WHITE);
-                                    textView.setShadowLayer(10, 10, 10, Color.BLACK);
-
-                                } else {
-                                    ll.setBackground(getDrawable(R.drawable.gre2));
-                                    textView.setTextColor(Color.BLACK);
-                                }
-                                transaction.replace(fragCase.getId(), _CurrentPage);
-
-                                textView.setText(_CurrentPage.getString());
-                                transaction.commit();
-                                clickCount++;
-                                HashMap<String, String> map = new HashMap<String, String>();
-                                map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
-                                //   tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
-                                mediaPlayer = MediaPlayer.create(this, pageTextRecording.get(currentPageIndex));
-                                mediaPlayer.setOnCompletionListener(this);
-                                mediaPlayer.setOnPreparedListener(this);
-                                _CurrentPage.passMediaPlayer(getApplicationContext());
-                                clock.reset();
-                                clock.run();
-
-                                _CurrentPage.enabledisabletouch(true);
-                                //                           _CurrentPage.enabledisabletouch(false);
-                                canClick = false;
+                                ll.setBackground(getDrawable(R.drawable.gre2));
+                                textView.setTextColor(Color.BLACK);
                             }
-                        } else if (canClick) {
+                            transaction.replace(fragCase.getId(), _CurrentPage);
 
+                            textView.setText(_CurrentPage.getString());
+                            transaction.commit();
+                            clickCount++;
+                            HashMap<String, String> map = new HashMap<String, String>();
+                            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+                            //   tts.speak(_CurrentPage.getString(), TextToSpeech.QUEUE_FLUSH, map);
+                            mediaPlayer = MediaPlayer.create(this, pageTextRecording.get(currentPageIndex));
+                            mediaPlayer.setOnCompletionListener(this);
+                            mediaPlayer.setOnPreparedListener(this);
+                            _CurrentPage.passMediaPlayer(getApplicationContext());
+                            clock.reset();
+                            clock.run();
+                            _CurrentPage.enabledisabletouch(false);
+                            canClick = false;
                         }
+                    } else if (canClick) {
+
                     }
                 }
-                dragginSomething=false;
+
                 break;
         }
         boolean ret = super.dispatchTouchEvent(event);
@@ -542,10 +526,8 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
         if (mediaPlayer.isPlaying()) {
 
         } else {
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
-                clock.run();
-            }
+            mediaPlayer.start();
+            clock.run();
         }
     }
 
@@ -561,7 +543,7 @@ public class PageTurner extends Activity implements TextToSpeech.OnInitListener,
 
                                                         @Override
                                                         public void run() {
-                                                            //   mediaPlayer.start();
+                                                            mediaPlayer.start();
                                                             clock.setPause(false);
                                                         }
                                                     });

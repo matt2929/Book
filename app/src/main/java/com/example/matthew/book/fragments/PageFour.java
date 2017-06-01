@@ -28,8 +28,7 @@ public class PageFour extends Page implements View.OnTouchListener {
     View masterView;
     int updateLimiter = 0;
     Float lastX = 0f, lastY = 0f;
-    boolean bool = true;
-    //    boolean bool = false;
+    boolean bool = false;
     public Handler handler;
     int indexRain = 0;
     int indexSun = 0;
@@ -86,11 +85,6 @@ public class PageFour extends Page implements View.OnTouchListener {
         cloud.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction()==MotionEvent.ACTION_BUTTON_PRESS){
-                    PageTurner.dragginSomething = true;
-                }else if(event.getAction()==MotionEvent.ACTION_BUTTON_RELEASE){
-                    PageTurner.dragginSomething = false;
-                }
                 ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
                 PageTurner.allButtons = new ArrayList<>(butttemp);
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -138,10 +132,6 @@ public class PageFour extends Page implements View.OnTouchListener {
         sun.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction()==MotionEvent.ACTION_DOWN){
-                    PageTurner.dragginSomething = true;
-                }else if(event.getAction()==MotionEvent.ACTION_UP){
-                }
                 ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud, sun}));
                 PageTurner.allButtons = new ArrayList<>(butttemp);
 

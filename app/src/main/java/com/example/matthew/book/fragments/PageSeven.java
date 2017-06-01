@@ -27,8 +27,7 @@ public class PageSeven extends Page implements View.OnTouchListener {
     Float lastX = 0f, lastY = 0f;
     boolean offsetIncrease = true;
     Float offset = 0f, offsetMax = 10f, offsetMin = -10f;
-    boolean bool = true;
-    //    boolean bool = false;
+    boolean bool = false;
     public Handler handler;
     Context _context;
     MediaPlayer mp;
@@ -68,9 +67,6 @@ public class PageSeven extends Page implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         ArrayList<Button> butttemp = new ArrayList<>(Arrays.asList(new Button[]{seedbutt1, seedbutt2, seedbutt3, cloud}));
-        if(event.getAction()==MotionEvent.ACTION_DOWN){
-            PageTurner.dragginSomething = true;
-        }
         PageTurner.allButtons = new ArrayList<>(butttemp);
         if (bool) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {

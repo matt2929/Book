@@ -37,8 +37,7 @@ public class PageEight extends Page implements View.OnTouchListener {
     float rotate = 0;
     Drawable drawable;
     String strings[] = { "Seed", "Sapling", "Young Tree", "Tree With Flowers", "Tree With Apples" };
-    Boolean currentBool = true;
-    //Boolean currentBool = false;
+    Boolean currentBool = false;
     public Handler handler;
     RelativeLayout relativeLayout;
     Context _context;
@@ -100,9 +99,7 @@ public class PageEight extends Page implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        if(event.getAction()==MotionEvent.ACTION_DOWN){
-            PageTurner.dragginSomething = true;
-        }
+
         Button imageView = (Button) view;
         didITouch.put(imageView, true);
         if ( event.getAction() == android.view.MotionEvent.ACTION_DOWN ) {

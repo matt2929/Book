@@ -9,6 +9,3 @@
 /captures
 .externalNativeBuild
 app/libs/
-app/src/main/res/animation/
-app/src/main/res/drawable/
-app/src/main/res/raw/

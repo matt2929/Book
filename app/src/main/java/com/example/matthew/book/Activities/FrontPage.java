@@ -32,31 +32,8 @@ public class FrontPage extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_front_page);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        if ( ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED ) {
-
-            // Should we show an explanation?
-            if ( ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_CONTACTS) ) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-                int n = 0;
-                ActivityCompat.requestPermissions(this,
-                        new String[]{ Manifest.permission.CAMERA, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE },
-                        n);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
+        ActivityCompat.requestPermissions(this,
+                new String[]{ Manifest.permission.CAMERA, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO },555);
 
         start = (Button) findViewById(R.id.titlereadtome);
         author = (Button) findViewById(R.id.author);
@@ -96,11 +73,8 @@ public class FrontPage extends Activity {
 
 
                 Intent i;
-                if ( EYETRACK ) {
-                    i = new Intent(getApplicationContext(), CameraPreviewActivity.class);
-                } else {
                     i = new Intent(getApplicationContext(), PageTurner.class);
-                }
+
                 startActivity(i);
 
             }

@@ -88,8 +88,8 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:text="PLay"
-                        android:textAllCaps="false"/>
+                        android:text="Play"
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/gazeStop"

@@ -4,7 +4,8 @@
  * QTI Proprietary and Confidential.
  * =====================================================================
  * @file: CameraSurfacePreview.java
- */
+ *//*
+
 
 package com.example.matthew.book.Activities;
 
@@ -16,17 +17,19 @@ import android.os.Build;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.qualcomm.snapdragon.sdk.face.FacialProcessing;
+//import com.qualcomm.snapdragon.sdk.face.FacialProcessing;
 
 import java.io.IOException;
 import java.util.List;
 
 public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.Callback {
 
-    private final SurfaceHolder mHolder;
+   */
+/* private final SurfaceHolder mHolder;
     private final Camera mCamera;
     Context mContext;
-    FacialProcessing mFaceProc;
+   *//*
+// FacialProcessing mFaceProc;
     private final int MAX_NUM_BYTES = 1500000;      // Each image is supported for display, upto 1.5 Mb = 1572864 bytes.
 
     // Facial Values
@@ -38,14 +41,15 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     int mSupportedHeight;
 
     @SuppressWarnings("deprecation")
-    public CameraSurfacePreview(Context context, Camera camera, FacialProcessing faceProc) {
+   */
+/* public CameraSurfacePreview(Context context, Camera camera, FacialProcessing faceProc) {
         super(context);
         mCamera = camera;
         mContext = context;
         // Install a SurfaceHolder.Callback so we get notified when the underlying surface is created and destroyed.
         mHolder = getHolder();
         mHolder.addCallback(this);
-        mFaceProc = faceProc;
+       // mFaceProc = faceProc;
 
 
         Camera.Parameters pm = mCamera.getParameters();
@@ -66,6 +70,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
+*//*
 
     @Override
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
@@ -91,4 +96,4 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
 
     }
 
-}
+}*/

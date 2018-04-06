@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Book.iml" filepath="$PROJECT_DIR$/Book.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BookC.iml" filepath="$PROJECT_DIR$/BookC.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/sd-sdk-facial-processing/sd-sdk-facial-processing.iml" filepath="$PROJECT_DIR$/sd-sdk-facial-processing/sd-sdk-facial-processing.iml" />
     </modules>

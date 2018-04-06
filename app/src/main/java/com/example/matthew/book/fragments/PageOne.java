@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,7 @@ public class PageOne extends Page {
     @Override
     public void enabledisabletouch(boolean b) {
         bool = b;
+        Log.e("touch","enabled");
     }
 
     @Override
